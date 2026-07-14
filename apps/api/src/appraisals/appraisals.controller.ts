@@ -52,4 +52,9 @@ export class AppraisalsController {
   sign(@CurrentUser() user: AuthUser, @Param('id') id: string, @Body() body: { party: 'employee' | 'manager'; name: string }, @Req() req: any) {
     return this.svc.sign(user, id, body.party, body.name, this.ip(req));
   }
+
+  @Post(':id/final-comments')
+  finalComments(@CurrentUser() user: AuthUser, @Param('id') id: string, @Body() body: { employee?: string; manager?: string }) {
+    return this.svc.setFinalComments(user, id, body);
+  }
 }

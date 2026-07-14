@@ -194,6 +194,28 @@ export class AppraisalsService {
     return this.getOne(user, id);
   }
 
+  // ── Final comments (sign-off stage) ───────────────────────────────────
+  async setFinalComments(user: AuthUser, id: string, body: { employee?: string; manager?: string }) {
+    const a = await this.prisma.appraisal.findUnique({ where: { id }, include: this.templateInclude });
+    if (!a) throw new NotFoundException();
+    if (a.status !== 'approved' || a.signed) {
+      throw new BadRequestException('Final comments can only be edited during sign-off, before locking');
+    }
+    const isEmployee = a.employeeId === user.id;
+    const isManager = this.scope.isManagerOf(user, a);
+    if (!isEmployee && !isManager) throw new ForbiddenException('Not a party to this appraisal');
+
+    const data: { finalCommentEmployee?: string; finalCommentManager?: string } = {};
+    // Each party may only edit their own final comment.
+    if (isEmployee && body.employee !== undefined) data.finalCommentEmployee = body.employee;
+    if (isManager && body.manager !== undefined) data.finalCommentManager = body.manager;
+    if (Object.keys(data).length === 0) throw new BadRequestException('Nothing to update for your role');
+
+    const updated = await this.prisma.appraisal.update({ where: { id }, data, include: this.templateInclude });
+    await this.audit.append({ actorId: user.id, actorName: user.displayName, action: 'APPRAISAL.SAVE', objectRef: `appraisal:${id}:final-comment` });
+    return this.withComputed(updated);
+  }
+
   // ── Create / assign ───────────────────────────────────────────────────
   async assign(user: AuthUser, employeeId: string, templateId: string, cycleId?: string) {
     // Managers assign for their reports; execs can assign within scope.

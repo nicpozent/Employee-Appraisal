@@ -8,11 +8,12 @@ interface Analytics {
   avgScoreByDepartment: { dept: string; avg: number }[];
   completionByStatus: { status: string; count: number }[];
   distribution: { bucket: string; count: number }[];
+  competencyHeat: { competency: string; section: string; avg: number; count: number }[];
 }
 
-/* Heat cell background from a 0–100 score (accent-050 → accent). */
-function heatBg(v: number): string {
-  const t = Math.max(0, Math.min(100, v)) / 100;
+/* Heat cell background from a 1–5 rating (accent-050 → accent). */
+function heatBg5(v: number): string {
+  const t = Math.max(0, Math.min(4, v - 1)) / 4;
   return `color-mix(in srgb, var(--accent) ${Math.round(t * 100)}%, var(--accent-050))`;
 }
 
@@ -34,6 +35,7 @@ export function Analytics() {
   const deptRows = data?.avgScoreByDepartment ?? [];
   const statusRows = data?.completionByStatus ?? [];
   const distRows = data?.distribution ?? [];
+  const heatRows = data?.competencyHeat ?? [];
   const maxDist = Math.max(1, ...distRows.map((d) => d.count));
 
   return (
@@ -77,28 +79,37 @@ export function Analytics() {
         </Card>
 
         <Card title="Competency heat">
-          {empty || deptRows.length === 0 ? (
-            emptyState
+          {empty || heatRows.length === 0 ? (
+            heatRows.length === 0 && !empty ? (
+              <EmptyState title="No manager ratings yet" icon="◔">Competency cells appear once managers have scored appraisals.</EmptyState>
+            ) : emptyState
           ) : (
             <>
               <p className="muted" style={{ fontSize: 'var(--t-sm)', marginBottom: 12 }}>
-                Per-competency org breakdown is not yet available; showing average score by department as a heat grid.
+                Average manager rating (1–5) per competency across the organization.
               </p>
-              <div className="grid grid-4" style={{ gap: 8 }}>
-                {deptRows.map((d) => (
-                  <div
-                    key={d.dept}
-                    style={{
-                      background: heatBg(d.avg),
-                      borderRadius: 'var(--r-md)',
-                      padding: '12px 10px',
-                      textAlign: 'center',
-                    }}
-                  >
-                    <div className="mono" style={{ fontWeight: 700, fontSize: 18 }}>
-                      {Math.round(d.avg)}
+              <div className="stack" style={{ gap: 6 }}>
+                {heatRows.map((c) => (
+                  <div key={`${c.section}·${c.competency}`} className="row" style={{ gap: 10 }}>
+                    <div
+                      style={{
+                        background: heatBg5(c.avg),
+                        borderRadius: 'var(--r-sm)',
+                        width: 44,
+                        textAlign: 'center',
+                        padding: '6px 0',
+                        flex: 'none',
+                        fontWeight: 700,
+                      }}
+                      className="mono"
+                      title={`n=${c.count}`}
+                    >
+                      {c.avg.toFixed(1)}
                     </div>
-                    <div style={{ fontSize: 'var(--t-2xs)' }}>{d.dept}</div>
+                    <div style={{ minWidth: 0 }}>
+                      <div style={{ fontSize: 'var(--t-sm)', fontWeight: 500, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{c.competency}</div>
+                      <div className="muted" style={{ fontSize: 'var(--t-2xs)' }}>{c.section}</div>
+                    </div>
                   </div>
                 ))}
               </div>

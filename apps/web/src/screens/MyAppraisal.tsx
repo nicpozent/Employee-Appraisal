@@ -290,13 +290,29 @@ export function SignModal({ defaultName, onClose, onSign, pending }: {
   onSign: (name: string) => void;
   pending: boolean;
 }) {
+  const { authMode, stepUpReauth } = useAuth();
   const parts = defaultName.trim().split(/\s+/);
   const [first, setFirst] = useState(parts[0] ?? '');
   const [last, setLast] = useState(parts.slice(1).join(' '));
   const [date, setDate] = useState(new Date().toISOString().slice(0, 10));
   const [stepTwo, setStepTwo] = useState(false);
+  const [reauthing, setReauthing] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
   const fullName = useMemo(() => `${first} ${last}`.trim(), [first, last]);
+
+  const doSign = async () => {
+    setError(null);
+    try {
+      setReauthing(true);
+      await stepUpReauth(); // real Entra step-up in prod; no-op in dev-mock
+      onSign(fullName);
+    } catch {
+      setError('Re-authentication was cancelled or failed. You must verify your identity to sign.');
+    } finally {
+      setReauthing(false);
+    }
+  };
 
   return (
     <div className="overlay" onClick={onClose}>
@@ -317,11 +333,16 @@ export function SignModal({ defaultName, onClose, onSign, pending }: {
             </>
           ) : (
             <>
-              <div className="notice">Re-authenticate with Microsoft Entra ID to sign. Your credentials are verified by Microsoft — no password is stored here.</div>
+              <div className="notice">
+                {authMode === 'entra'
+                  ? 'Re-authenticate with Microsoft Entra ID to sign. Microsoft will prompt for your credentials — no password is stored here.'
+                  : 'Dev-mock mode: signing is confirmed without a live Entra step-up. In production this requires Microsoft re-authentication.'}
+              </div>
               <div className="sig-name">{fullName}</div>
+              {error && <div className="notice notice-warn">{error}</div>}
               <div className="row" style={{ gap: 10 }}>
-                <button className="btn btn-primary" disabled={pending} onClick={() => onSign(fullName)}>
-                  <span style={{ fontWeight: 800 }}>⊞</span> Sign with Microsoft
+                <button className="btn btn-primary" disabled={pending || reauthing} onClick={doSign}>
+                  <span style={{ fontWeight: 800 }}>⊞</span> {reauthing ? 'Verifying…' : 'Sign with Microsoft'}
                 </button>
                 <button className="btn btn-ghost" onClick={() => setStepTwo(false)}>Back</button>
               </div>

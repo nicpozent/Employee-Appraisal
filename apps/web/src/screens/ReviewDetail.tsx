@@ -25,6 +25,8 @@ export function ReviewDetail() {
 
   const [mRatings, setMRatings] = useState<Record<string, number>>({});
   const [mComments, setMComments] = useState<Record<string, string>>({});
+  const [finalEmp, setFinalEmp] = useState('');
+  const [finalMgr, setFinalMgr] = useState('');
 
   const { data: appraisal, isLoading } = useQuery({
     queryKey: ['appraisal', id],
@@ -36,6 +38,8 @@ export function ReviewDetail() {
     if (!appraisal) return;
     setMRatings({ ...(appraisal.managerReview?.ratings ?? {}) });
     setMComments({ ...(appraisal.managerReview?.sectionComments ?? {}) });
+    setFinalEmp(appraisal.finalCommentEmployee ?? '');
+    setFinalMgr(appraisal.finalCommentManager ?? '');
   }, [appraisal]);
 
   useEffect(() => {
@@ -61,6 +65,10 @@ export function ReviewDetail() {
     mutationFn: (name: string) => api.post<Appraisal>(`/appraisals/${id}/sign`, { party: 'manager', name }),
     onSuccess: () => { invalidate(); setSignOpen(false); setToast('Signed.'); },
   });
+  const finalMut = useMutation({
+    mutationFn: (body: { employee?: string; manager?: string }) => api.post<Appraisal>(`/appraisals/${id}/final-comments`, body),
+    onSuccess: () => { invalidate(); setToast('Final comment saved.'); },
+  });
 
   const sections = useMemo<Section[]>(
     () => [...(appraisal?.template?.sections ?? [])].sort((a, b) => a.order - b.order),
@@ -74,6 +82,7 @@ export function ReviewDetail() {
   if (!appraisal) return <p className="muted">Appraisal not found.</p>;
 
   const isManager = appraisal.managerId === me!.id;
+  const isEmployee = appraisal.employeeId === me!.id;
   const stage = stageOf(appraisal);
   const reviewStage = stage === 0;
   const decisionStage = stage === 1;
@@ -183,11 +192,29 @@ export function ReviewDetail() {
               <div className="form-grid">
                 <div className="field">
                   <label>Final comment — Employee</label>
-                  <textarea value={appraisal.finalCommentEmployee ?? ''} disabled readOnly />
+                  <textarea
+                    value={finalEmp}
+                    disabled={!(isEmployee && !appraisal.signed)}
+                    onChange={(e) => setFinalEmp(e.target.value)}
+                    placeholder={isEmployee ? 'Add your closing comment…' : '—'}
+                  />
+                  {isEmployee && !appraisal.signed && (
+                    <button className="btn" style={{ marginTop: 8, alignSelf: 'flex-start' }} disabled={finalMut.isPending}
+                      onClick={() => finalMut.mutate({ employee: finalEmp })}>Save my comment</button>
+                  )}
                 </div>
                 <div className="field">
                   <label>Final comment — Manager</label>
-                  <textarea value={appraisal.finalCommentManager ?? ''} disabled readOnly />
+                  <textarea
+                    value={finalMgr}
+                    disabled={!(isManager && !appraisal.signed)}
+                    onChange={(e) => setFinalMgr(e.target.value)}
+                    placeholder={isManager ? 'Add your closing comment…' : '—'}
+                  />
+                  {isManager && !appraisal.signed && (
+                    <button className="btn" style={{ marginTop: 8, alignSelf: 'flex-start' }} disabled={finalMut.isPending}
+                      onClick={() => finalMut.mutate({ manager: finalMgr })}>Save my comment</button>
+                  )}
                 </div>
               </div>
             </Card>

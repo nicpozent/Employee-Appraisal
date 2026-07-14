@@ -12,6 +12,9 @@ interface AuthCtx {
   signInEntra: () => Promise<void>;
   signOut: () => void;
   refresh: () => Promise<void>;
+  /** Step-up re-authentication for e-signature (§7). Forces a fresh interactive
+      login in Entra mode; no-op in dev-mock. Throws if the user cancels/fails. */
+  stepUpReauth: () => Promise<void>;
 }
 
 const Ctx = createContext<AuthCtx>(null as any);
@@ -90,6 +93,16 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     await loadMe();
   };
 
+  const stepUpReauth = async () => {
+    if (AUTH_MODE !== 'entra') return; // dev-mock: nothing to step up
+    const inst = getMsal();
+    await inst.initialize();
+    const account = inst.getActiveAccount() ?? inst.getAllAccounts()[0];
+    const scopes = ENTRA.apiScope ? [ENTRA.apiScope] : [`${ENTRA.clientId}/.default`];
+    // prompt=login forces a fresh interactive credential prompt (non-repudiable signing).
+    await inst.acquireTokenPopup({ scopes, prompt: 'login', account });
+  };
+
   const signOut = () => {
     if (AUTH_MODE === 'entra') {
       const inst = getMsal();
@@ -103,7 +116,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   };
 
   return (
-    <Ctx.Provider value={{ me, loading, authMode: AUTH_MODE, signInMock, signInEntra, signOut, refresh: loadMe }}>
+    <Ctx.Provider value={{ me, loading, authMode: AUTH_MODE, signInMock, signInEntra, signOut, refresh: loadMe, stepUpReauth }}>
       {children}
     </Ctx.Provider>
   );

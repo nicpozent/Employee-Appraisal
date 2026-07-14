@@ -1,0 +1,1752 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="_ds/biltema-dpp-design-system-893bbb82-3e68-47e8-ae8e-93fa5e82b01b/_ds_bundle.css">
+<link rel="stylesheet" href="_ds/biltema-dpp-design-system-893bbb82-3e68-47e8-ae8e-93fa5e82b01b/styles.css">
+<script>
+(function(){
+  var SRC='_ds/biltema-dpp-design-system-893bbb82-3e68-47e8-ae8e-93fa5e82b01b/_ds_bundle.js';
+  function load(){ if(window.__dsBundleLoaded) return; window.__dsBundleLoaded=1; var s=document.createElement('script'); s.src=SRC; document.head.appendChild(s); }
+  if(window.React){ load(); }
+  else { var i=setInterval(function(){ if(window.React){ clearInterval(i); load(); } }, 25); }
+})();
+</script>
+<style>
+:root{
+  --accent:#1080c0; --accent-700:#0c6196; --accent-050:#e9f3fa; --accent-tint:#f3f8fc;
+  --navy:#1c3f8c; --navy-700:#162f6a; --navy-050:#eaeefa; --red:#d81b48; --red-bg:#fdeaf0;
+  --rail:linear-gradient(185deg,#1c3f8c,#162f6a);
+}
+/* ---- Command (graphite dark) ---- */
+[data-theme="command"]{
+  --surface:#161d28; --paper:#0c121b; --ink:#eef3f9; --ink-2:#b7c4d2; --muted:#7c8b9c;
+  --line:#28323f; --line-2:#1b232e;
+  --accent:#3aa2e6; --accent-700:#7cc4f2; --accent-050:#13293a; --accent-tint:#101b26;
+  --navy:#0f273f; --navy-700:#0a1b2d; --navy-050:#14283c; --red:#f2506f; --red-bg:#2e1620;
+  --ok:#3ac07e; --ok-bg:#0f2a1e; --warn:#e0a53a; --warn-bg:#2c2413; --crit:#f0685c; --crit-bg:#2e1714;
+  --shadow:0 1px 2px rgba(0,0,0,.45),0 8px 24px rgba(0,0,0,.4); --shadow-sm:0 1px 2px rgba(0,0,0,.45);
+  --rail:linear-gradient(185deg,#111823,#080d14);
+}
+/* ---- Midnight (deep navy dark) ---- */
+[data-theme="midnight"]{
+  --surface:#172544; --paper:#0e1830; --ink:#eaf0fb; --ink-2:#b3c1de; --muted:#8091b5;
+  --line:#26365c; --line-2:#1a2847;
+  --accent:#5b96f2; --accent-700:#8fb6f7; --accent-050:#1a2b50; --accent-tint:#131f3d;
+  --navy:#1c3f8c; --navy-700:#152e68; --navy-050:#1c2c52; --red:#f65b7d; --red-bg:#331826;
+  --ok:#43c98a; --ok-bg:#123020; --warn:#e6b04a; --warn-bg:#2f2815; --crit:#f26a72; --crit-bg:#331a20;
+  --shadow:0 1px 2px rgba(0,0,0,.45),0 10px 28px rgba(4,10,30,.5); --shadow-sm:0 1px 2px rgba(0,0,0,.45);
+  --rail:linear-gradient(185deg,#183163,#0b1836);
+}
+*{transition:none !important;}
+body{background:var(--paper);}
+.shell{min-height:100vh;background:var(--paper);}
+.themeseg{display:inline-flex;gap:2px;background:var(--paper);border:1px solid var(--line);border-radius:100px;padding:3px;flex:none;}
+.themeseg button{width:30px;height:30px;border-radius:100px;border:0;background:transparent;color:var(--muted);cursor:pointer;font-size:14px;line-height:1;display:grid;place-items:center;font-family:inherit;}
+.themeseg button:hover{color:var(--ink-2);}
+.themeseg button.on{background:var(--surface);color:var(--accent);box-shadow:var(--shadow-sm);}
+.appbar-role{appearance:none;-webkit-appearance:none;font:inherit;font-weight:600;font-size:var(--t-sm);color:#fff;background:rgba(255,255,255,.14);border:1px solid rgba(255,255,255,.25);border-radius:100px;padding:7px 30px 7px 14px;cursor:pointer;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6' viewBox='0 0 10 6'%3E%3Cpath d='M1 1l4 4 4-4' stroke='white' stroke-width='1.6' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 13px center;}
+.appbar-role option{color:#10243b;}
+.rl-nav a{color:rgba(255,255,255,.78);}
+.rl-nav a .ico{color:rgba(255,255,255,.6);}
+.rl-nav a:hover{background:rgba(255,255,255,.1);color:#fff;}
+.rl-nav a:hover .ico{color:#fff;}
+.rl-nav a.active{background:#fff;color:var(--navy);font-weight:600;}
+.rl-nav a.active .ico{color:var(--navy);}
+.rl-nav a .badge{margin-left:auto;font-size:var(--t-xs);font-weight:700;background:rgba(255,255,255,.18);color:#fff;padding:1px 8px;border-radius:100px;}
+.rl-nav a.active .badge{background:var(--accent);color:#fff;}
+.rate{display:inline-flex;gap:6px;}
+.rate button{width:34px;height:34px;border-radius:9px;border:1px solid var(--line);background:var(--surface);font:inherit;font-weight:700;color:var(--ink-2);cursor:pointer;}
+.rate button:hover{border-color:var(--accent);}
+.rate button.on{background:var(--accent);border-color:var(--accent);color:#fff;}
+.seg2{display:inline-flex;border:1px solid var(--line);border-radius:100px;overflow:hidden;background:var(--surface);}
+.seg2 button{font:inherit;font-weight:600;font-size:var(--t-sm);border:0;background:transparent;color:var(--ink-2);padding:7px 16px;cursor:pointer;}
+.seg2 button.on{background:var(--accent);color:#fff;}
+.tile{background:var(--surface);border:1px solid var(--line);border-radius:var(--r-lg);box-shadow:var(--shadow);}
+.bartrack{height:8px;border-radius:100px;background:var(--line);overflow:hidden;}
+.barfill{height:100%;border-radius:100px;background:var(--accent);}
+.pill{display:inline-flex;align-items:center;gap:6px;font-size:var(--t-xs);font-weight:700;padding:3px 10px;border-radius:100px;}
+.gridcols{display:grid;gap:16px;}
+.emptystate{display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:52px 24px;color:var(--muted);}
+.emptystate .ic{width:46px;height:46px;border-radius:12px;display:grid;place-items:center;background:var(--accent-050);color:var(--accent);margin-bottom:14px;}
+.emptystate h4{font-family:Archivo;font-size:16px;font-weight:700;color:var(--ink);margin:0 0 5px;}
+.emptystate p{font-size:var(--t-sm);margin:0;max-width:46ch;line-height:1.55;}
+@media(max-width:1080px){ .shell{grid-template-columns:1fr !important;} .rail{position:relative !important;height:auto !important;flex-direction:row !important;flex-wrap:wrap;align-items:center;} .rl-nav{flex-direction:row !important;flex-wrap:wrap;} .main{padding:24px !important;} }
+</style>
+</helmet>
+
+<!-- ===================== SIGN IN ===================== -->
+<sc-if value="{{showLogin}}" hint-placeholder-val="{{true}}">
+<div style="min-height:100vh;display:grid;grid-template-columns:1.05fr .95fr;background:var(--surface)">
+  <div style="background:linear-gradient(150deg,var(--navy) 0%,var(--navy-700) 55%,#0f2150 100%);padding:56px 56px;display:flex;flex-direction:column;justify-content:space-between;color:#fff;position:relative;overflow:hidden">
+    <div style="position:absolute;right:-80px;top:-80px;width:340px;height:340px;border-radius:50%;background:rgba(16,128,192,.25);filter:blur(8px)"></div>
+    <div style="position:absolute;right:90px;bottom:-60px;width:160px;height:160px;border-radius:50%;background:rgba(216,27,72,.22)"></div>
+    <div style="position:relative;z-index:1">
+      <div style="background:#fff;border-radius:14px;padding:16px 24px;display:flex;align-items:center;justify-content:center;box-shadow:0 12px 40px rgba(0,0,0,.25)">
+        <img src="assets/lockup.png" alt="Biltema · Birgma" style="height:32px;display:block">
+      </div>
+    </div>
+    <div style="position:relative;z-index:1;max-width:30ch">
+      <div style="font-size:var(--t-xs);font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:#9fc4e4;margin-bottom:14px">Performance &amp; Appraisals</div>
+      <h1 style="font-family:Archivo;font-size:38px;font-weight:800;letter-spacing:-.02em;line-height:1.08;color:#fff;margin:0 0 16px">One appraisal platform for the whole group.</h1>
+      <p style="font-size:15px;line-height:1.6;color:#cdd9f0;margin:0">Templates for every function, role-based reviews, and end-to-end approval workflows — secured with enterprise SSO and audited against ISO 27001, NIS2 and GDPR.</p>
+    </div>
+    <div style="position:relative;z-index:1;display:flex;gap:18px;flex-wrap:wrap;font-size:var(--t-xs);color:#9fc4e4">
+      <span style="display:inline-flex;align-items:center;gap:7px"><x-import component-from-global-scope="BiltemaDPP.IconCheck" hint-size="14px,14px"></x-import>Entra ID SSO</span>
+      <span style="display:inline-flex;align-items:center;gap:7px"><x-import component-from-global-scope="BiltemaDPP.IconCheck" hint-size="14px,14px"></x-import>ISO 27001 controls</span>
+      <span style="display:inline-flex;align-items:center;gap:7px"><x-import component-from-global-scope="BiltemaDPP.IconCheck" hint-size="14px,14px"></x-import>GDPR &amp; NIS2 ready</span>
+    </div>
+  </div>
+
+  <div style="padding:56px 56px;display:flex;flex-direction:column;justify-content:center;max-width:560px">
+    <div class="eyebrow" style="color:var(--accent)">Welcome back</div>
+    <h2 style="font-family:Archivo;font-size:26px;font-weight:800;letter-spacing:-.02em;margin:6px 0 4px">Sign in to continue</h2>
+    <p class="muted" style="margin:0 0 22px;font-size:var(--t-h3)">Authentication is delegated to your organization's Microsoft Entra ID tenant. No separate password is stored.</p>
+
+    <button onClick="{{ssoSignIn}}" style="display:flex;align-items:center;gap:12px;width:100%;justify-content:center;padding:13px;border:1px solid var(--line);border-radius:var(--r-md);background:var(--surface);font:inherit;font-weight:600;font-size:15px;color:var(--ink);cursor:pointer;box-shadow:var(--shadow-sm)">
+      <span style="display:grid;grid-template-columns:1fr 1fr;gap:2px;width:18px;height:18px;flex:none">
+        <span style="background:#f25022"></span><span style="background:#7fba00"></span><span style="background:#00a4ef"></span><span style="background:#ffb900"></span>
+      </span>
+      Sign in with Microsoft
+    </button>
+
+    <div style="display:flex;align-items:center;gap:12px;margin:22px 0">
+      <span style="flex:1;height:1px;background:var(--line)"></span>
+      <span class="muted" style="font-size:var(--t-xs);font-weight:600;letter-spacing:.06em;text-transform:uppercase">Preview a role · development only</span>
+      <span style="flex:1;height:1px;background:var(--line)"></span>
+    </div>
+
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
+      <sc-for list="{{roleCards}}" as="r" hint-placeholder-count="6">
+        <button onClick="{{r.onPick}}" style="text-align:left;display:flex;align-items:center;gap:11px;padding:12px;border:1px solid var(--line);border-radius:var(--r-md);background:var(--surface);cursor:pointer;font:inherit">
+          <span style="width:34px;height:34px;border-radius:9px;flex:none;display:grid;place-items:center;color:#fff;font-weight:700;font-size:var(--t-xs);background:{{r.color}}">{{r.initials}}</span>
+          <span style="min-width:0">
+            <span style="display:block;font-weight:600;font-size:var(--t-sm);color:var(--ink);line-height:1.2">{{r.roleName}}</span>
+            <span style="display:block;font-size:var(--t-xs);color:var(--muted)">{{r.label}}</span>
+          </span>
+        </button>
+      </sc-for>
+    </div>
+    <p class="muted" style="font-size:var(--t-xs);margin-top:18px;display:flex;align-items:center;gap:7px"><x-import component-from-global-scope="BiltemaDPP.IconAlert" hint-size="13px,13px"></x-import>Registered as an Enterprise Application · tenant biltema.onmicrosoft.com · roles assigned via Entra ID app roles · MFA enforced via Conditional Access.</p>
+  </div>
+</div>
+</sc-if>
+
+<!-- ===================== APP SHELL ===================== -->
+<sc-if value="{{showApp}}" hint-placeholder-val="{{true}}">
+<div class="shell">
+  <aside class="rail" style="background:var(--rail);border-right:1px solid {{railBorder}}">
+    <div style="background:#fff;border-radius:11px;padding:12px 14px;margin:0 4px 6px;box-shadow:0 4px 14px rgba(0,0,0,.12);display:flex;align-items:center;justify-content:center">
+      <img src="assets/lockup.png" alt="Biltema · Birgma" style="height:20px;display:block;max-width:100%">
+    </div>
+    <div style="padding:8px 10px 4px">
+      <div style="font-size:9.5px;font-weight:700;letter-spacing:.13em;text-transform:uppercase;color:{{railSub}}">Signed in as</div>
+      <div style="display:flex;align-items:center;gap:10px;margin-top:8px">
+        <span style="width:34px;height:34px;border-radius:50%;flex:none;display:grid;place-items:center;color:#fff;font-weight:700;font-size:var(--t-xs);background:{{uColor}}">{{uInitials}}</span>
+        <span style="min-width:0">
+          <span style="display:block;font-weight:700;font-size:var(--t-sm);color:{{railName}};line-height:1.15">{{uName}}</span>
+          <span style="display:block;font-size:var(--t-xs);color:{{railSub}}">{{roleName}}</span>
+        </span>
+      </div>
+    </div>
+    <nav class="nav rl-nav" style="margin-top:10px">
+      <sc-for list="{{navItems}}" as="n" hint-placeholder-count="6">
+        <a href="#" class="{{n.active}}" onClick="{{n.onClick}}"><x-import component-from-global-scope="{{n.icon}}" hint-size="17px,17px"></x-import>{{n.label}}<sc-if value="{{n.hasBadge}}" hint-placeholder-val="{{true}}"><span class="badge num">{{n.badge}}</span></sc-if></a>
+      </sc-for>
+    </nav>
+    <div class="rail-foot" style="border-top:1px solid {{railBorder}}">
+      <button onClick="{{signOut}}" style="display:flex;align-items:center;gap:9px;width:100%;font:inherit;font-weight:600;font-size:var(--t-sm);color:{{railSub}};background:none;border:0;cursor:pointer;padding:4px 6px"><x-import component-from-global-scope="BiltemaDPP.IconArrowLeft" hint-size="15px,15px"></x-import>Sign out</button>
+    </div>
+  </aside>
+
+  <main class="main" style="max-width:none">
+    <!-- top bar -->
+    <div style="display:flex;align-items:center;gap:14px;padding-bottom:18px;margin-bottom:22px;border-bottom:1px solid var(--line);flex-wrap:wrap">
+      <div style="flex:1;min-width:0">
+        <div class="eyebrow" style="margin-bottom:3px">{{crumb}}</div>
+        <h1 style="font-size:23px;margin:0">{{pageTitle}}</h1>
+      </div>
+      <label class="search" style="width:230px;flex:none">
+        <x-import component-from-global-scope="BiltemaDPP.IconSearch" hint-size="16px,16px"></x-import>
+        <input type="text" placeholder="Search people, appraisals…">
+      </label>
+      <button onClick="{{goNotifs}}" style="position:relative;width:40px;height:40px;border-radius:var(--r-md);border:1px solid var(--line);background:var(--surface);cursor:pointer;display:grid;place-items:center;color:var(--ink-2);flex:none">
+        <x-import component-from-global-scope="BiltemaDPP.IconBolt" hint-size="17px,17px"></x-import>
+        <sc-if value="{{hasUnread}}" hint-placeholder-val="{{true}}"><span style="position:absolute;top:-5px;right:-5px;min-width:18px;height:18px;padding:0 4px;border-radius:100px;background:var(--red);color:#fff;font-size:10px;font-weight:700;display:grid;place-items:center">{{unreadCount}}</span></sc-if>
+      </button>
+      <div class="themeseg" title="Appearance">
+        <button class="{{thDay}}" onClick="{{setThemeDay}}" title="Daylight">☀</button>
+        <button class="{{thCmd}}" onClick="{{setThemeCmd}}" title="Command">⌘</button>
+        <button class="{{thMid}}" onClick="{{setThemeMid}}" title="Midnight">☾</button>
+      </div>
+      <div style="display:flex;align-items:center;gap:8px;background:var(--navy);border-radius:100px;padding:5px 6px 5px 14px;flex:none">
+        <span style="font-size:var(--t-xs);color:#9fc4e4;font-weight:600">View as</span>
+        <select class="appbar-role" value="{{role}}" onChange="{{onRoleChange}}">
+          <sc-for list="{{roleOptions}}" as="o" hint-placeholder-count="7">
+            <option value="{{o.value}}">{{o.label}}</option>
+          </sc-for>
+        </select>
+      </div>
+    </div>
+
+    <!-- toast -->
+    <sc-if value="{{hasToast}}" hint-placeholder-val="{{true}}">
+    <div style="display:flex;align-items:center;gap:11px;background:var(--ok-bg);border:1px solid #c7e6d4;color:var(--ok);border-radius:var(--r-md);padding:11px 16px;margin-bottom:18px;font-size:var(--t-sm);font-weight:600"><x-import component-from-global-scope="BiltemaDPP.IconCheck" hint-size="16px,16px"></x-import>{{toast}}</div>
+    </sc-if>
+
+    <!-- ========== DASHBOARD ========== -->
+    <sc-if value="{{isDashboard}}" hint-placeholder-val="{{true}}">
+    <div>
+      <div style="display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;margin-bottom:18px">
+        <div class="action" style="flex:1;min-width:280px;background:linear-gradient(120deg,var(--navy),var(--accent))">
+          <div class="ic"><x-import component-from-global-scope="{{dashHeroIcon}}" hint-size="23px,23px"></x-import></div>
+          <div class="body">
+            <div class="kicker">{{dashHeroKicker}}</div>
+            <div class="ttl">{{dashHeroTitle}}</div>
+            <div class="ds">{{dashHeroDesc}}</div>
+          </div>
+          <button class="btn btn-onaccent" style="flex:none" onClick="{{dashHeroAction}}">{{dashHeroBtn}}</button>
+        </div>
+        <sc-if value="{{showApprDash}}" hint-placeholder-val="{{true}}">
+        <div class="seg2" style="flex:none">
+          <button class="{{dvBriefingClass}}" onClick="{{setDashBriefing}}">Briefing</button>
+          <button class="{{dvMetricsClass}}" onClick="{{setDashMetrics}}">Metrics</button>
+        </div>
+        </sc-if>
+      </div>
+
+      <div class="gridcols" style="grid-template-columns:repeat(4,minmax(0,1fr));margin-bottom:16px">
+        <sc-for list="{{kpis}}" as="k" hint-placeholder-count="4">
+          <div class="tile" style="padding:18px">
+            <div style="font-size:var(--t-2xs);font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--muted)">{{k.label}}</div>
+            <div class="display num" style="font-size:34px;font-weight:800;letter-spacing:-.02em;color:{{k.color}};margin-top:10px;line-height:1">{{k.value}}</div>
+            <div class="muted" style="font-size:var(--t-sm);margin-top:7px">{{k.sub}}</div>
+          </div>
+        </sc-for>
+      </div>
+
+      <!-- ADMIN config panel (no appraisal content) -->
+      <sc-if value="{{isAdminDash}}" hint-placeholder-val="{{true}}">
+      <div class="gridcols" style="grid-template-columns:minmax(0,1.5fr) minmax(0,1fr);align-items:start">
+        <div class="tile" style="overflow:hidden">
+          <div class="card-head"><h3 class="card-title">Active cycles</h3><span class="meta">Scheduling &amp; deadlines</span></div>
+          <sc-for list="{{adminCycles}}" as="b" hint-placeholder-count="2">
+            <button onClick="{{b.onClick}}" style="display:flex;align-items:center;gap:13px;width:100%;text-align:left;padding:14px 24px;border:0;border-bottom:1px solid var(--line-2);background:var(--surface);cursor:pointer;font:inherit">
+              <span class="chip {{b.chip}}" style="flex:none"><span class="pip"></span>{{b.status}}</span>
+              <span style="flex:1;min-width:0">
+                <span style="display:block;font-weight:600;color:var(--ink)">{{b.name}}</span>
+                <span style="display:block;font-size:var(--t-sm);color:var(--ink-2);margin-top:1px">{{b.meta}}</span>
+              </span>
+              <span class="mono" style="font-size:var(--t-xs);color:{{b.dueColor}};white-space:nowrap">Due {{b.due}}</span>
+              <span style="color:var(--muted);font-size:19px;flex:none">&rsaquo;</span>
+            </button>
+          </sc-for>
+          <div style="padding:14px 24px;display:flex;align-items:center;gap:9px;background:var(--accent-tint)"><span style="color:var(--accent);flex:none"><x-import component-from-global-scope="BiltemaDPP.IconAlert" hint-size="15px,15px"></x-import></span><span class="muted" style="font-size:var(--t-sm)">As administrator you manage templates, roles and deadlines — appraisal answers and scores are never visible to this role.</span></div>
+        </div>
+        <div class="tile" style="overflow:hidden">
+          <div class="card-head"><h3 class="card-title">Admin activity</h3></div>
+          <div style="padding:6px 0">
+            <sc-for list="{{adminActivity}}" as="a" hint-placeholder-count="5">
+              <div style="display:flex;gap:11px;align-items:flex-start;padding:10px 24px">
+                <span style="width:28px;height:28px;border-radius:8px;flex:none;display:grid;place-items:center;background:var(--accent-050);color:var(--accent)"><x-import component-from-global-scope="{{a.icon}}" hint-size="15px,15px"></x-import></span>
+                <div style="flex:1;min-width:0">
+                  <div style="font-size:var(--t-sm);color:var(--ink);line-height:1.45">{{a.text}}</div>
+                  <div class="mono" style="font-size:var(--t-xs);color:var(--muted);margin-top:2px">{{a.ts}}</div>
+                </div>
+              </div>
+            </sc-for>
+          </div>
+        </div>
+      </div>
+      </sc-if>
+
+      <!-- BRIEFING variation -->
+      <sc-if value="{{isBriefingDash}}" hint-placeholder-val="{{true}}">
+      <div class="gridcols" style="grid-template-columns:minmax(0,1.5fr) minmax(0,1fr);align-items:start">
+        <div class="tile" style="overflow:hidden">
+          <div class="card-head"><h3 class="card-title">{{briefTitle}}</h3><span class="meta">{{briefMeta}}</span></div>
+          <sc-for list="{{briefRows}}" as="b" hint-placeholder-count="5">
+            <button onClick="{{b.onClick}}" style="display:flex;align-items:center;gap:13px;width:100%;text-align:left;padding:14px 24px;border:0;border-bottom:1px solid var(--line-2);background:var(--surface);cursor:pointer;font:inherit">
+              <span class="chip {{b.chip}}" style="flex:none"><span class="pip"></span>{{b.status}}</span>
+              <span style="flex:1;min-width:0">
+                <span style="display:block;font-weight:600;color:var(--ink)">{{b.name}}</span>
+                <span style="display:block;font-size:var(--t-sm);color:var(--ink-2);margin-top:1px">{{b.meta}}</span>
+              </span>
+              <span class="mono" style="font-size:var(--t-xs);color:{{b.dueColor}};white-space:nowrap">{{b.due}}</span>
+              <span style="color:var(--muted);font-size:19px;flex:none">&rsaquo;</span>
+            </button>
+          </sc-for>
+          <sc-if value="{{briefEmpty}}" hint-placeholder-val="{{false}}"><div class="emptystate" style="padding:40px 24px"><span class="ic"><x-import component-from-global-scope="BiltemaDPP.IconContract" hint-size="22px,22px"></x-import></span><h4>Nothing here yet</h4><p>Appraisals for the active cycle will appear here.</p></div></sc-if>
+        </div>
+        <div class="tile" style="overflow:hidden">
+          <div class="card-head"><h3 class="card-title">Activity</h3></div>
+          <div style="padding:6px 0">
+            <sc-for list="{{dashActivity}}" as="a" hint-placeholder-count="5">
+              <div style="display:flex;gap:11px;align-items:flex-start;padding:10px 24px">
+                <span style="width:28px;height:28px;border-radius:8px;flex:none;display:grid;place-items:center;background:var(--accent-050);color:var(--accent)"><x-import component-from-global-scope="{{a.icon}}" hint-size="15px,15px"></x-import></span>
+                <div style="flex:1;min-width:0">
+                  <div style="font-size:var(--t-sm);color:var(--ink);line-height:1.45">{{a.text}}</div>
+                  <div class="mono" style="font-size:var(--t-xs);color:var(--muted);margin-top:2px">{{a.ts}}</div>
+                </div>
+              </div>
+            </sc-for>
+          </div>
+        </div>
+      </div>
+      </sc-if>
+
+      <!-- METRICS variation -->
+      <sc-if value="{{isMetricsDash}}" hint-placeholder-val="{{true}}">
+      <div class="gridcols" style="grid-template-columns:minmax(0,1fr) minmax(0,1fr);align-items:start">
+        <div class="tile card-pad">
+          <h3 class="card-title" style="margin-bottom:4px">Completion by status</h3>
+          <p class="muted" style="font-size:var(--t-sm);margin:0 0 16px">{{briefMeta}}</p>
+          <sc-for list="{{statusBars}}" as="s" hint-placeholder-count="5">
+            <div style="margin-bottom:13px">
+              <div style="display:flex;justify-content:space-between;font-size:var(--t-sm);margin-bottom:6px"><span style="font-weight:600;color:var(--ink)">{{s.label}}</span><span class="num muted">{{s.count}}</span></div>
+              <div class="bartrack"><div class="barfill" style="width:{{s.pct}}%;background:{{s.color}}"></div></div>
+            </div>
+          </sc-for>
+        </div>
+        <div class="tile card-pad">
+          <h3 class="card-title" style="margin-bottom:16px">Average score by department</h3>
+          <sc-for list="{{deptScores}}" as="d" hint-placeholder-count="5">
+            <div style="margin-bottom:13px">
+              <div style="display:flex;justify-content:space-between;font-size:var(--t-sm);margin-bottom:6px"><span style="font-weight:600;color:var(--ink)">{{d.label}}</span><span class="num" style="color:var(--accent);font-weight:700">{{d.score}}</span></div>
+              <div class="bartrack"><div class="barfill" style="width:{{d.pct}}%"></div></div>
+            </div>
+          </sc-for>
+        </div>
+      </div>
+      </sc-if>
+    </div>
+    </sc-if>
+
+    <!-- ========== MY APPRAISAL ========== -->
+    <sc-if value="{{isMyAppraisal}}" hint-placeholder-val="{{true}}">
+    <div>
+      <div class="tile" style="padding:18px 22px;margin-bottom:16px;display:flex;align-items:center;gap:18px;flex-wrap:wrap">
+        <div style="flex:1;min-width:200px">
+          <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap">
+            <h3 style="font-family:Archivo;font-size:18px;font-weight:800;margin:0">{{myTplName}}</h3>
+            <span class="chip {{myStatusChip}}"><span class="pip"></span>{{myStatusLabel}}</span>
+          </div>
+          <div class="muted" style="font-size:var(--t-sm);margin-top:5px">Cycle <b style="color:var(--ink-2)">{{myCycle}}</b> · Reviewer <b style="color:var(--ink-2)">{{myManager}}</b> · Due <b style="color:{{myDueColor}}">{{myDue}}</b></div>
+        </div>
+        <div style="text-align:right">
+          <div class="muted" style="font-size:var(--t-2xs);font-weight:700;letter-spacing:.1em;text-transform:uppercase">Live score</div>
+          <div class="display num" style="font-size:30px;font-weight:800;color:var(--accent);line-height:1.1">{{myScore}}<span style="font-size:16px;color:var(--muted)">/100</span></div>
+        </div>
+        <div style="text-align:right">
+          <div class="muted" style="font-size:var(--t-2xs);font-weight:700;letter-spacing:.1em;text-transform:uppercase">Complete</div>
+          <div class="display num" style="font-size:30px;font-weight:800;color:var(--ink);line-height:1.1">{{myComplete}}%</div>
+        </div>
+      </div>
+
+      <!-- step timeline -->
+      <div class="tile" style="padding:18px 24px;margin-bottom:16px">
+        <div style="display:flex;gap:8px;flex-wrap:wrap">
+          <sc-for list="{{mySteps}}" as="st" hint-placeholder-count="5">
+            <div style="flex:1;min-width:120px;border:1px solid {{st.border}};background:{{st.bg}};border-radius:var(--r-md);padding:11px 13px">
+              <div style="display:flex;align-items:center;gap:7px"><span style="width:18px;height:18px;border-radius:50%;flex:none;display:grid;place-items:center;font-size:10px;font-weight:700;background:{{st.dot}};color:#fff">{{st.n}}</span><span style="font-size:var(--t-sm);font-weight:600;color:{{st.fg}}">{{st.label}}</span></div>
+              <div class="mono" style="font-size:var(--t-xs);color:var(--muted);margin-top:6px">{{st.date}}</div>
+            </div>
+          </sc-for>
+        </div>
+      </div>
+
+      <sc-for list="{{mySections}}" as="sec" hint-placeholder-count="4">
+        <div class="tile" style="overflow:hidden;margin-bottom:16px">
+          <div class="card-head">
+            <div style="display:flex;align-items:center;gap:10px"><h3 class="card-title">{{sec.title}}</h3><span class="pill" style="background:var(--accent-050);color:var(--accent)">{{sec.weight}}% weight</span></div>
+            <span class="meta">{{sec.kind}}</span>
+          </div>
+          <div style="padding:6px 24px 18px">
+            <!-- rating fields -->
+            <sc-for list="{{sec.ratingFields}}" as="f" hint-placeholder-count="0">
+              <div style="display:flex;align-items:center;gap:14px;padding:12px 0;border-bottom:1px solid var(--line-2)">
+                <span style="flex:1;min-width:0;font-size:var(--t-base);color:var(--ink);font-weight:500">{{f.label}}</span>
+                <div class="rate">
+                  <sc-for list="{{f.scale}}" as="s" hint-placeholder-count="5">
+                    <button class="{{s.on}}" onClick="{{s.onClick}}">{{s.n}}</button>
+                  </sc-for>
+                </div>
+              </div>
+            </sc-for>
+            <!-- text field -->
+            <sc-if value="{{sec.isText}}" hint-placeholder-val="{{true}}">
+              <textarea rows="4" placeholder="{{sec.placeholder}}" value="{{sec.textVal}}" onChange="{{sec.onText}}" style="margin-top:12px"></textarea>
+            </sc-if>
+            <!-- goal field -->
+            <sc-if value="{{sec.isGoal}}" hint-placeholder-val="{{true}}">
+              <div style="margin-top:12px;display:flex;flex-direction:column;gap:10px">
+                <sc-for list="{{sec.goals}}" as="g" hint-placeholder-count="2">
+                  <div style="border:1px solid var(--line);border-radius:var(--r-md);padding:13px;background:var(--paper)">
+                    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px"><span style="font-size:var(--t-xs);font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--muted)">{{g.title}}</span><span class="pill" style="background:{{g.statusBg}};color:{{g.statusFg}}">{{g.status}}</span></div>
+                    <div style="font-weight:600;color:var(--ink)">{{g.objective}}</div>
+                    <div class="muted" style="font-size:var(--t-sm);margin-top:4px">{{g.metric}}</div>
+                  </div>
+                </sc-for>
+              </div>
+            </sc-if>
+          </div>
+        </div>
+      </sc-for>
+
+      <div class="tile card-pad" style="display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap">
+        <div class="muted" style="font-size:var(--t-sm);max-width:48ch"><b style="color:var(--ink-2)">On submit,</b> your appraisal locks for editing and an MS Graph notification is sent to {{myManager}} for review.</div>
+        <div style="display:flex;gap:10px">
+          <button class="btn btn-ghost">Save draft</button>
+          <button class="btn btn-primary" onClick="{{submitMine}}"><x-import component-from-global-scope="BiltemaDPP.IconCheck" hint-size="16px,16px"></x-import>Submit for review</button>
+        </div>
+      </div>
+    </div>
+    </sc-if>
+
+    <!-- ========== TEAM REVIEWS (list) ========== -->
+    <sc-if value="{{isReviews}}" hint-placeholder-val="{{true}}">
+    <div>
+      <div class="filter-bar">
+        <sc-for list="{{reviewFilters}}" as="f" hint-placeholder-count="5">
+          <button class="filter-btn {{f.active}}" onClick="{{f.onClick}}">{{f.label}}<span class="ct num">{{f.count}}</span></button>
+        </sc-for>
+      </div>
+      <div class="tile">
+        <div class="table-wrap"><table>
+          <thead><tr><th>Employee</th><th>Template</th><th>Status</th><th>Score</th><th>Due</th><th></th></tr></thead>
+          <tbody>
+            <sc-for list="{{reviewRows}}" as="r" hint-placeholder-count="6">
+              <tr class="clickable" onClick="{{r.onOpen}}">
+                <td><div class="cell-art"><span style="width:32px;height:32px;border-radius:50%;flex:none;display:grid;place-items:center;color:#fff;font-weight:700;font-size:var(--t-xs);background:{{r.color}}">{{r.initials}}</span><div><div class="art">{{r.name}}</div><div class="mono" style="font-size:var(--t-xs);color:var(--muted)">{{r.dept}}</div></div></div></td>
+                <td><span class="tag">{{r.tpl}}</span></td>
+                <td><span class="chip {{r.chip}}"><span class="pip"></span>{{r.status}}</span></td>
+                <td><span class="num" style="font-weight:700;color:{{r.scoreColor}}">{{r.score}}</span></td>
+                <td class="upd" style="color:{{r.dueColor}}">{{r.due}}</td>
+                <td class="right"><span style="color:var(--muted);font-size:19px">&rsaquo;</span></td>
+              </tr>
+            </sc-for>
+          </tbody>
+        </table></div>
+        <sc-if value="{{reviewsEmpty}}" hint-placeholder-val="{{false}}"><div class="emptystate"><span class="ic"><x-import component-from-global-scope="BiltemaDPP.IconCheck" hint-size="22px,22px"></x-import></span><h4>No reviews to show</h4><p>Appraisals submitted by your team for the active cycle will appear here, ready to score and approve.</p></div></sc-if>
+      </div>
+    </div>
+    </sc-if>
+
+    <!-- ========== REVIEW DETAIL ========== -->
+    <sc-if value="{{isReviewDetail}}" hint-placeholder-val="{{true}}">
+    <div>
+      <a class="backlink" onClick="{{backToReviews}}" style="cursor:pointer"><x-import component-from-global-scope="BiltemaDPP.IconArrowLeft" hint-size="14px,14px"></x-import>All reviews</a>
+      <div class="detail-head">
+        <div>
+          <div class="detail-title"><h3>{{rdName}}</h3><span class="chip {{rdChip}}"><span class="pip"></span>{{rdStatus}}</span></div>
+          <div class="detail-meta"><span>{{rdDept}}</span><span>Template <b>{{rdTpl}}</b></span><span>Submitted <b>{{rdSubmitted}}</b></span><span>Due <b style="color:{{rdDueColor}}">{{rdDue}}</b></span></div>
+        </div>
+        <div style="display:flex;gap:22px;flex:none">
+          <div style="text-align:right"><div class="muted" style="font-size:var(--t-2xs);font-weight:700;letter-spacing:.1em;text-transform:uppercase">Employee</div><div class="display num" style="font-size:28px;font-weight:800;color:var(--ink-2)">{{rdEmpScore}}<span style="font-size:14px;color:var(--muted)">/100</span></div></div>
+          <div style="text-align:right"><div class="muted" style="font-size:var(--t-2xs);font-weight:700;letter-spacing:.1em;text-transform:uppercase">Manager</div><div class="display num" style="font-size:28px;font-weight:800;color:var(--accent)">{{rdMgrScore}}<span style="font-size:14px;color:var(--muted)">/100</span></div></div>
+        </div>
+      </div>
+
+      <!-- stage stepper -->
+      <div class="tile" style="padding:14px 20px;margin-bottom:16px;display:flex;gap:10px;flex-wrap:wrap">
+        <sc-for list="{{rdSteps}}" as="st" hint-placeholder-count="3">
+          <div style="flex:1;min-width:150px;border:1px solid {{st.border}};background:{{st.bg}};border-radius:var(--r-md);padding:10px 14px;display:flex;align-items:center;gap:9px">
+            <span style="width:20px;height:20px;border-radius:50%;flex:none;display:grid;place-items:center;font-size:11px;font-weight:700;background:{{st.dot}};color:#fff">{{st.n}}</span>
+            <span style="font-size:var(--t-sm);font-weight:600;color:{{st.fg}}">{{st.label}}</span>
+          </div>
+        </sc-for>
+      </div>
+
+      <div class="gridcols" style="grid-template-columns:minmax(0,1fr) 300px;align-items:start">
+        <div style="display:flex;flex-direction:column;gap:16px">
+
+          <!-- self-assessment -->
+          <div class="tile card-pad">
+            <h3 class="card-title" style="margin-bottom:10px">Employee self-assessment</h3>
+            <p style="color:var(--ink-2);line-height:1.6;font-size:var(--t-base);margin:0">{{rdSelf}}</p>
+          </div>
+
+          <!-- per-section comparison + manager scoring -->
+          <sc-for list="{{rdSections}}" as="sec" hint-placeholder-count="3">
+            <div class="tile" style="overflow:hidden">
+              <div class="card-head">
+                <div style="display:flex;align-items:center;gap:10px"><h3 class="card-title">{{sec.title}}</h3><span class="pill" style="background:var(--accent-050);color:var(--accent)">{{sec.weight}}% weight</span></div>
+                <div style="display:flex;gap:14px;align-items:center">
+                  <span style="font-size:var(--t-xs);color:var(--muted)">Self <b class="num" style="color:var(--ink-2)">{{sec.empAvg}}</b></span>
+                  <span style="font-size:var(--t-xs);color:var(--muted)">Mgr <b class="num" style="color:var(--accent)">{{sec.mgrAvg}}</b></span>
+                </div>
+              </div>
+              <div style="padding:4px 22px 16px">
+                <div style="display:flex;align-items:center;gap:12px;padding:8px 0;border-bottom:1px solid var(--line-2)">
+                  <span style="flex:1"></span>
+                  <span style="width:42px;text-align:center;font-size:9px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--muted)">Self</span>
+                  <span style="width:200px;text-align:center;font-size:9px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--accent)">Manager rating</span>
+                </div>
+                <sc-for list="{{sec.fields}}" as="f" hint-placeholder-count="4">
+                  <div style="display:flex;align-items:center;gap:12px;padding:11px 0;border-bottom:1px solid var(--line-2)">
+                    <span style="flex:1;min-width:0;font-size:var(--t-base);color:var(--ink);font-weight:500">{{f.label}}</span>
+                    <span style="width:42px;text-align:center"><span class="num" style="display:inline-grid;place-items:center;width:30px;height:30px;border-radius:8px;background:var(--paper);border:1px solid var(--line);font-weight:700;color:var(--ink-2)">{{f.empRating}}</span></span>
+                    <span style="width:200px;display:flex;justify-content:center">
+                      <span class="rate">
+                        <sc-for list="{{f.mgrScale}}" as="s" hint-placeholder-count="5">
+                          <button class="{{s.on}}" disabled="{{s.dis}}" onClick="{{s.onClick}}">{{s.n}}</button>
+                        </sc-for>
+                      </span>
+                    </span>
+                  </div>
+                </sc-for>
+                <div style="margin-top:12px">
+                  <label style="display:block;font-size:var(--t-xs);font-weight:700;letter-spacing:.05em;text-transform:uppercase;color:var(--muted);margin-bottom:6px">Manager comment · {{sec.title}}</label>
+                  <sc-if value="{{sec.canComment}}" hint-placeholder-val="{{true}}">
+                    <textarea rows="2" placeholder="Add evidence and feedback for this section…" value="{{sec.comment}}" onChange="{{sec.onComment}}"></textarea>
+                  </sc-if>
+                  <sc-if value="{{sec.commentReadonly}}" hint-placeholder-val="{{false}}">
+                    <p style="margin:0;font-size:var(--t-sm);color:var(--ink-2);line-height:1.55;background:var(--paper);border:1px solid var(--line-2);border-radius:var(--r-sm);padding:10px 12px">{{sec.comment}}</p>
+                  </sc-if>
+                </div>
+              </div>
+            </div>
+          </sc-for>
+
+          <!-- final sign-off comments -->
+          <sc-if value="{{rdStageSignoff}}" hint-placeholder-val="{{true}}">
+          <div class="gridcols" style="grid-template-columns:1fr 1fr">
+            <div class="tile card-pad">
+              <h3 class="card-title" style="margin-bottom:10px">Final comment — Employee</h3>
+              <textarea rows="3" placeholder="Employee’s closing comment…" value="{{rdFinalEmp}}" onChange="{{onFinalEmp}}"></textarea>
+            </div>
+            <div class="tile card-pad">
+              <h3 class="card-title" style="margin-bottom:10px">Final comment — Manager</h3>
+              <textarea rows="3" placeholder="Manager’s closing comment…" value="{{rdFinalMgr}}" onChange="{{onFinalMgr}}"></textarea>
+            </div>
+          </div>
+          </sc-if>
+        </div>
+
+        <!-- side rail -->
+        <div style="display:flex;flex-direction:column;gap:16px">
+          <!-- STAGE: manager review -->
+          <sc-if value="{{rdStageReview}}" hint-placeholder-val="{{true}}">
+          <div class="tile card-pad">
+            <h3 class="card-title" style="margin-bottom:4px">Manager review</h3>
+            <p class="muted" style="font-size:var(--t-sm);margin:0 0 14px">{{rdMgrReviewHint}}</p>
+            <button class="btn btn-primary" style="justify-content:center;width:100%" onClick="{{submitMgrReview}}"><x-import component-from-global-scope="BiltemaDPP.IconCheck" hint-size="16px,16px"></x-import>Submit manager review</button>
+          </div>
+          </sc-if>
+
+          <!-- STAGE: decision -->
+          <sc-if value="{{rdStageDecision}}" hint-placeholder-val="{{true}}">
+          <div class="tile card-pad">
+            <h3 class="card-title" style="margin-bottom:4px">Decision</h3>
+            <p class="muted" style="font-size:var(--t-sm);margin:0 0 14px">Both submissions are stored. Approving moves to dual electronic sign-off. An email is sent via MS Graph.</p>
+            <div style="display:flex;flex-direction:column;gap:9px">
+              <button class="btn btn-primary" style="justify-content:center" onClick="{{decApprove}}"><x-import component-from-global-scope="BiltemaDPP.IconCheck" hint-size="16px,16px"></x-import>Approve</button>
+              <button class="btn btn-ghost" style="justify-content:center" onClick="{{decRequest}}"><x-import component-from-global-scope="BiltemaDPP.IconPencil" hint-size="16px,16px"></x-import>Request modification</button>
+              <button onClick="{{decReject}}" style="justify-content:center;display:inline-flex;align-items:center;gap:8px;font:inherit;font-weight:600;font-size:var(--t-base);padding:9px 16px;border-radius:var(--r-md);border:1px solid var(--red);background:var(--surface);color:var(--red);cursor:pointer"><x-import component-from-global-scope="BiltemaDPP.IconAlert" hint-size="16px,16px"></x-import>Reject</button>
+            </div>
+          </div>
+          </sc-if>
+
+          <!-- STAGE: sign-off -->
+          <sc-if value="{{rdStageSignoff}}" hint-placeholder-val="{{true}}">
+          <div class="tile card-pad">
+            <h3 class="card-title" style="margin-bottom:4px">Electronic sign-off</h3>
+            <p class="muted" style="font-size:var(--t-sm);margin:0 0 14px">Both parties acknowledge with a qualified electronic signature.</p>
+            <!-- employee signature -->
+            <div style="border:1px solid {{rdEmpSigned ? 'var(--ok)' : 'var(--line)'}};border-radius:var(--r-md);padding:13px;margin-bottom:10px;background:{{rdEmpSigned ? 'var(--ok-bg)' : 'var(--surface)'}}">
+              <div style="display:flex;justify-content:space-between;align-items:center"><span style="font-size:var(--t-xs);font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--muted)">Employee</span><sc-if value="{{rdEmpSigned}}" hint-placeholder-val="{{true}}"><span class="comp ok"><span class="dot"></span>Signed</span></sc-if></div>
+              <sc-if value="{{rdEmpSigned}}" hint-placeholder-val="{{true}}">
+                <div style="font-family:'Segoe Script','Bradley Hand','Brush Script MT',cursive;font-size:22px;color:var(--navy);margin:6px 0 2px">{{rdEmpSigName}}</div>
+                <div class="mono" style="font-size:var(--t-xs);color:var(--muted)">{{rdEmpSigDate}} · {{rdEmpSigAcct}}</div>
+              </sc-if>
+              <sc-if value="{{rdEmpUnsigned}}" hint-placeholder-val="{{false}}">
+                <button class="btn btn-ghost btn-sm" style="margin-top:9px;width:100%;justify-content:center" onClick="{{signEmployee}}"><x-import component-from-global-scope="BiltemaDPP.IconPencil" hint-size="14px,14px"></x-import>Sign as employee</button>
+              </sc-if>
+            </div>
+            <!-- manager signature -->
+            <div style="border:1px solid {{rdMgrSigned ? 'var(--ok)' : 'var(--line)'}};border-radius:var(--r-md);padding:13px;background:{{rdMgrSigned ? 'var(--ok-bg)' : 'var(--surface)'}}">
+              <div style="display:flex;justify-content:space-between;align-items:center"><span style="font-size:var(--t-xs);font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--muted)">Manager</span><sc-if value="{{rdMgrSigned}}" hint-placeholder-val="{{true}}"><span class="comp ok"><span class="dot"></span>Signed</span></sc-if></div>
+              <sc-if value="{{rdMgrSigned}}" hint-placeholder-val="{{true}}">
+                <div style="font-family:'Segoe Script','Bradley Hand','Brush Script MT',cursive;font-size:22px;color:var(--navy);margin:6px 0 2px">{{rdMgrSigName}}</div>
+                <div class="mono" style="font-size:var(--t-xs);color:var(--muted)">{{rdMgrSigDate}} · {{rdMgrSigAcct}}</div>
+              </sc-if>
+              <sc-if value="{{rdMgrUnsigned}}" hint-placeholder-val="{{false}}">
+                <button class="btn btn-ghost btn-sm" style="margin-top:9px;width:100%;justify-content:center" onClick="{{signManager}}"><x-import component-from-global-scope="BiltemaDPP.IconPencil" hint-size="14px,14px"></x-import>Sign as manager</button>
+              </sc-if>
+            </div>
+            <sc-if value="{{rdComplete}}" hint-placeholder-val="{{true}}">
+              <div class="notice ok" style="margin-top:12px;display:flex;align-items:center;gap:8px"><x-import component-from-global-scope="BiltemaDPP.IconCheck" hint-size="15px,15px"></x-import>Finalized &amp; locked — signed by both parties.</div>
+            </sc-if>
+          </div>
+          </sc-if>
+
+          <!-- approval chain -->
+          <div class="tile card-pad">
+            <h3 class="card-title" style="margin-bottom:10px">Approval &amp; signature chain</h3>
+            <sc-for list="{{rdChain}}" as="c" hint-placeholder-count="4">
+              <div style="display:flex;gap:10px;align-items:flex-start;padding:7px 0">
+                <span style="width:22px;height:22px;border-radius:50%;flex:none;display:grid;place-items:center;font-size:11px;background:{{c.dot}};color:#fff"><x-import component-from-global-scope="{{c.icon}}" hint-size="12px,12px"></x-import></span>
+                <div style="flex:1"><div style="font-size:var(--t-sm);font-weight:600;color:var(--ink)">{{c.who}}</div><div class="muted" style="font-size:var(--t-xs)">{{c.note}}</div></div>
+              </div>
+            </sc-for>
+          </div>
+        </div>
+      </div>
+    </div>
+    </sc-if>
+
+    <!-- ========== TEMPLATES ========== -->
+    <sc-if value="{{isTemplates}}" hint-placeholder-val="{{true}}">
+    <div>
+      <div style="display:flex;justify-content:space-between;align-items:center;gap:16px;margin-bottom:16px;flex-wrap:wrap">
+        <p class="muted" style="margin:0;font-size:var(--t-h3);max-width:60ch">Pick a base template to open the customization studio — add, remove, reorder and re-weight sections, then save it as a reusable group template.</p>
+        <button class="btn btn-primary" onClick="{{newTemplate}}"><x-import component-from-global-scope="BiltemaDPP.IconPlus" hint-size="16px,16px"></x-import>Blank template</button>
+      </div>
+      <div class="gridcols" style="grid-template-columns:repeat(auto-fill,minmax(280px,1fr))">
+        <sc-for list="{{templateCards}}" as="t" hint-placeholder-count="5">
+          <button class="tile" onClick="{{t.onOpen}}" style="text-align:left;cursor:pointer;padding:20px;display:flex;flex-direction:column;gap:12px">
+            <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:10px">
+              <span style="width:40px;height:40px;border-radius:11px;flex:none;display:grid;place-items:center;color:#fff;background:{{t.color}}"><x-import component-from-global-scope="{{t.icon}}" hint-size="20px,20px"></x-import></span>
+              <span class="pill" style="background:{{t.tagBg}};color:{{t.tagFg}}">{{t.tag}}</span>
+            </div>
+            <div>
+              <div style="font-family:Archivo;font-weight:700;font-size:16px;color:var(--ink)">{{t.name}}</div>
+              <div class="muted" style="font-size:var(--t-sm);margin-top:4px;line-height:1.5">{{t.desc}}</div>
+            </div>
+            <div style="display:flex;gap:14px;margin-top:auto;padding-top:8px;border-top:1px solid var(--line-2)">
+              <span class="mono" style="font-size:var(--t-xs);color:var(--muted)">{{t.sectionCount}} sections</span>
+              <span class="mono" style="font-size:var(--t-xs);color:var(--muted)">{{t.fieldCount}} fields</span>
+            </div>
+          </button>
+        </sc-for>
+      </div>
+    </div>
+    </sc-if>
+
+    <!-- ========== TEMPLATE BUILDER ========== -->
+    <sc-if value="{{isBuilder}}" hint-placeholder-val="{{true}}">
+    <div>
+      <a class="backlink" onClick="{{builderCancel}}" style="cursor:pointer"><x-import component-from-global-scope="BiltemaDPP.IconArrowLeft" hint-size="14px,14px"></x-import>All templates</a>
+      <div class="gridcols" style="grid-template-columns:minmax(0,1fr) 300px;align-items:start">
+        <div>
+          <div class="tile card-pad" style="margin-bottom:16px">
+            <div class="form-grid">
+              <div class="field col-span-2"><label>Template name</label><input type="text" value="{{bName}}" onChange="{{onBName}}" placeholder="e.g. IT — Senior Engineer 2026"></div>
+              <div class="field"><label>Function / scope</label>
+                <select value="{{bScope}}" onChange="{{onBScope}}"><option>IT</option><option>Finance Trade</option><option>Finance</option><option>Legal</option><option>General</option></select>
+              </div>
+              <div class="field"><label>Total weight</label><input type="text" value="{{bTotalWeight}}" disabled></div>
+            </div>
+            <sc-if value="{{bWeightWarn}}" hint-placeholder-val="{{true}}"><div class="notice bad" style="margin-top:14px">Section weights total {{bTotalWeight}} — adjust to 100% before saving.</div></sc-if>
+          </div>
+
+          <sc-for list="{{bSections}}" as="s" hint-placeholder-count="3">
+            <div class="tile" style="overflow:hidden;margin-bottom:14px">
+              <div style="display:flex;align-items:center;gap:10px;padding:14px 18px;background:var(--paper);border-bottom:1px solid var(--line)">
+                <div style="display:flex;flex-direction:column;gap:2px">
+                  <button onClick="{{s.onUp}}" style="border:0;background:none;cursor:pointer;color:var(--muted);line-height:.7;font-size:13px;padding:0">▲</button>
+                  <button onClick="{{s.onDown}}" style="border:0;background:none;cursor:pointer;color:var(--muted);line-height:.7;font-size:13px;padding:0">▼</button>
+                </div>
+                <input type="text" value="{{s.title}}" onChange="{{s.onTitle}}" style="flex:1;font-weight:600">
+                <select value="{{s.type}}" onChange="{{s.onType}}" style="width:130px"><option value="rating">Rating 1–5</option><option value="text">Long answer</option><option value="goal">Goals / OKRs</option><option value="number">Numeric</option></select>
+                <div style="display:flex;align-items:center;gap:6px"><input type="number" value="{{s.weight}}" onChange="{{s.onWeight}}" style="width:64px;text-align:right"><span class="muted" style="font-size:var(--t-sm)">%</span></div>
+                <button class="icon-btn" onClick="{{s.onRemove}}"><x-import component-from-global-scope="BiltemaDPP.IconTrash" hint-size="15px,15px"></x-import></button>
+              </div>
+              <div style="padding:14px 18px">
+                <sc-for list="{{s.fields}}" as="f" hint-placeholder-count="3">
+                  <div style="display:flex;align-items:center;gap:10px;margin-bottom:8px">
+                    <span style="color:var(--muted);font-size:13px">⋮⋮</span>
+                    <input type="text" value="{{f.label}}" onChange="{{f.onLabel}}" style="flex:1">
+                    <button class="icon-btn" onClick="{{f.onRemove}}"><x-import component-from-global-scope="BiltemaDPP.IconTrash" hint-size="14px,14px"></x-import></button>
+                  </div>
+                </sc-for>
+                <button class="add-row" onClick="{{s.onAddField}}"><x-import component-from-global-scope="BiltemaDPP.IconPlus" hint-size="14px,14px"></x-import>Add field</button>
+              </div>
+            </div>
+          </sc-for>
+          <button class="add-row" onClick="{{builderAddSection}}" style="padding:14px"><x-import component-from-global-scope="BiltemaDPP.IconPlus" hint-size="15px,15px"></x-import>Add section</button>
+        </div>
+
+        <div style="display:flex;flex-direction:column;gap:16px;position:sticky;top:16px">
+          <div class="tile card-pad">
+            <h3 class="card-title" style="margin-bottom:12px">Summary</h3>
+            <div style="display:flex;justify-content:space-between;padding:7px 0;border-bottom:1px solid var(--line-2)"><span class="muted" style="font-size:var(--t-sm)">Sections</span><span class="num" style="font-weight:700">{{bSectionCount}}</span></div>
+            <div style="display:flex;justify-content:space-between;padding:7px 0;border-bottom:1px solid var(--line-2)"><span class="muted" style="font-size:var(--t-sm)">Fields</span><span class="num" style="font-weight:700">{{bFieldCount}}</span></div>
+            <div style="display:flex;justify-content:space-between;padding:7px 0"><span class="muted" style="font-size:var(--t-sm)">Total weight</span><span class="num" style="font-weight:700;color:{{bWeightColor}}">{{bTotalWeight}}</span></div>
+          </div>
+          <div class="tile card-pad">
+            <div style="display:flex;gap:9px;align-items:flex-start"><span style="color:var(--accent);flex:none;margin-top:1px"><x-import component-from-global-scope="BiltemaDPP.IconCheck" hint-size="16px,16px"></x-import></span><p class="muted" style="font-size:var(--t-sm);margin:0">Saved templates become reusable across cycles and can be assigned to any team by managers and admins.</p></div>
+          </div>
+          <button class="btn btn-primary" style="justify-content:center" onClick="{{builderSave}}"><x-import component-from-global-scope="BiltemaDPP.IconCheck" hint-size="16px,16px"></x-import>Save template</button>
+          <button class="btn btn-ghost" style="justify-content:center" onClick="{{builderCancel}}">Cancel</button>
+        </div>
+      </div>
+    </div>
+    </sc-if>
+
+    <!-- ========== NOTIFICATIONS ========== -->
+    <sc-if value="{{isNotifs}}" hint-placeholder-val="{{true}}">
+    <div class="gridcols" style="grid-template-columns:minmax(0,1.3fr) minmax(0,1fr);align-items:start">
+      <div class="tile" style="overflow:hidden">
+        <div class="card-head"><h3 class="card-title">Notification &amp; email log</h3><span class="meta">Sent via MS Graph</span></div>
+        <sc-for list="{{notifList}}" as="n" hint-placeholder-count="6">
+          <button onClick="{{n.onOpen}}" style="display:flex;gap:13px;align-items:flex-start;width:100%;text-align:left;padding:14px 22px;border:0;border-bottom:1px solid var(--line-2);background:{{n.bg}};cursor:pointer;font:inherit">
+            <span style="width:30px;height:30px;border-radius:8px;flex:none;display:grid;place-items:center;background:{{n.iconBg}};color:{{n.iconFg}}"><x-import component-from-global-scope="{{n.icon}}" hint-size="16px,16px"></x-import></span>
+            <span style="flex:1;min-width:0">
+              <span style="display:block;font-weight:600;color:var(--ink);font-size:var(--t-base)">{{n.subject}}</span>
+              <span style="display:block;font-size:var(--t-sm);color:var(--ink-2);margin-top:2px">{{n.preview}}</span>
+              <span class="mono" style="display:block;font-size:var(--t-xs);color:var(--muted);margin-top:4px">To {{n.to}} · {{n.ts}}</span>
+            </span>
+          </button>
+        </sc-for>
+        <sc-if value="{{notifsEmpty}}" hint-placeholder-val="{{false}}"><div class="emptystate"><span class="ic"><x-import component-from-global-scope="BiltemaDPP.IconBolt" hint-size="22px,22px"></x-import></span><h4>No notifications yet</h4><p>Status emails sent through Microsoft Graph — submissions, approvals, change requests and reminders — are logged here.</p></div></sc-if>
+      </div>
+      <div class="tile" style="overflow:hidden;position:sticky;top:16px">
+        <div class="card-head"><h3 class="card-title">Email preview</h3><span class="pill" style="background:var(--accent-050);color:var(--accent)">{{emailStatus}}</span></div>
+        <div style="padding:18px 22px">
+          <div style="border:1px solid var(--line);border-radius:var(--r-md);overflow:hidden">
+            <div style="background:var(--navy);padding:14px 18px;display:flex;align-items:center;gap:10px"><div style="background:#fff;border-radius:7px;padding:5px 10px;display:flex;align-items:center"><img src="assets/lockup.png" style="height:13px;display:block"></div></div>
+            <div style="padding:18px">
+              <div class="muted" style="font-size:var(--t-xs)">Subject</div>
+              <div style="font-weight:700;color:var(--ink);margin:2px 0 12px">{{emailSubject}}</div>
+              <div style="font-size:var(--t-sm);color:var(--ink-2);line-height:1.65;white-space:pre-line">{{emailBody}}</div>
+              <div style="margin-top:16px"><span class="btn btn-primary btn-sm">{{emailCta}}</span></div>
+              <div class="muted" style="font-size:var(--t-xs);margin-top:16px;padding-top:12px;border-top:1px solid var(--line-2)">Sent by Appraisal Platform · {{emailTo}} · message logged for audit (ISO 27001 A.12.4).</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    </sc-if>
+
+    <!-- ========== ORGANIZATION / FINISHED APPRAISALS ========== -->
+    <sc-if value="{{isOrg}}" hint-placeholder-val="{{true}}">
+    <div>
+      <div class="gridcols" style="grid-template-columns:repeat(4,minmax(0,1fr));margin-bottom:16px">
+        <sc-for list="{{orgKpis}}" as="k" hint-placeholder-count="4">
+          <div class="tile" style="padding:18px"><div style="font-size:var(--t-2xs);font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--muted)">{{k.label}}</div><div class="display num" style="font-size:32px;font-weight:800;color:{{k.color}};margin-top:10px;line-height:1">{{k.value}}</div><div class="muted" style="font-size:var(--t-sm);margin-top:7px">{{k.sub}}</div></div>
+        </sc-for>
+      </div>
+      <div class="filter-bar">
+        <sc-for list="{{orgFilters}}" as="f" hint-placeholder-count="5"><button class="filter-btn {{f.active}}" onClick="{{f.onClick}}">{{f.label}}<span class="ct num">{{f.count}}</span></button></sc-for>
+      </div>
+      <div class="tile"><div class="table-wrap"><table>
+        <thead><tr><th>Employee</th><th>Department</th><th>Template</th><th>Status</th><th>Score</th><th>Reviewed by</th></tr></thead>
+        <tbody>
+          <sc-for list="{{orgRows}}" as="r" hint-placeholder-count="8">
+            <tr class="clickable" onClick="{{r.onOpen}}">
+              <td><div class="cell-art"><span style="width:30px;height:30px;border-radius:50%;flex:none;display:grid;place-items:center;color:#fff;font-weight:700;font-size:var(--t-xs);background:{{r.color}}">{{r.initials}}</span><div class="art">{{r.name}}</div></div></td>
+              <td><span class="tag">{{r.dept}}</span></td><td><span class="tag">{{r.tpl}}</span></td>
+              <td><span class="chip {{r.chip}}"><span class="pip"></span>{{r.status}}</span></td>
+              <td><span class="num" style="font-weight:700;color:{{r.scoreColor}}">{{r.score}}</span></td>
+              <td class="upd">{{r.reviewer}}</td>
+            </tr>
+          </sc-for>
+        </tbody>
+      </table></div>
+        <sc-if value="{{orgEmpty}}" hint-placeholder-val="{{false}}"><div class="emptystate"><span class="ic"><x-import component-from-global-scope="BiltemaDPP.IconGlobe" hint-size="22px,22px"></x-import></span><h4>No appraisals to show</h4><p>Finalized appraisals across the organization will appear here once cycles are under way.</p></div></sc-if>
+      </div></div>
+    </div>
+    </sc-if>
+
+    <!-- ========== ANALYTICS ========== -->
+    <sc-if value="{{isAnalytics}}" hint-placeholder-val="{{true}}">
+    <div class="gridcols" style="grid-template-columns:minmax(0,1fr) minmax(0,1fr);align-items:start">
+      <div class="tile card-pad"><h3 class="card-title" style="margin-bottom:16px">Average score by department</h3>
+        <sc-for list="{{deptScores}}" as="d" hint-placeholder-count="5"><div style="margin-bottom:14px"><div style="display:flex;justify-content:space-between;font-size:var(--t-sm);margin-bottom:6px"><span style="font-weight:600">{{d.label}}</span><span class="num" style="color:var(--accent);font-weight:700">{{d.score}}</span></div><div class="bartrack"><div class="barfill" style="width:{{d.pct}}%"></div></div></div></sc-for>
+      </div>
+      <div class="tile card-pad"><h3 class="card-title" style="margin-bottom:16px">Cycle completion</h3>
+        <sc-for list="{{statusBars}}" as="s" hint-placeholder-count="5"><div style="margin-bottom:14px"><div style="display:flex;justify-content:space-between;font-size:var(--t-sm);margin-bottom:6px"><span style="font-weight:600">{{s.label}}</span><span class="num muted">{{s.count}}</span></div><div class="bartrack"><div class="barfill" style="width:{{s.pct}}%;background:{{s.color}}"></div></div></div></sc-for>
+      </div>
+      <div class="tile card-pad"><h3 class="card-title" style="margin-bottom:16px">Competency heat (IT org)</h3>
+        <sc-for list="{{heat}}" as="h" hint-placeholder-count="5"><div style="display:flex;align-items:center;gap:12px;margin-bottom:10px"><span style="flex:1;font-size:var(--t-sm);font-weight:500">{{h.label}}</span><div style="display:flex;gap:4px"><sc-for list="{{h.cells}}" as="c" hint-placeholder-count="5"><span style="width:26px;height:18px;border-radius:4px;background:{{c.color}}"></span></sc-for></div><span class="num" style="width:34px;text-align:right;font-weight:700;color:var(--ink-2)">{{h.avg}}</span></div></sc-for>
+      </div>
+      <div class="tile card-pad"><h3 class="card-title" style="margin-bottom:8px">Calibration &amp; distribution</h3><p class="muted" style="font-size:var(--t-sm);margin:0 0 16px">Score distribution across the organization for the current cycle.</p>
+        <div style="display:flex;align-items:flex-end;gap:10px;height:150px">
+          <sc-for list="{{distBars}}" as="b" hint-placeholder-count="5"><div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:8px;height:100%;justify-content:flex-end"><div style="width:100%;border-radius:6px 6px 0 0;background:var(--accent);height:{{b.h}}%"></div><span class="mono" style="font-size:var(--t-xs);color:var(--muted)">{{b.label}}</span></div></sc-for>
+        </div>
+      </div>
+    </div>
+    </sc-if>
+
+    <!-- ========== CYCLES ========== -->
+    <sc-if value="{{isCycles}}" hint-placeholder-val="{{true}}">
+    <div>
+      <div style="display:flex;justify-content:space-between;align-items:center;gap:16px;margin-bottom:16px;flex-wrap:wrap">
+        <p class="muted" style="margin:0;font-size:var(--t-h3);max-width:60ch">Define an appraisal cycle, set a target completion date, and a deadline for every step in between. Reminders fire automatically as dates approach.</p>
+        <button class="btn btn-primary"><x-import component-from-global-scope="BiltemaDPP.IconPlus" hint-size="16px,16px"></x-import>New cycle</button>
+      </div>
+      <sc-for list="{{cycles}}" as="c" hint-placeholder-count="2">
+        <div class="tile" style="overflow:hidden;margin-bottom:16px">
+          <div style="display:flex;align-items:center;gap:14px;padding:18px 22px;border-bottom:1px solid var(--line);flex-wrap:wrap">
+            <div style="flex:1;min-width:200px"><div style="display:flex;align-items:center;gap:10px"><h3 style="font-family:Archivo;font-size:17px;font-weight:800;margin:0">{{c.name}}</h3><span class="chip {{c.chip}}"><span class="pip"></span>{{c.status}}</span></div><div class="muted" style="font-size:var(--t-sm);margin-top:4px">{{c.scope}} · {{c.participants}} participants</div></div>
+            <div style="text-align:right"><div class="muted" style="font-size:var(--t-2xs);font-weight:700;letter-spacing:.1em;text-transform:uppercase">Target completion</div><div class="mono" style="font-weight:700;color:{{c.dueColor}};font-size:15px">{{c.due}}</div></div>
+            <sc-if value="{{c.canExtend}}" hint-placeholder-val="{{true}}">
+            <button class="btn btn-ghost btn-sm" style="flex:none" onClick="{{c.onExtend}}"><x-import component-from-global-scope="BiltemaDPP.IconRefresh" hint-size="15px,15px"></x-import>Extend target date</button>
+            </sc-if>
+          </div>
+          <div style="padding:18px 22px">
+            <div style="display:flex;gap:8px;flex-wrap:wrap">
+              <sc-for list="{{c.steps}}" as="s" hint-placeholder-count="5">
+                <div style="flex:1;min-width:130px;border:1px solid {{s.border}};background:{{s.bg}};border-radius:var(--r-md);padding:12px 14px">
+                  <div style="display:flex;align-items:center;gap:7px"><span style="width:18px;height:18px;border-radius:50%;flex:none;display:grid;place-items:center;font-size:10px;font-weight:700;background:{{s.dot}};color:#fff">{{s.n}}</span><span style="font-size:var(--t-sm);font-weight:600;color:{{s.fg}}">{{s.label}}</span></div>
+                  <div class="mono" style="font-size:var(--t-xs);color:var(--muted);margin-top:7px">Due {{s.date}}</div>
+                  <div class="pill" style="margin-top:7px;background:{{s.tagBg}};color:{{s.tagFg}}">{{s.state}}</div>
+                </div>
+              </sc-for>
+            </div>
+            <div style="margin-top:16px"><div style="display:flex;justify-content:space-between;font-size:var(--t-sm);margin-bottom:6px"><span class="muted">Overall progress</span><span class="num" style="font-weight:700">{{c.progress}}%</span></div><div class="bartrack"><div class="barfill" style="width:{{c.progress}}%"></div></div></div>
+            <sc-if value="{{c.showParticipants}}" hint-placeholder-val="{{true}}">
+            <div style="margin-top:18px;border-top:1px solid var(--line-2);padding-top:14px">
+              <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px">
+                <span style="font-size:var(--t-xs);font-weight:700;letter-spacing:.07em;text-transform:uppercase;color:var(--muted)">Per-participant deadlines</span>
+                <span class="muted" style="font-size:var(--t-xs)">Extend an individual deadline on request</span>
+              </div>
+              <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:8px">
+                <sc-for list="{{c.participantRows}}" as="p" hint-placeholder-count="6">
+                  <div style="display:flex;align-items:center;gap:10px;border:1px solid var(--line);border-radius:var(--r-md);padding:9px 12px;background:var(--paper)">
+                    <div style="flex:1;min-width:0"><div style="font-size:var(--t-sm);font-weight:600;color:var(--ink);white-space:nowrap;overflow:hidden;text-overflow:ellipsis">{{p.name}}</div><div class="mono" style="font-size:var(--t-xs);color:var(--muted)">{{p.team}}</div></div>
+                    <div style="text-align:right;flex:none"><div class="mono" style="font-size:var(--t-xs);color:{{p.dueColor}};font-weight:700">{{p.due}}</div><sc-if value="{{p.extended}}" hint-placeholder-val="{{true}}"><div class="pill" style="background:var(--ok-bg);color:var(--ok);font-size:9px;padding:1px 7px;margin-top:2px">Extended</div></sc-if></div>
+                    <button title="Extend deadline" onClick="{{p.onExtend}}" style="flex:none;width:32px;height:32px;border-radius:var(--r-sm);border:1px solid var(--line);background:var(--surface);color:var(--accent);cursor:pointer;display:grid;place-items:center" style-hover="border-color:var(--accent);background:var(--accent-050)"><x-import component-from-global-scope="BiltemaDPP.IconRefresh" hint-size="14px,14px"></x-import></button>
+                  </div>
+                </sc-for>
+              </div>
+            </div>
+            </sc-if>
+          </div>
+        </div>
+      </sc-for>
+      <sc-if value="{{cyclesEmpty}}" hint-placeholder-val="{{false}}"><div class="tile"><div class="emptystate"><span class="ic"><x-import component-from-global-scope="BiltemaDPP.IconRefresh" hint-size="22px,22px"></x-import></span><h4>No cycles defined</h4><p>Create an appraisal cycle to set a target completion date and a deadline for every step in between.</p></div></div></sc-if>
+    </div>
+    </sc-if>
+
+    <!-- ========== SECURITY & COMPLIANCE ========== -->
+    <sc-if value="{{isSecurity}}" hint-placeholder-val="{{true}}">
+    <div>
+      <div class="gridcols" style="grid-template-columns:repeat(3,minmax(0,1fr));margin-bottom:16px">
+        <sc-for list="{{secCards}}" as="c" hint-placeholder-count="3"><div class="tile card-pad"><div style="display:flex;align-items:center;gap:10px;margin-bottom:8px"><span style="width:34px;height:34px;border-radius:9px;flex:none;display:grid;place-items:center;background:var(--accent-050);color:var(--accent)"><x-import component-from-global-scope="{{c.icon}}" hint-size="18px,18px"></x-import></span><span style="font-family:Archivo;font-weight:700;font-size:15px">{{c.title}}</span></div><div class="display num" style="font-size:26px;font-weight:800;color:var(--ok)">{{c.value}}</div><div class="muted" style="font-size:var(--t-sm);margin-top:4px">{{c.sub}}</div></div></sc-for>
+      </div>
+      <div class="tile" style="overflow:hidden;margin-bottom:16px">
+        <div class="card-head"><h3 class="card-title">Control framework mapping</h3><span class="meta">Each control mapped to a feature in this platform</span></div>
+        <div class="table-wrap"><table>
+          <thead><tr><th>Framework</th><th>Control</th><th>How it's met</th><th>Status</th></tr></thead>
+          <tbody>
+            <sc-for list="{{controls}}" as="c" hint-placeholder-count="8">
+              <tr><td><span class="pill" style="background:{{c.fwBg}};color:{{c.fwFg}}">{{c.fw}}</span></td><td><span class="mono" style="font-size:var(--t-xs);color:var(--ink-2)">{{c.code}}</span><div style="font-weight:600;color:var(--ink);margin-top:2px">{{c.name}}</div></td><td class="muted" style="font-size:var(--t-sm);max-width:42ch">{{c.how}}</td><td><span class="comp {{c.statusClass}}"><span class="dot"></span>{{c.statusLabel}}</span></td></tr>
+            </sc-for>
+          </tbody>
+        </table></div>
+      </div>
+      <div class="tile card-pad">
+        <h3 class="card-title" style="margin-bottom:6px">Architecture &amp; controls overview</h3>
+        <p class="muted" style="font-size:var(--t-sm);margin:0 0 16px">Authentication, data flow and protection at a glance.</p>
+        <div class="gridcols" style="grid-template-columns:repeat(auto-fit,minmax(200px,1fr))">
+          <sc-for list="{{archCards}}" as="a" hint-placeholder-count="4"><div style="border:1px solid var(--line);border-radius:var(--r-md);padding:15px;background:var(--paper)"><div style="font-size:var(--t-xs);font-weight:700;letter-spacing:.07em;text-transform:uppercase;color:var(--accent);margin-bottom:7px">{{a.cat}}</div><div style="font-weight:700;color:var(--ink);margin-bottom:4px">{{a.title}}</div><div class="muted" style="font-size:var(--t-sm);line-height:1.5">{{a.desc}}</div></div></sc-for>
+        </div>
+      </div>
+    </div>
+    </sc-if>
+
+    <!-- ========== AUDIT LOG ========== -->
+    <sc-if value="{{isAudit}}" hint-placeholder-val="{{true}}">
+    <div>
+      <div class="notice info" style="margin:0 0 16px;display:flex;align-items:center;gap:9px"><x-import component-from-global-scope="BiltemaDPP.IconAlert" hint-size="15px,15px"></x-import>Immutable, append-only access trail. Retained 24 months then auto-purged (ISO 27001 A.12.4 · NIS2 logging).</div>
+      <div class="tile"><div class="table-wrap"><table>
+        <thead><tr><th>Timestamp</th><th>Actor</th><th>Action</th><th>Object</th><th>Source IP</th><th>Result</th></tr></thead>
+        <tbody>
+          <sc-for list="{{auditRows}}" as="a" hint-placeholder-count="8">
+            <tr><td class="mono" style="font-size:var(--t-xs);color:var(--ink-2)">{{a.ts}}</td><td>{{a.actor}}</td><td><span class="tag">{{a.action}}</span></td><td class="muted">{{a.object}}</td><td class="mono" style="font-size:var(--t-xs);color:var(--muted)">{{a.ip}}</td><td><span class="comp {{a.resultClass}}"><span class="dot"></span>{{a.result}}</span></td></tr>
+          </sc-for>
+        </tbody>
+      </table></div></div>
+      <sc-if value="{{auditEmpty}}" hint-placeholder-val="{{false}}"><div class="tile" style="margin-top:16px"><div class="emptystate"><span class="ic"><x-import component-from-global-scope="BiltemaDPP.IconSource" hint-size="22px,22px"></x-import></span><h4>Audit trail is empty</h4><p>Every access and decision — view, save, approve, sign, extend, export — is appended here immutably as it happens.</p></div></div></sc-if>
+    </div>
+    </sc-if>
+
+    <!-- ========== GDPR ========== -->
+    <sc-if value="{{isGdpr}}" hint-placeholder-val="{{true}}">
+    <div class="gridcols" style="grid-template-columns:minmax(0,1fr) minmax(0,1fr);align-items:start">
+      <div style="display:flex;flex-direction:column;gap:16px">
+        <div class="tile card-pad">
+          <h3 class="card-title" style="margin-bottom:6px">Data subject request (DSAR)</h3>
+          <p class="muted" style="font-size:var(--t-sm);margin:0 0 14px">Fulfil access, portability and erasure requests within the 30-day GDPR window.</p>
+          <div class="field" style="margin-bottom:12px"><label>Employee</label><select><option>Mona Lindqvist · IT Platform</option><option>Erik Sundberg · IT Infrastructure</option><option>Petra Nilsson · Finance Trade</option></select></div>
+          <div style="display:flex;gap:9px;flex-wrap:wrap">
+            <button class="btn btn-ghost btn-sm" onClick="{{dsarExport}}"><x-import component-from-global-scope="BiltemaDPP.IconExternal" hint-size="15px,15px"></x-import>Export data</button>
+            <button class="btn btn-ghost btn-sm">Rectify</button>
+            <button onClick="{{dsarErase}}" style="display:inline-flex;align-items:center;gap:7px;font:inherit;font-weight:600;font-size:var(--t-sm);padding:7px 12px;border-radius:var(--r-sm);border:1px solid var(--red);background:var(--surface);color:var(--red);cursor:pointer"><x-import component-from-global-scope="BiltemaDPP.IconTrash" hint-size="14px,14px"></x-import>Erase &amp; anonymize</button>
+          </div>
+          <sc-if value="{{dsarDone}}" hint-placeholder-val="{{true}}"><div class="notice ok" style="margin-top:14px">{{dsarMsg}}</div></sc-if>
+        </div>
+        <div class="tile card-pad">
+          <h3 class="card-title" style="margin-bottom:12px">Retention schedule</h3>
+          <sc-for list="{{retention}}" as="r" hint-placeholder-count="4"><div style="display:flex;justify-content:space-between;align-items:center;padding:10px 0;border-bottom:1px solid var(--line-2)"><div><div style="font-weight:600;font-size:var(--t-sm);color:var(--ink)">{{r.kind}}</div><div class="muted" style="font-size:var(--t-xs);margin-top:1px">{{r.basis}}</div></div><span class="mono" style="font-weight:700;color:var(--ink-2);font-size:var(--t-sm)">{{r.period}}</span></div></sc-for>
+        </div>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:16px">
+        <div class="tile card-pad">
+          <h3 class="card-title" style="margin-bottom:12px">Processing &amp; lawful basis</h3>
+          <sc-for list="{{processing}}" as="p" hint-placeholder-count="4"><div style="padding:11px 0;border-bottom:1px solid var(--line-2)"><div style="display:flex;justify-content:space-between;gap:10px"><span style="font-weight:600;color:var(--ink);font-size:var(--t-sm)">{{p.purpose}}</span><span class="pill" style="background:var(--accent-050);color:var(--accent)">{{p.basis}}</span></div><div class="muted" style="font-size:var(--t-xs);margin-top:3px">{{p.data}}</div></div></sc-for>
+        </div>
+        <div class="tile card-pad">
+          <h3 class="card-title" style="margin-bottom:6px">Consent &amp; transparency</h3>
+          <sc-for list="{{consents}}" as="c" hint-placeholder-count="3"><label class="check" style="display:flex;justify-content:space-between;padding:9px 0;border-bottom:1px solid var(--line-2)"><span style="font-size:var(--t-sm);color:var(--ink)">{{c.label}}</span><span class="pill" style="background:var(--ok-bg);color:var(--ok)">{{c.state}}</span></label></sc-for>
+        </div>
+      </div>
+    </div>
+    </sc-if>
+
+    <!-- ========== USERS & ROLES / ENTERPRISE APP ========== -->
+    <sc-if value="{{isUsers}}" hint-placeholder-val="{{true}}">
+    <div>
+      <div class="tile card-pad" style="margin-bottom:16px">
+        <div style="display:flex;align-items:center;gap:12px;margin-bottom:14px"><span style="width:38px;height:38px;border-radius:10px;display:grid;place-items:center;background:var(--navy);color:#fff"><x-import component-from-global-scope="BiltemaDPP.IconGlobe" hint-size="20px,20px"></x-import></span><div><h3 class="card-title">Enterprise Application — Entra ID</h3><div class="muted" style="font-size:var(--t-sm)">SSO, app roles and Microsoft Graph permissions</div></div></div>
+        <div class="gridcols" style="grid-template-columns:repeat(auto-fit,minmax(220px,1fr))">
+          <sc-for list="{{appConfig}}" as="a" hint-placeholder-count="4"><div style="border:1px solid var(--line);border-radius:var(--r-md);padding:13px;background:var(--paper)"><div class="muted" style="font-size:var(--t-xs);font-weight:700;letter-spacing:.06em;text-transform:uppercase">{{a.label}}</div><div class="mono" style="font-size:var(--t-sm);color:var(--ink);margin-top:5px;word-break:break-all">{{a.value}}</div></div></sc-for>
+        </div>
+        <div style="margin-top:14px;display:flex;gap:8px;flex-wrap:wrap">
+          <sc-for list="{{graphScopes}}" as="g" hint-placeholder-count="4"><span class="pill" style="background:var(--navy-050);color:var(--navy)"><x-import component-from-global-scope="BiltemaDPP.IconCheck" hint-size="12px,12px"></x-import>{{g}}</span></sc-for>
+        </div>
+      </div>
+      <div class="tile" style="overflow:hidden;margin-bottom:16px">
+        <div class="card-head"><h3 class="card-title">App roles — mapped from Entra ID</h3><span class="meta">Defined in the Enterprise Application manifest</span></div>
+        <div class="notice info" style="margin:14px 22px 4px;display:flex;align-items:center;gap:9px"><x-import component-from-global-scope="BiltemaDPP.IconAlert" hint-size="15px,15px"></x-import>Roles are not managed in this app. A user's access is determined by the Azure <b>appRole</b> assigned to them (directly or via an Entra security group). Removing the assignment in Entra revokes access immediately.</div>
+        <div class="table-wrap"><table>
+          <thead><tr><th>App role (value)</th><th>Entra security group</th><th>Members</th><th>Grants</th></tr></thead>
+          <tbody>
+            <sc-for list="{{appRoles}}" as="r" hint-placeholder-count="7">
+              <tr>
+                <td><div style="font-weight:600;color:var(--ink)">{{r.role}}</div><div class="mono" style="font-size:var(--t-xs);color:var(--accent)">{{r.value}}</div></td>
+                <td class="mono" style="font-size:var(--t-xs);color:var(--ink-2)">{{r.group}}</td>
+                <td><span class="num" style="font-weight:700">{{r.members}}</span></td>
+                <td class="muted" style="font-size:var(--t-sm);max-width:34ch">{{r.desc}}</td>
+              </tr>
+            </sc-for>
+          </tbody>
+        </table></div>
+      </div>
+      <div class="tile"><div class="table-wrap"><table>
+        <thead><tr><th>User</th><th>Department</th><th>App role</th><th>Entra group</th><th>MFA</th><th>Last sign-in</th></tr></thead>
+        <tbody>
+          <sc-for list="{{userRows}}" as="u" hint-placeholder-count="7">
+            <tr><td><div class="cell-art"><span style="width:30px;height:30px;border-radius:50%;flex:none;display:grid;place-items:center;color:#fff;font-weight:700;font-size:var(--t-xs);background:{{u.color}}">{{u.initials}}</span><div><div class="art">{{u.name}}</div><div class="mono" style="font-size:var(--t-xs);color:var(--muted)">{{u.email}}</div></div></div></td>
+              <td><span class="tag">{{u.dept}}</span></td><td><span class="pill" style="background:var(--accent-050);color:var(--accent)">{{u.role}}</span></td>
+              <td class="mono" style="font-size:var(--t-xs);color:var(--ink-2)">{{u.group}}</td>
+              <td><span class="comp ok"><span class="dot"></span>On</span></td><td class="upd">{{u.lastSeen}}</td></tr>
+          </sc-for>
+        </tbody>
+      </table></div></div>
+      <sc-if value="{{usersEmpty}}" hint-placeholder-val="{{false}}"><div class="tile" style="margin-top:16px"><div class="emptystate"><span class="ic"><x-import component-from-global-scope="BiltemaDPP.IconProducts" hint-size="22px,22px"></x-import></span><h4>No users synced</h4><p>Users and their Entra ID app-role assignments will be listed here once directory sync is connected.</p></div></div></sc-if>
+    </div>
+    </sc-if>
+
+  </main>
+
+  <!-- EXTEND DATE MODAL -->
+  <sc-if value="{{hasExtend}}" hint-placeholder-val="{{true}}">
+  <div class="overlay" onClick="{{closeExtend}}">
+    <div class="modal" style="max-width:440px" onClick="{{stopProp}}">
+      <div class="modal-head">
+        <div style="display:flex;align-items:center;gap:11px"><span style="width:36px;height:36px;border-radius:9px;flex:none;display:grid;place-items:center;background:var(--accent-050);color:var(--accent)"><x-import component-from-global-scope="BiltemaDPP.IconRefresh" hint-size="18px,18px"></x-import></span><div><h3 class="card-title">Extend target date</h3><div class="muted" style="font-size:var(--t-sm)">{{extendScope}}</div></div></div>
+      </div>
+      <div class="modal-body">
+        <div style="display:flex;justify-content:space-between;align-items:center;padding:11px 14px;border:1px solid var(--line);border-radius:var(--r-md);background:var(--paper);margin-bottom:16px">
+          <span style="font-weight:600;color:var(--ink)">{{extendWho}}</span>
+          <span class="mono" style="font-size:var(--t-sm);color:var(--ink-2)">Current: {{extendCurrent}}</span>
+        </div>
+        <div class="muted" style="font-size:var(--t-sm);margin-bottom:10px">Push the deadline forward by:</div>
+        <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:10px">
+          <button class="btn btn-ghost" style="justify-content:center" onClick="{{extendByWeek}}">+1 week</button>
+          <button class="btn btn-ghost" style="justify-content:center" onClick="{{extendByTwoWeeks}}">+2 weeks</button>
+          <button class="btn btn-ghost" style="justify-content:center" onClick="{{extendByMonth}}">+1 month</button>
+        </div>
+        <p class="muted" style="font-size:var(--t-xs);margin:16px 0 0;display:flex;gap:7px"><span style="flex:none;color:var(--accent)"><x-import component-from-global-scope="BiltemaDPP.IconAlert" hint-size="13px,13px"></x-import></span>Affected users are notified by email (MS Graph) and the change is written to the audit log.</p>
+      </div>
+      <div class="modal-foot"><button class="btn btn-ghost" onClick="{{closeExtend}}">Cancel</button></div>
+    </div>
+  </div>
+  </sc-if>
+
+  <!-- E-SIGNATURE MODAL -->
+  <sc-if value="{{hasSigning}}" hint-placeholder-val="{{true}}">
+  <div class="overlay" onClick="{{closeSign}}">
+    <div class="modal" style="max-width:460px" onClick="{{stopProp}}">
+      <div class="modal-head">
+        <div style="display:flex;align-items:center;gap:11px"><span style="width:36px;height:36px;border-radius:9px;flex:none;display:grid;place-items:center;background:var(--navy);color:#fff"><x-import component-from-global-scope="BiltemaDPP.IconContract" hint-size="18px,18px"></x-import></span><div><h3 class="card-title">Electronic signature</h3><div class="muted" style="font-size:var(--t-sm)">{{sigParty}} acknowledgement · {{sigPersonName}}</div></div></div>
+      </div>
+
+      <!-- step 1: details -->
+      <sc-if value="{{sigStepDetails}}" hint-placeholder-val="{{true}}">
+      <div class="modal-body">
+        <p class="muted" style="font-size:var(--t-sm);margin:0 0 16px">By signing you confirm the appraisal scores and comments are accurate and acknowledged.</p>
+        <div class="form-grid">
+          <div class="field"><label>First name</label><input type="text" value="{{sfFirst}}" onChange="{{onSfFirst}}" placeholder="First name"></div>
+          <div class="field"><label>Last name</label><input type="text" value="{{sfLast}}" onChange="{{onSfLast}}" placeholder="Last name"></div>
+          <div class="field col-span-2"><label>Date</label><input type="text" value="{{sfDate}}" onChange="{{onSfDate}}"></div>
+        </div>
+      </div>
+      <div class="modal-foot" style="display:flex;gap:9px;justify-content:flex-end"><button class="btn btn-ghost" onClick="{{closeSign}}">Cancel</button><button class="btn btn-primary" onClick="{{sigToCredential}}">Continue<x-import component-from-global-scope="BiltemaDPP.IconArrowLeft" hint-size="14px,14px"></x-import></button></div>
+      </sc-if>
+
+      <!-- step 2: credential -->
+      <sc-if value="{{sigStepCredential}}" hint-placeholder-val="{{true}}">
+      <div class="modal-body">
+        <div style="display:flex;align-items:center;gap:10px;background:var(--navy);border-radius:var(--r-md);padding:12px 14px;margin-bottom:16px">
+          <span style="display:grid;grid-template-columns:1fr 1fr;gap:2px;width:18px;height:18px;flex:none"><span style="background:#f25022"></span><span style="background:#7fba00"></span><span style="background:#00a4ef"></span><span style="background:#ffb900"></span></span>
+          <span style="color:#fff;font-size:var(--t-sm);font-weight:600">Sign in to acknowledge</span>
+        </div>
+        <p class="muted" style="font-size:var(--t-sm);margin:0 0 14px">Re-authenticate with your Entra ID credentials to apply your signature.</p>
+        <div class="field" style="margin-bottom:12px"><label>Username</label><input type="text" value="{{sfUser}}" onChange="{{onSfUser}}" placeholder="name@biltema.com"></div>
+        <div class="field"><label>Password</label><input type="password" value="{{sfPass}}" onChange="{{onSfPass}}" placeholder="••••••••"></div>
+        <p class="muted" style="font-size:var(--t-xs);margin:14px 0 0;display:flex;gap:7px"><span style="flex:none;color:var(--accent)"><x-import component-from-global-scope="BiltemaDPP.IconAlert" hint-size="13px,13px"></x-import></span>This re-authentication is recorded as a non-repudiable signature event in the audit log (eIDAS / ISO 27001 A.12.4).</p>
+      </div>
+      <div class="modal-foot" style="display:flex;gap:9px;justify-content:flex-end"><button class="btn btn-ghost" onClick="{{closeSign}}">Cancel</button><button class="btn btn-primary" onClick="{{confirmSign}}"><x-import component-from-global-scope="BiltemaDPP.IconCheck" hint-size="15px,15px"></x-import>Sign &amp; acknowledge</button></div>
+      </sc-if>
+    </div>
+  </div>
+  </sc-if>
+</div>
+</sc-if>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:1280,&quot;height&quot;:860},&quot;theme&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;daylight&quot;,&quot;command&quot;,&quot;midnight&quot;],&quot;default&quot;:&quot;daylight&quot;,&quot;tsType&quot;:&quot;\&quot;daylight\&quot; | \&quot;command\&quot; | \&quot;midnight\&quot;&quot;,&quot;section&quot;:&quot;Appearance&quot;},&quot;dashView&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;briefing&quot;,&quot;metrics&quot;],&quot;default&quot;:&quot;briefing&quot;,&quot;tsType&quot;:&quot;\&quot;briefing\&quot; | \&quot;metrics\&quot;&quot;,&quot;section&quot;:&quot;Dashboard&quot;},&quot;showComplianceBadges&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;Appearance&quot;}}">
+class Component extends DCLogic {
+  state = {
+    authed:false, role:'appraisee', screen:'dashboard', dashView:null,
+    selId:'a-mona', reviewFilter:'all', orgFilter:'all',
+    ratings:{}, texts:{}, comments:{}, builder:null, emailId:'n1',
+    mgrRatings:{}, mgrSecComments:{}, mgrSubmitted:{}, finalEmp:{}, finalMgr:{}, sig:{}, signing:null, sigForm:{first:'',last:'',date:'',user:'',pass:''}, sigStep:'details',
+    toast:null, dsar:null, extend:null, cycles:null, extraAudit:null,
+    theme:null,
+    templates:null, appraisals:null, notifs:null,
+  };
+
+  // Role definitions only — identity (name, initials) comes from the Entra ID token at runtime.
+  ROLES = {
+    appraisee:{name:'Signed-in user', label:'Completes own appraisal', roleName:'Employee (Appraisee)', initials:'EM', color:'#1080c0'},
+    it_manager:{name:'Signed-in user', label:'Reviews their own team', roleName:'Manager', initials:'MG', color:'#1c3f8c'},
+    cto:{name:'Signed-in user', label:'IT organization-wide view', roleName:'CTO', initials:'CTO', color:'#0c6196'},
+    cio:{name:'Signed-in user', label:'IT organization + compliance', roleName:'CIO', initials:'CIO', color:'#2a5cb8'},
+    cfo:{name:'Signed-in user', label:'Read-only, finished appraisals', roleName:'CFO', initials:'CFO', color:'#7a2b86'},
+    md:{name:'Signed-in user', label:'Whole-organization view', roleName:'Managing Director', initials:'MD', color:'#d81b48'},
+    admin:{name:'Signed-in user', label:'Config, roles, scheduling', roleName:'Platform Administrator', initials:'AD', color:'#0f2150'},
+  };
+  ROLE_ORDER = ['appraisee','it_manager','cto','cio','cfo','md','admin'];
+
+  NAV = [
+    {key:'dashboard', label:'Dashboard', icon:'BiltemaDPP.IconOverview', roles:'all'},
+    {key:'my_appraisal', label:'My appraisal', icon:'BiltemaDPP.IconContract', roles:['appraisee','it_manager','cto','cio']},
+    {key:'reviews', label:'Team reviews', icon:'BiltemaDPP.IconCheck', roles:['it_manager','cto','cio']},
+    {key:'org', label:'Organization', icon:'BiltemaDPP.IconGlobe', roles:['cto','cio','md']},
+    {key:'org', label:'Finished appraisals', icon:'BiltemaDPP.IconGlobe', roles:['cfo']},
+    {key:'analytics', label:'Analytics', icon:'BiltemaDPP.IconSimulator', roles:['cto','cio','md','cfo']},
+    {key:'templates', label:'Templates', icon:'BiltemaDPP.IconRegulations', roles:['admin','it_manager','cto','cio']},
+    {key:'cycles', label:'Cycles & dates', icon:'BiltemaDPP.IconRefresh', roles:['admin','it_manager','cto','cio']},
+    {key:'users', label:'Users & roles', icon:'BiltemaDPP.IconProducts', roles:['admin']},
+    {key:'security', label:'Security & compliance', icon:'BiltemaDPP.IconPublish', roles:['admin','cio']},
+    {key:'audit', label:'Audit log', icon:'BiltemaDPP.IconSource', roles:['admin','cio']},
+    {key:'gdpr', label:'Data & GDPR', icon:'BiltemaDPP.IconContract', roles:['admin','cio']},
+    {key:'notifications', label:'Notifications', icon:'BiltemaDPP.IconBolt', roles:'all'},
+  ];
+
+  STATUS = {
+    not_started:{chip:'st-staged', label:'Not started'},
+    in_progress:{chip:'st-enriching', label:'In progress'},
+    submitted:{chip:'st-published', label:'Awaiting review'},
+    changes_requested:{chip:'st-uncategorized', label:'Changes requested'},
+    approved:{chip:'st-compliant', label:'Approved'},
+    rejected:{chip:'st-uncategorized', label:'Rejected'},
+  };
+
+  componentDidMount(){
+    this.applyTheme();
+    if(!this.state.templates){
+      const appraisals=this.seedAppraisals();
+      // pre-populate manager review + dual signatures for already-approved appraisals
+      const mgrSubmitted={}, sig={}, mgrRatings={}, finalEmp={}, finalMgr={};
+      appraisals.forEach(a=>{
+        if(a.status==='approved'){
+          a.signed=true;
+          mgrSubmitted[a.id]=true;
+          mgrRatings[a.id]=this.seedRatings(a.id, a); // manager ratings mirror
+          const d=a.submitted&&a.submitted!=='—'?a.submitted:'20 Jun 2026';
+          sig[a.id]={employee:{name:a.name, date:d, account:a.name.toLowerCase().split(' ')[0]+'@biltema.com', signedAt:d}, manager:{name:a.manager, date:d, account:a.manager.toLowerCase().split(' ')[0]+'@biltema.com', signedAt:d}};
+          finalEmp[a.id]='Thank you for the feedback — I\u2019m aligned on the goals for next period.';
+          finalMgr[a.id]='Strong period overall. Agreed development focus is captured above.';
+        }
+      });
+      this.setState({templates:this.seedTemplates(), appraisals, notifs:this.seedNotifs(), cycles:this.seedCycles(), mgrSubmitted, sig, mgrRatings, finalEmp, finalMgr});
+    }
+  }
+
+  seedTemplates(){
+    return [
+      {id:'tpl-it', name:'IT Appraisal', scope:'IT', system:true, icon:'BiltemaDPP.IconBolt', color:'#1080c0',
+       desc:'Soft skills and technical skills for engineers and IT staff, with goals and a development plan.',
+       sections:[
+        {id:'s1',title:'Soft Skills',type:'rating',weight:25,fields:[{id:'f1',label:'Communication & clarity'},{id:'f2',label:'Collaboration & teamwork'},{id:'f3',label:'Adaptability'},{id:'f4',label:'Ownership & accountability'},{id:'f5',label:'Mentoring & leadership'}]},
+        {id:'s2',title:'Technical Skills',type:'rating',weight:35,fields:[{id:'f6',label:'Code quality & craftsmanship'},{id:'f7',label:'System & architecture design'},{id:'f8',label:'Security awareness (secure SDLC)'},{id:'f9',label:'Automation & tooling'},{id:'f10',label:'Incident response & reliability'}]},
+        {id:'s3',title:'Goals & OKRs',type:'goal',weight:20,fields:[{id:'f11',label:'Objective'}]},
+        {id:'s4',title:'Self-assessment',type:'text',weight:0,fields:[{id:'f12',label:'Reflection'}]},
+        {id:'s5',title:'Development Plan',type:'text',weight:20,fields:[{id:'f13',label:'Growth focus'}]},
+       ]},
+      {id:'tpl-fintrade', name:'Finance — Trade / Buying', scope:'Finance Trade', system:true, icon:'BiltemaDPP.IconProducts', color:'#1c3f8c',
+       desc:'Supplier and category evaluation for retail buyers, scored on historical performance data.',
+       sections:[
+        {id:'s1',title:'Supplier Evaluation',type:'rating',weight:40,fields:[{id:'f1',label:'Price competitiveness vs market'},{id:'f2',label:'Lead-time reliability'},{id:'f3',label:'Quality consistency'},{id:'f4',label:'Return / defect rate'},{id:'f5',label:'Historical delivery performance'}]},
+        {id:'s2',title:'Category Performance',type:'rating',weight:30,fields:[{id:'f6',label:'Margin contribution'},{id:'f7',label:'Sell-through rate'},{id:'f8',label:'Stock turnover'}]},
+        {id:'s3',title:'Negotiation & Sourcing',type:'rating',weight:15,fields:[{id:'f9',label:'Negotiation outcomes'},{id:'f10',label:'Supplier diversification'}]},
+        {id:'s4',title:'Goals & Targets',type:'goal',weight:15,fields:[{id:'f11',label:'Objective'}]},
+       ]},
+      {id:'tpl-finance', name:'Finance', scope:'Finance', system:true, icon:'BiltemaDPP.IconSimulator', color:'#0c6196',
+       desc:'Controls, reporting accuracy and compliance for finance and accounting roles.',
+       sections:[
+        {id:'s1',title:'Financial Controls',type:'rating',weight:30,fields:[{id:'f1',label:'Controls discipline'},{id:'f2',label:'Risk identification'},{id:'f3',label:'Process improvement'}]},
+        {id:'s2',title:'Reporting Accuracy',type:'rating',weight:25,fields:[{id:'f4',label:'Accuracy & timeliness'},{id:'f5',label:'Reconciliation quality'}]},
+        {id:'s3',title:'Compliance',type:'rating',weight:20,fields:[{id:'f6',label:'Regulatory compliance'},{id:'f7',label:'Audit readiness'}]},
+        {id:'s4',title:'Stakeholder Management',type:'rating',weight:10,fields:[{id:'f8',label:'Business partnering'}]},
+        {id:'s5',title:'Goals',type:'goal',weight:15,fields:[{id:'f9',label:'Objective'}]},
+       ]},
+      {id:'tpl-legal', name:'Legal', scope:'Legal', system:true, icon:'BiltemaDPP.IconContract', color:'#7a2b86',
+       desc:'Contract management, risk, advisory quality and dispute handling for legal counsel.',
+       sections:[
+        {id:'s1',title:'Contract Management',type:'rating',weight:30,fields:[{id:'f1',label:'Drafting quality'},{id:'f2',label:'Turnaround time'},{id:'f3',label:'Risk allocation'}]},
+        {id:'s2',title:'Risk & Compliance',type:'rating',weight:25,fields:[{id:'f4',label:'Regulatory awareness'},{id:'f5',label:'Issue spotting'}]},
+        {id:'s3',title:'Advisory Quality',type:'rating',weight:20,fields:[{id:'f6',label:'Clarity of advice'},{id:'f7',label:'Commercial judgement'}]},
+        {id:'s4',title:'Dispute & Litigation',type:'rating',weight:10,fields:[{id:'f8',label:'Case management'}]},
+        {id:'s5',title:'Goals',type:'goal',weight:15,fields:[{id:'f9',label:'Objective'}]},
+       ]},
+    ];
+  }
+
+  seedAppraisals(){
+    return []; // TODO(backend): load appraisals for the signed-in user’s scope
+  }
+
+  seedNotifs(){
+    return []; // TODO(backend): load notification/email log
+  }
+
+  seedCycles(){
+    return []; // TODO(backend): load appraisal cycles + participants
+  }
+
+  // ---- dates ----
+  MONTHS=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+  parseDate(s){ const p=String(s).split(' '); return new Date(parseInt(p[2]), this.MONTHS.indexOf(p[1]), parseInt(p[0])); }
+  fmtDate(dt){ return String(dt.getDate()).padStart(2,'0')+' '+this.MONTHS[dt.getMonth()]+' '+dt.getFullYear(); }
+  addDays(s,n){ const dt=this.parseDate(s); dt.setDate(dt.getDate()+n); return this.fmtDate(dt); }
+  shortDate(s){ const p=String(s).split(' '); return p[0]+' '+p[1]; }
+
+  // ---- extend deadlines (admin) ----
+  openExtendCycle(cid){ this.setState({extend:{scope:'cycle', cid}}); }
+  openExtendUser(cid,name){ this.setState({extend:{scope:'user', cid, name}}); }
+  closeExtend(){ this.setState({extend:null}); }
+  extendCurrentDate(){ const ex=this.state.extend; if(!ex) return ''; const c=(this.state.cycles||[]).find(x=>x.id===ex.cid); if(!c) return ''; if(ex.scope==='cycle') return c.due; const p=c.participants.find(x=>x.name===ex.name); return p?p.due:c.due; }
+  applyExtend(days){
+    const ex=this.state.extend; if(!ex) return;
+    const cyc=(this.state.cycles||[]).find(c=>c.id===ex.cid); if(!cyc) return;
+    if(ex.scope==='cycle'){
+      this.setState(s=>({cycles:s.cycles.map(c=> c.id!==ex.cid?c:{
+        ...c, due:this.addDays(c.due,days),
+        steps:c.steps.map(st=>({...st, date:this.addDays(st.date,days)})),
+        participants:c.participants.map(p=>({...p, due:this.addDays(p.due,days)})),
+      })}));
+      this.pushExtendNotif('All '+cyc.participants.length+' participants in '+cyc.name, this.addDays(cyc.due,days), 'cycle '+cyc.name);
+      this.flash('Target date for '+cyc.name+' extended by '+days+' days. Participants notified.');
+    } else {
+      let newDue='';
+      this.setState(s=>({cycles:s.cycles.map(c=> c.id!==ex.cid?c:{
+        ...c, participants:c.participants.map(p=>{ if(p.name!==ex.name) return p; newDue=this.addDays(p.due,days); return {...p, due:newDue, extended:true}; }),
+      })}));
+      this.pushExtendNotif(ex.name, this.addDays((cyc.participants.find(p=>p.name===ex.name)||{}).due||cyc.due,days), 'their appraisal');
+      this.flash('Deadline for '+ex.name+' extended by '+days+' days.');
+    }
+    this.setState({extend:null});
+  }
+  pushExtendNotif(who, newDate, what){
+    const first=String(who).toLowerCase().split(' ')[0].replace(/[^a-z]/g,'');
+    const n={id:'n'+Date.now(), kind:'reminder', subject:'Target date extended', preview:who+' — the deadline for '+what+' has been extended to '+newDate+'.', to: who.indexOf('All')===0?'8 recipients':first+'@biltema.com', ts:'just now', unread:true};
+    this.setState(s=>({notifs:[n,...s.notifs], extraAudit:[{ts:this.nowStamp(), actor:'Iris Vega', action:'CYCLE.EXTEND_DATE', object:who+' → '+newDate, ip:'10.1.3.4', result:'OK', resultClass:'ok'},...(s.extraAudit||[])]}));
+  }
+  nowStamp(){ const d=new Date(); const p=n=>String(n).padStart(2,'0'); return d.getFullYear()+'-'+p(d.getMonth()+1)+'-'+p(d.getDate())+' '+p(d.getHours())+':'+p(d.getMinutes())+':'+p(d.getSeconds()); }
+
+  // ---- helpers ----
+  cu(){ return this.ROLES[this.state.role]; }
+  theme(){ return this.state.theme || this.props.theme || 'daylight'; }
+  applyTheme(){ try{ document.documentElement.setAttribute('data-theme', this.theme()); }catch(e){} }
+  componentDidUpdate(){ this.applyTheme(); }
+  setTheme(t){ this.setState({theme:t}); }
+  tpl(id){ return (this.state.templates||[]).find(t=>t.id===id); }
+  appr(id){ return (this.state.appraisals||[]).find(a=>a.id===id); }
+  dashView(){ return this.state.dashView || this.props.dashView || 'briefing'; }
+
+  ratingOf(aid,fid){ return (this.state.ratings[aid]||{})[fid]; }
+  scoreOf(a){
+    if(!a) return 0;
+    const t=this.tpl(a.tpl); if(!t) return 0;
+    const rs=t.sections.filter(s=>s.type==='rating'&&s.weight>0);
+    let wsum=0, acc=0; const seed=this.seedRatings(a.id);
+    rs.forEach(s=>{
+      const vals=s.fields.map(f=>{const r=this.ratingOf(a.id,f.id); return r!=null?r:(seed[f.id]||0);}).filter(v=>v>0);
+      if(vals.length){ const avg=vals.reduce((x,y)=>x+y,0)/vals.length; acc+=(avg/5)*s.weight; wsum+=s.weight; }
+    });
+    return wsum? Math.round((acc/wsum)*100):0;
+  }
+  // deterministic pseudo-ratings so seeded appraisals have scores
+  seedRatings(aid, aOverride){
+    const a=aOverride||this.appr(aid); if(!a||a.status==='not_started') return {};
+    const t=this.tpl(a.tpl); if(!t) return {};
+    let h=0; for(let i=0;i<aid.length;i++) h=(h*31+aid.charCodeAt(i))&0xffff;
+    const out={}; t.sections.forEach(s=> s.fields.forEach(f=>{ h=(h*1103515245+12345)&0x7fffffff; out[f.id]=3+(h%3); }));
+    return out;
+  }
+
+  // ---- actions ----
+  ssoSignIn(){ this.setState({authed:true, screen:'dashboard'}); }
+  pickRole(r){ this.setState({authed:true, role:r, screen:'dashboard', selId:this.firstFor(r)}); }
+  signOut(){ this.setState({authed:false}); }
+  onRoleChange(e){ const r=e.target.value; this.setState({role:r, screen:'dashboard', selId:this.firstFor(r), builder:null}); }
+  firstFor(r){
+    if(r==='appraisee') return 'a-mona';
+    const list=this.visibleAppraisals(r); return list[0]?list[0].id:'a-mona';
+  }
+  go(s){ this.setState({screen:s, builder:s==='templates'?null:this.state.builder}); }
+  flash(m){ this.setState({toast:m}); clearTimeout(this._t); this._t=setTimeout(()=>this.setState({toast:null}),3200); }
+
+  setRating(aid,fid,v){ this.setState(s=>({ratings:{...s.ratings,[aid]:{...(s.ratings[aid]||{}),[fid]:v}}})); }
+  setText(aid,fid,e){ const v=e&&e.target?e.target.value:e; this.setState(s=>({texts:{...s.texts,[aid]:{...(s.texts[aid]||{}),[fid]:v}}})); }
+  submitMine(){
+    this.setState(s=>({appraisals:s.appraisals.map(a=>a.id==='a-mona'?{...a,status:'submitted',submitted:'today'}:a)}));
+    this.flash('Submitted to Johan Berg. Notification email sent via MS Graph.');
+    this.go('dashboard');
+  }
+
+  openReview(id){ this.setState({screen:'review_detail', selId:id}); }
+  onComment(aid,e){ const v=e&&e.target?e.target.value:e; this.setState(s=>({comments:{...s.comments,[aid]:v}})); }
+  decide(action){
+    const id=this.state.selId; const a=this.appr(id); if(!a) return;
+    const map={approve:'approved', request:'changes_requested', reject:'rejected'};
+    const status=map[action];
+    const subj={approve:'Appraisal approved — signatures required', request:'Changes requested on your appraisal', reject:'Your appraisal was not approved'}[action];
+    const prev={approve:`${a.name}, your manager approved your appraisal (final score ${this.mgrScoreOf(a)}/100). Both parties must now sign off to finalize.`, request:`${a.name}, your manager has requested modifications before approval.`, reject:`${a.name}, your appraisal has been returned. Please contact your manager.`}[action];
+    const newN={id:'n'+Date.now(), kind:action==='approve'?'approved':(action==='reject'?'rejected':'changes'), subject:subj, preview:prev, to:(a.name.toLowerCase().split(' ')[0])+'@biltema.com', ts:'just now', unread:true};
+    this.setState(s=>({
+      appraisals:s.appraisals.map(x=>x.id===id?{...x,status}:x),
+      notifs:[newN,...s.notifs],
+    }));
+    if(action==='approve'){
+      this.flash('Approved. Awaiting electronic signatures from both parties.');
+    } else {
+      this.flash({request:'Modification request sent to '+a.name+'.', reject:'Appraisal rejected. '+a.name+' has been notified.'}[action]);
+      this.setState({screen:'reviews'});
+    }
+  }
+
+  // ---- manager review (mirror of employee form) ----
+  empRatingsMap(aid){ return {...this.seedRatings(aid), ...(this.appr(aid)&&this.appr(aid).mine?(this.state.ratings[aid]||{}):{})}; }
+  mgrRatingsMap(aid){ return this.state.mgrRatings[aid]||{}; }
+  scoreFrom(map,a){ if(!a) return 0; const t=this.tpl(a.tpl); if(!t) return 0; const rs=t.sections.filter(s=>s.type==='rating'&&s.weight>0); let wsum=0,acc=0; rs.forEach(s=>{ const vals=s.fields.map(f=>map[f.id]).filter(v=>v>0); if(vals.length){ const avg=vals.reduce((x,y)=>x+y,0)/vals.length; acc+=(avg/5)*s.weight; wsum+=s.weight; } }); return wsum?Math.round((acc/wsum)*100):0; }
+  empScoreOf(a){ return this.scoreFrom(this.empRatingsMap(a.id),a); }
+  mgrScoreOf(a){ return this.scoreFrom(this.mgrRatingsMap(a.id),a); }
+  setMgrRating(aid,fid,v){ this.setState(s=>({mgrRatings:{...s.mgrRatings,[aid]:{...(s.mgrRatings[aid]||{}),[fid]:v}}})); }
+  setMgrSecComment(aid,sid,e){ const v=e&&e.target?e.target.value:e; this.setState(s=>({mgrSecComments:{...s.mgrSecComments,[aid]:{...(s.mgrSecComments[aid]||{}),[sid]:v}}})); }
+  mgrReviewComplete(aid){ const a=this.appr(aid); const t=this.tpl(a.tpl); const map=this.mgrRatingsMap(aid); const fields=t.sections.filter(s=>s.type==='rating'&&s.weight>0).flatMap(s=>s.fields); return fields.length>0 && fields.every(f=>map[f.id]>0); }
+  submitMgrReview(){
+    const aid=this.state.selId; const a=this.appr(aid);
+    if(!this.mgrReviewComplete(aid)){ this.flash('Rate every competency before submitting your review.'); return; }
+    this.setState(s=>({mgrSubmitted:{...s.mgrSubmitted,[aid]:true}, extraAudit:[{ts:this.nowStamp(), actor:this.cu().name, action:'APPRAISAL.MANAGER_REVIEW', object:a.name+' · score '+this.mgrScoreOf(a), ip:'10.4.12.8', result:'OK', resultClass:'ok'},...(s.extraAudit||[])]}));
+    this.flash('Manager review saved alongside the employee submission.');
+  }
+  setFinalEmp(aid,e){ const v=e&&e.target?e.target.value:e; this.setState(s=>({finalEmp:{...s.finalEmp,[aid]:v}})); }
+  setFinalMgr(aid,e){ const v=e&&e.target?e.target.value:e; this.setState(s=>({finalMgr:{...s.finalMgr,[aid]:v}})); }
+
+  // ---- e-signature ----
+  openSign(party){
+    const def = party==='manager'? this.appr(this.state.selId).manager : this.appr(this.state.selId).name;
+    const parts=String(def).split(' ');
+    const today=this.fmtDate(new Date());
+    this.setState({signing:{aid:this.state.selId, party}, sigStep:'details', sigForm:{first:parts[0]||'', last:parts.slice(1).join(' ')||'', date:today, user:'', pass:''}});
+  }
+  closeSign(){ this.setState({signing:null}); }
+  sigField(k,e){ const v=e&&e.target?e.target.value:e; this.setState(s=>({sigForm:{...s.sigForm,[k]:v}})); }
+  sigToCredential(){ const f=this.state.sigForm; if(!f.first.trim()||!f.last.trim()||!f.date.trim()){ this.flash('Enter first name, last name and date to continue.'); return; } this.setState({sigStep:'credential'}); }
+  confirmSign(){
+    const f=this.state.sigForm; if(!f.user.trim()||!f.pass.trim()){ this.flash('Enter your Entra ID credentials to acknowledge.'); return; }
+    const sg=this.state.signing; const aid=sg.aid; const a=this.appr(aid);
+    const record={name:(f.first+' '+f.last).trim(), date:f.date, account:f.user, signedAt:this.nowStamp()};
+    this.setState(s=>({
+      sig:{...s.sig,[aid]:{...(s.sig[aid]||{}),[sg.party]:record}}, signing:null,
+      extraAudit:[{ts:this.nowStamp(), actor:record.name, action:'APPRAISAL.ESIGN', object:a.name+' · '+(sg.party==='manager'?'manager':'employee')+' sign-off', ip: sg.party==='manager'?'10.4.12.8':'10.4.18.2', result:'OK', resultClass:'ok'},...(s.extraAudit||[])]}));
+    this.flash((sg.party==='manager'?'Manager':'Employee')+' signature recorded for '+a.name+'.');
+    setTimeout(()=>{ this.maybeFinalize(aid); },50);
+  }
+  maybeFinalize(aid){
+    const sig=this.state.sig[aid]||{}; const a=this.appr(aid);
+    if(sig.manager&&sig.employee){
+      const n={id:'n'+Date.now(), kind:'approved', subject:'Appraisal finalized & signed', preview:a.name+'\u2019s appraisal is fully signed by both parties and locked. Final score '+this.mgrScoreOf(a)+'/100.', to:(a.name.toLowerCase().split(' ')[0])+'@biltema.com', ts:'just now', unread:true};
+      this.setState(s=>({appraisals:s.appraisals.map(x=>x.id===aid?{...x,status:'approved',signed:true}:x), notifs:[n,...s.notifs]}));
+      this.flash('Appraisal finalized — signed by both parties and locked.');
+    }
+  }
+
+  goNotifs(){ this.setState({screen:'notifications', notifs:this.state.notifs.map(n=>({...n,unread:false}))}); }
+  openNotif(id){ this.setState({emailId:id}); }
+
+  // template builder
+  openTemplate(id){
+    const t=this.tpl(id);
+    const copy=JSON.parse(JSON.stringify(t));
+    copy.name = t.system? t.name+' (custom)' : t.name;
+    copy.id='draft'; copy.system=false; copy.baseId=t.id;
+    this.setState({screen:'builder', builder:copy});
+  }
+  newTemplate(){ this.setState({screen:'builder', builder:{id:'draft',name:'',scope:'General',system:false,icon:'BiltemaDPP.IconRegulations',color:'#1c3f8c',sections:[{id:'s'+Date.now(),title:'New section',type:'rating',weight:100,fields:[{id:'f'+Date.now(),label:'New field'}]}]}}); }
+  bMut(fn){ this.setState(s=>{ const b=JSON.parse(JSON.stringify(s.builder)); fn(b); return {builder:b}; }); }
+  bAddSection(){ this.bMut(b=>b.sections.push({id:'s'+Date.now(),title:'New section',type:'rating',weight:0,fields:[{id:'f'+Date.now(),label:'New field'}]})); }
+  bRemoveSection(sid){ this.bMut(b=>b.sections=b.sections.filter(s=>s.id!==sid)); }
+  bMove(sid,dir){ this.bMut(b=>{ const i=b.sections.findIndex(s=>s.id===sid); const j=i+dir; if(j<0||j>=b.sections.length) return; const t=b.sections[i]; b.sections[i]=b.sections[j]; b.sections[j]=t; }); }
+  bSet(sid,key,e){ const v=e&&e.target?e.target.value:e; this.bMut(b=>{const s=b.sections.find(x=>x.id===sid); if(s) s[key]=(key==='weight'?(parseInt(v)||0):v);}); }
+  bAddField(sid){ this.bMut(b=>{const s=b.sections.find(x=>x.id===sid); if(s) s.fields.push({id:'f'+Date.now()+Math.random(),label:'New field'});}); }
+  bRemoveField(sid,fid){ this.bMut(b=>{const s=b.sections.find(x=>x.id===sid); if(s) s.fields=s.fields.filter(f=>f.id!==fid);}); }
+  bSetField(sid,fid,e){ const v=e&&e.target?e.target.value:e; this.bMut(b=>{const s=b.sections.find(x=>x.id===sid); const f=s&&s.fields.find(y=>y.id===fid); if(f) f.label=v;}); }
+  bName(e){ const v=e.target.value; this.bMut(b=>b.name=v); }
+  bScope(e){ const v=e.target.value; this.bMut(b=>b.scope=v); }
+  bTotal(){ return (this.state.builder?this.state.builder.sections:[]).reduce((a,s)=>a+(parseInt(s.weight)||0),0); }
+  builderSave(){
+    const b=this.state.builder; if(!b) return;
+    if(!b.name.trim()){ this.flash('Give the template a name first.'); return; }
+    if(this.bTotal()!==100){ this.flash('Weights must total 100% to save.'); return; }
+    const fin=JSON.parse(JSON.stringify(b)); fin.id='tpl-'+Date.now(); fin.system=false;
+    this.setState(s=>({templates:[...s.templates,fin], builder:null, screen:'templates'}));
+    this.flash('Template "'+b.name+'" saved and ready to reuse.');
+  }
+  builderCancel(){ this.setState({builder:null, screen:'templates'}); }
+
+  dsarRun(kind){
+    const msg = kind==='export'? 'Data package generated — JSON + PDF export ready, fulfilled within SLA (Art. 15 & 20).' : 'Records anonymized and personal identifiers removed. Audit entry written (Art. 17 right to erasure).';
+    this.setState({dsar:msg});
+    this.flash('DSAR action completed and logged.');
+  }
+
+  visibleAppraisals(role){
+    const all=this.state.appraisals||[];
+    role=role||this.state.role;
+    if(role==='admin') return []; // platform admin manages config & scheduling, never sees appraisal content
+    if(role==='appraisee') return all.filter(a=>a.mine);
+    if(role==='it_manager') return all.filter(a=>a.dept==='IT — Platform'||a.dept==='IT — Infrastructure'||a.dept==='IT — Security'||a.dept==='IT — Data');
+    if(role==='cto'||role==='cio') return all.filter(a=>a.org==='IT');
+    if(role==='cfo') return all.filter(a=>a.status==='approved');
+    return all; // md
+  }
+
+  // ---- render ----
+  renderVals(){
+    const S=this.state, u=this.cu(), role=S.role;
+    const theme=this.theme();
+    const showBadges = this.props.showComplianceBadges!==false;
+
+    const allowed = this.NAV.filter(n=> n.roles==='all' || n.roles.includes(role));
+    const reviewsCount = this.visibleAppraisals(role).filter(a=>a.status==='submitted').length;
+    const navItems = allowed.map(n=>({
+      label:n.label, icon:n.icon, active:S.screen===n.key?'active':'',
+      onClick:()=>this.go(n.key),
+      hasBadge:(n.key==='reviews'&&reviewsCount>0)||(n.key==='notifications'&&this.unread()>0),
+      badge:n.key==='reviews'?reviewsCount:this.unread(),
+    }));
+
+    const titleMap={dashboard:'Dashboard',my_appraisal:'My appraisal',reviews:'Team reviews',review_detail:'Review',org:role==='cfo'?'Finished appraisals':'Organization',analytics:'Analytics',templates:'Templates',builder:'Template builder',cycles:'Cycles & target dates',users:'Users & roles',security:'Security & compliance',audit:'Audit log',gdpr:'Data protection & GDPR',notifications:'Notifications',review_detail:'Review'};
+    const crumbMap={dashboard:'Workspace',my_appraisal:'My work',reviews:'Reviews',review_detail:'Reviews',org:'Organization',analytics:'Insights',templates:'Configuration',builder:'Configuration',cycles:'Configuration',users:'Administration',security:'Administration',audit:'Administration',gdpr:'Administration',notifications:'Workspace'};
+
+    const base={
+      showLogin:!S.authed, showApp:S.authed,
+      role, roleName:u.roleName, uName:u.name, uInitials:u.initials, uColor:u.color,
+      railBorder: 'rgba(255,255,255,.12)',
+      railName: '#fff', railSub: '#9fc4e4',
+      navItems,
+      thDay: theme==='daylight'?'on':'', thCmd: theme==='command'?'on':'', thMid: theme==='midnight'?'on':'',
+      setThemeDay:()=>this.setTheme('daylight'), setThemeCmd:()=>this.setTheme('command'), setThemeMid:()=>this.setTheme('midnight'),
+      ssoSignIn:()=>this.ssoSignIn(),
+      roleCards:this.ROLE_ORDER.map(k=>({...this.ROLES[k], onPick:()=>this.pickRole(k)})),
+      roleOptions:this.ROLE_ORDER.map(k=>({value:k, label:this.ROLES[k].roleName})),
+      pageTitle:titleMap[S.screen]||'', crumb:crumbMap[S.screen]||'',
+      hasUnread:this.unread()>0, unreadCount:this.unread(),
+      hasToast:!!S.toast, toast:S.toast,
+      goNotifs:()=>this.goNotifs(), signOut:()=>this.signOut(), onRoleChange:e=>this.onRoleChange(e),
+      isDashboard:S.screen==='dashboard', isMyAppraisal:S.screen==='my_appraisal',
+      isReviews:S.screen==='reviews', isReviewDetail:S.screen==='review_detail',
+      isTemplates:S.screen==='templates', isBuilder:S.screen==='builder',
+      isNotifs:S.screen==='notifications', isOrg:S.screen==='org', isAnalytics:S.screen==='analytics',
+      isCycles:S.screen==='cycles', isSecurity:S.screen==='security', isAudit:S.screen==='audit',
+      isGdpr:S.screen==='gdpr', isUsers:S.screen==='users',
+      hasExtend:!!S.extend,
+      extendScope: S.extend? (S.extend.scope==='cycle'?'Whole cycle':'Single user'):'',
+      extendWho: S.extend? (S.extend.scope==='cycle'? ((this.state.cycles||[]).find(c=>c.id===S.extend.cid)||{}).name : S.extend.name) : '',
+      extendCurrent: S.extend? this.extendCurrentDate() : '',
+      extendByWeek:()=>this.applyExtend(7), extendByTwoWeeks:()=>this.applyExtend(14), extendByMonth:()=>this.applyExtend(30),
+      closeExtend:()=>this.closeExtend(),
+      stopProp:(e)=>{ e&&e.stopPropagation&&e.stopPropagation(); },
+      hasSigning:!!S.signing,
+      sigParty: S.signing? (S.signing.party==='manager'?'Manager':'Employee') : '',
+      sigPersonName: S.signing? (S.signing.party==='manager'? (this.appr(S.signing.aid)||{}).manager : (this.appr(S.signing.aid)||{}).name) : '',
+      sigStepDetails: S.sigStep==='details', sigStepCredential: S.sigStep==='credential',
+      sfFirst:S.sigForm.first, sfLast:S.sigForm.last, sfDate:S.sigForm.date, sfUser:S.sigForm.user, sfPass:S.sigForm.pass,
+      onSfFirst:e=>this.sigField('first',e), onSfLast:e=>this.sigField('last',e), onSfDate:e=>this.sigField('date',e),
+      onSfUser:e=>this.sigField('user',e), onSfPass:e=>this.sigField('pass',e),
+      sigToCredential:()=>this.sigToCredential(), confirmSign:()=>this.confirmSign(), closeSign:()=>this.closeSign(),
+    };
+
+    return {...base,
+      ...this.dashVals(role),
+      ...this.myVals(),
+      ...this.reviewVals(role),
+      ...this.reviewDetailVals(),
+      ...this.templateVals(),
+      ...this.builderVals(),
+      ...this.notifVals(),
+      ...this.orgVals(role),
+      ...this.analyticsVals(),
+      ...this.cycleVals(),
+      ...this.secVals(),
+      ...this.auditVals(),
+      ...this.gdprVals(),
+      ...this.userVals(),
+    };
+  }
+  unread(){ return (this.state.notifs||[]).filter(n=>n.unread).length; }
+
+  dashVals(role){
+    const view=this.dashView();
+    const list=this.visibleAppraisals(role);
+    const cnt=s=>list.filter(a=>a.status===s).length;
+    const avg=list.length? Math.round(list.map(a=>this.scoreOf(a)).reduce((x,y)=>x+y,0)/list.length):0;
+    const heroes={
+      appraisee:{icon:'BiltemaDPP.IconContract',kicker:'Action needed',title:'Complete your self-assessment',desc:'Open your assigned appraisal to begin.',btn:'Open my appraisal',go:'my_appraisal'},
+      it_manager:{icon:'BiltemaDPP.IconCheck',kicker:'Awaiting you',title:reviewsCountLabel(cnt('submitted'))+' to review',desc:'Approve, request changes or reject submitted appraisals.',btn:'Go to reviews',go:'reviews'},
+      cto:{icon:'BiltemaDPP.IconGlobe',kicker:'IT organization',title:'IT cycle is '+pct(list)+'% complete',desc:avg+'/100 average across '+list.length+' participants.',btn:'View organization',go:'org'},
+      cio:{icon:'BiltemaDPP.IconGlobe',kicker:'IT organization',title:'IT cycle is '+pct(list)+'% complete',desc:'Track completion, scores and compliance across all IT teams.',btn:'View organization',go:'org'},
+      cfo:{icon:'BiltemaDPP.IconCheck',kicker:'Finance & group',title:cnt('approved')+' finished appraisals',desc:'Read-only access to every finalized and approved appraisal.',btn:'View finished appraisals',go:'org'},
+      md:{icon:'BiltemaDPP.IconGlobe',kicker:'Whole organization',title:'Group cycle overview',desc:avg+'/100 average · '+pct(list)+'% complete across all functions.',btn:'View organization',go:'org'},
+      admin:{icon:'BiltemaDPP.IconRegulations',kicker:'Administration',title:'Platform configuration',desc:'Manage templates, cycles, roles and the security control framework.',btn:'Manage templates',go:'templates'},
+    };
+    function reviewsCountLabel(n){ return n+' appraisal'+(n===1?'':'s'); }
+    function pct(l){ if(!l.length) return 0; const done=l.filter(a=>a.status==='approved'||a.status==='submitted').length; return Math.round(done/l.length*100); }
+    const h=heroes[role]||heroes.cto;
+
+    const kpiByRole={
+      appraisee:[{label:'My status',value:'Not started',color:'var(--muted)',sub:'Self-assessment'},{label:'Completion',value:'0%',color:'var(--ink)',sub:'— of — fields'},{label:'Live score',value:'0',color:'var(--accent)',sub:'Provisional'},{label:'Days left',value:'—',color:'var(--ink)',sub:'No due date'}],
+      it_manager:[{label:'Team',value:String(list.length),color:'var(--ink)',sub:'Direct reports'},{label:'Awaiting review',value:String(cnt('submitted')),color:'var(--accent)',sub:'Action needed'},{label:'Approved',value:String(cnt('approved')),color:'var(--ok)',sub:'This cycle'},{label:'Avg score',value:String(avg),color:'var(--ink)',sub:'Team average'}],
+    };
+    const execKpis=[{label:'Participants',value:String(list.length),color:'var(--ink)',sub:role==='cfo'?'Finalized':'In this cycle'},{label:'Completed',value:String(cnt('approved')),color:'var(--ok)',sub:'Approved'},{label:'In review',value:String(cnt('submitted')+cnt('changes_requested')),color:'var(--accent)',sub:'Open'},{label:'Avg score',value:String(avg),color:'var(--navy)',sub:'Out of 100'}];
+    const cyclesAll=this.state.cycles||[];
+    const activeCycles=cyclesAll.filter(c=>!c.closed);
+    const adminKpis=[
+      {label:'Templates',value:String((this.state.templates||[]).length),color:'var(--accent)',sub:'System + custom'},
+      {label:'Active cycles',value:String(activeCycles.length),color:'var(--ink)',sub:'Running now'},
+      {label:'Users',value:'—',color:'var(--navy)',sub:'Across all roles'},
+      {label:'Controls',value:'—',color:'var(--ok)',sub:'Implemented'},
+    ];
+    const kpis= role==='admin'? adminKpis : (kpiByRole[role]||execKpis);
+
+    const adminCycles=activeCycles.map(c=>({name:c.name, meta:c.scope+' · '+c.participants.length+' participants', status:c.status, chip:c.chip, due:c.due, dueColor:'var(--warn)', onClick:()=>this.go('cycles')}));
+    const adminActivity=[]; // TODO(backend): admin activity feed
+
+    const briefRows=list.slice(0,6).map(a=>{
+      const st=this.STATUS[a.status]; const overdue=false;
+      return {name:a.name, meta:a.dept+' · '+(this.tpl(a.tpl)||{}).name, status:st.label, chip:st.chip,
+        due:a.due, dueColor:'var(--muted)', onClick:()=> a.mine? this.go('my_appraisal') : this.openReview(a.id)};
+    });
+    const dashActivity=[]; // TODO(backend): recent activity feed
+
+    const statuses=['not_started','in_progress','submitted','changes_requested','approved'];
+    const statusBars=statuses.map(s=>({label:this.STATUS[s].label, count:cnt(s), pct:list.length?Math.round(cnt(s)/list.length*100):0, color:s==='approved'?'var(--ok)':(s==='submitted'?'var(--accent)':(s==='changes_requested'?'var(--red)':'var(--muted)'))}));
+    const depts=[...new Set(list.map(a=>a.dept))];
+    const deptScores=depts.map(d=>{ const ds=list.filter(a=>a.dept===d); const sc=Math.round(ds.map(a=>this.scoreOf(a)).reduce((x,y)=>x+y,0)/(ds.length||1)); return {label:d, score:sc, pct:sc}; });
+
+    return {
+      dashHeroIcon:h.icon, dashHeroKicker:h.kicker, dashHeroTitle:h.title, dashHeroDesc:h.desc, dashHeroBtn:h.btn, dashHeroAction:()=>this.go(h.go),
+      dvBriefingClass:view==='briefing'?'on':'', dvMetricsClass:view==='metrics'?'on':'',
+      setDashBriefing:()=>this.setState({dashView:'briefing'}), setDashMetrics:()=>this.setState({dashView:'metrics'}),
+      isBriefing:view==='briefing', isMetrics:view==='metrics',
+      isBriefingDash: role!=='admin' && view==='briefing', isMetricsDash: role!=='admin' && view==='metrics',
+      kpis, briefTitle: role==='appraisee'?'My appraisals':(role==='it_manager'?'My team':'Appraisals'), briefMeta:list.length+' in this cycle',
+      briefRows, dashActivity, statusBars, deptScores,
+      briefEmpty: briefRows.length===0,
+      isAdminDash: role==='admin', showApprDash: role!=='admin',
+      adminCycles, adminActivity,
+    };
+  }
+
+  myVals(){
+    // No data: render a BLANK appraisal form from the assigned template.
+    // TODO(backend): resolve the signed-in user's assigned appraisal + template for the active cycle.
+    const a=this.appr('a-mona') || {id:'my-appraisal', tpl:((this.state.templates||[])[0]||{}).id, name:'—', manager:'—', due:'—', status:'not_started', self:''};
+    const t=this.tpl(a.tpl); if(!t) return {myNoTemplate:true};
+    const aid=a.id;
+    const sc=this.scoreOf(a);
+    let filled=0, total=0;
+    const sections=t.sections.map(sec=>{
+      const out={title:sec.title, weight:sec.weight, kind:{rating:'Rate 1–5',text:'Written',goal:'Objectives',number:'Numeric'}[sec.type]};
+      out.ratingFields = sec.type==='rating'? sec.fields.map(f=>{
+        const cur=this.ratingOf(aid,f.id); total++; if(cur!=null) filled++;
+        return {label:f.label, scale:[1,2,3,4,5].map(x=>({n:x, on:cur===x?'on':'', onClick:()=>this.setRating(aid,f.id,x)}))};
+      }) : [];
+      out.isText = sec.type==='text';
+      if(out.isText){ total++; const tv=(this.state.texts[aid]||{})[sec.fields[0].id]; if(tv) filled++; out.placeholder='Write your '+sec.title.toLowerCase()+'…'; out.textVal=tv||''; out.onText=e=>this.setText(aid,sec.fields[0].id,e); }
+      out.isGoal = sec.type==='goal';
+      if(out.isGoal){ out.goals=[]; } // TODO(backend): load the employee's goals/OKRs
+      return out;
+    });
+    const steps=[
+      {label:'Self-assessment',date:'Due —',state:'cur'},
+      {label:'Manager review',date:'Due —',state:'todo'},
+      {label:'Calibration',date:'Due —',state:'todo'},
+      {label:'Sign-off',date:'Due —',state:'todo'},
+    ].map((s,i)=>({n:i+1,label:s.label,date:s.date,
+      dot:s.state==='cur'?'var(--accent)':(s.state==='done'?'var(--ok)':'var(--muted)'),
+      bg:s.state==='cur'?'var(--accent-050)':'var(--paper)', border:s.state==='cur'?'#bcd3e8':'var(--line)',
+      fg:s.state==='cur'?'var(--accent-700)':'var(--ink-2)'}));
+    const st=this.STATUS[a.status];
+    return {
+      myTplName:t.name, myStatusChip:st.chip, myStatusLabel:st.label, myCycle:'—',
+      myManager:a.manager, myDue:a.due, myDueColor:'var(--muted)',
+      myScore:sc, myComplete:total?Math.round(filled/total*100):0,
+      mySections:sections, mySteps:steps, submitMine:()=>this.submitMine(),
+    };
+  }
+
+  reviewVals(role){
+    const list=this.visibleAppraisals(role).filter(a=>!a.mine);
+    const f=this.state.reviewFilter;
+    const defs=[{k:'all',l:'All'},{k:'submitted',l:'Awaiting review'},{k:'changes_requested',l:'Changes requested'},{k:'approved',l:'Approved'},{k:'not_started',l:'Not started'}];
+    const reviewFilters=defs.map(d=>({label:d.l, count:d.k==='all'?list.length:list.filter(a=>a.status===d.k).length, active:f===d.k?'active':'', onClick:()=>this.setState({reviewFilter:d.k})}));
+    const rows=(f==='all'?list:list.filter(a=>a.status===f)).map(a=>{ const st=this.STATUS[a.status]; const sc=a.status==='not_started'?'—':this.scoreOf(a);
+      return {name:a.name, initials:a.initials, color:a.color, dept:a.dept, tpl:(this.tpl(a.tpl)||{}).name, status:st.label, chip:st.chip, score:sc, scoreColor:sc==='—'?'var(--muted)':'var(--accent)', due:a.due, dueColor:'var(--muted)', onOpen:()=>this.openReview(a.id)}; });
+    return {reviewFilters, reviewRows:rows, reviewsEmpty:rows.length===0};
+  }
+
+  reviewDetailVals(){
+    const a=this.appr(this.state.selId); if(!a) return {};
+    const t=this.tpl(a.tpl); const st=this.STATUS[a.status];
+    const empMap=this.empRatingsMap(a.id); const mgrMap=this.mgrRatingsMap(a.id);
+    const mgrDone=!!this.state.mgrSubmitted[a.id];
+    const sig=this.state.sig[a.id]||{};
+    const empSigned=!!sig.employee, mgrSigned=!!sig.manager;
+    // stage
+    let stage;
+    if(!mgrDone) stage='review';
+    else if(a.status==='submitted') stage='decision';
+    else if(a.status==='approved' && !(empSigned&&mgrSigned)) stage='signoff';
+    else if(a.status==='approved') stage='complete';
+    else stage='closed';
+    const canScore = stage==='review';
+
+    const ratingSecs=t.sections.filter(s=>s.type==='rating'&&s.weight>0);
+    const sections=ratingSecs.map(s=>{
+      const eVals=s.fields.map(f=>empMap[f.id]||0).filter(v=>v>0); const eAvg=eVals.length?eVals.reduce((x,y)=>x+y,0)/eVals.length:0;
+      const mVals=s.fields.map(f=>mgrMap[f.id]||0).filter(v=>v>0); const mAvg=mVals.length?mVals.reduce((x,y)=>x+y,0)/mVals.length:0;
+      return {
+        title:s.title, weight:s.weight,
+        empAvg:eAvg?eAvg.toFixed(1):'—', mgrAvg:mAvg?mAvg.toFixed(1):'—',
+        empPct:Math.round(eAvg/5*100), mgrPct:Math.round(mAvg/5*100),
+        fields:s.fields.map(f=>({
+          label:f.label, empRating:empMap[f.id]||'—',
+          mgrScale:[1,2,3,4,5].map(n=>({n, on:mgrMap[f.id]===n?'on':'', dis:!canScore, onClick: canScore?()=>this.setMgrRating(a.id,f.id,n):()=>{}})),
+        })),
+        comment:(this.state.mgrSecComments[a.id]||{})[s.id]||'',
+        onComment:e=>this.setMgrSecComment(a.id,s.id,e), canComment:canScore, commentReadonly:!canScore,
+      };
+    });
+
+    const chain=[
+      {who:a.name+' · self-assessment', note:a.submitted!=='—'?('submitted '+a.submitted):'pending', icon:'BiltemaDPP.IconCheck', dot:'var(--ok)'},
+      {who:a.manager+' · manager review', note:mgrDone?'submitted':'in progress', icon: mgrDone?'BiltemaDPP.IconCheck':'BiltemaDPP.IconPencil', dot: mgrDone?'var(--ok)':'var(--accent)'},
+      {who:'Employee sign-off', note:empSigned?('signed '+sig.employee.date):'awaiting signature', icon: empSigned?'BiltemaDPP.IconCheck':'BiltemaDPP.IconContract', dot: empSigned?'var(--ok)':'var(--muted)'},
+      {who:'Manager sign-off', note:mgrSigned?('signed '+sig.manager.date):'awaiting signature', icon: mgrSigned?'BiltemaDPP.IconCheck':'BiltemaDPP.IconContract', dot: mgrSigned?'var(--ok)':'var(--muted)'},
+    ];
+
+    const steps=[
+      {label:'Manager review', state: mgrDone?'done':'cur'},
+      {label:'Decision', state: !mgrDone?'todo':(stage==='decision'?'cur':'done')},
+      {label:'Sign-off', state: stage==='signoff'?'cur':(stage==='complete'?'done':'todo')},
+    ].map((x,i)=>({n:i+1,label:x.label, dot:x.state==='done'?'var(--ok)':(x.state==='cur'?'var(--accent)':'var(--muted)'), bg:x.state==='cur'?'var(--accent-050)':'var(--paper)', border:x.state==='cur'?'#bcd3e8':'var(--line)', fg:x.state==='cur'?'var(--accent-700)':'var(--ink-2)'}));
+
+    return {
+      rdName:a.name, rdChip:st.chip, rdStatus: a.signed?'Finalized & signed':st.label, rdDept:a.dept, rdTpl:t.name, rdSubmitted:a.submitted, rdDue:a.due, rdDueColor:'var(--muted)',
+      rdEmpScore:this.empScoreOf(a), rdMgrScore: mgrDone?this.mgrScoreOf(a):'—',
+      rdSections:sections, rdSelf:a.self||'No self-assessment text provided.',
+      rdSteps:steps,
+      rdStageReview: stage==='review', rdStageDecision: stage==='decision', rdStageSignoff: stage==='signoff'||stage==='complete',
+      rdMgrReviewHint: canScore? 'Score every competency, then submit your review to store it alongside the employee\u2019s.' : 'Manager review submitted.',
+      submitMgrReview:()=>this.submitMgrReview(),
+      rdComplete: stage==='complete',
+      // final comments
+      rdFinalEmp:this.state.finalEmp[a.id]||'', onFinalEmp:e=>this.setFinalEmp(a.id,e),
+      rdFinalMgr:this.state.finalMgr[a.id]||'', onFinalMgr:e=>this.setFinalMgr(a.id,e),
+      // signatures
+      rdEmpSigned:empSigned, rdEmpUnsigned:!empSigned, rdEmpSigName:empSigned?sig.employee.name:'', rdEmpSigDate:empSigned?sig.employee.date:'', rdEmpSigAcct:empSigned?sig.employee.account:'',
+      rdMgrSigned:mgrSigned, rdMgrUnsigned:!mgrSigned, rdMgrSigName:mgrSigned?sig.manager.name:'', rdMgrSigDate:mgrSigned?sig.manager.date:'', rdMgrSigAcct:mgrSigned?sig.manager.account:'',
+      signEmployee:()=>this.openSign('employee'), signManager:()=>this.openSign('manager'),
+      rdChain:chain,
+      backToReviews:()=>this.setState({screen:'reviews'}),
+      decApprove:()=>this.decide('approve'), decRequest:()=>this.decide('request'), decReject:()=>this.decide('reject'),
+    };
+  }
+
+  templateVals(){
+    const cards=(this.state.templates||[]).map(t=>({
+      name:t.name, desc:t.desc||('Custom template · '+t.scope), icon:t.icon||'BiltemaDPP.IconRegulations', color:t.color||'#1c3f8c',
+      tag:t.system?'System':'Custom', tagBg:t.system?'var(--accent-050)':'var(--ok-bg)', tagFg:t.system?'var(--accent)':'var(--ok)',
+      sectionCount:t.sections.length, fieldCount:t.sections.reduce((a,s)=>a+s.fields.length,0),
+      onOpen:()=>this.openTemplate(t.id),
+    }));
+    return {templateCards:cards, newTemplate:()=>this.newTemplate()};
+  }
+
+  builderVals(){
+    const b=this.state.builder; if(!b) return {};
+    const total=this.bTotal();
+    const sections=b.sections.map(s=>({
+      title:s.title, type:s.type, weight:s.weight,
+      onTitle:e=>this.bSet(s.id,'title',e), onType:e=>this.bSet(s.id,'type',e), onWeight:e=>this.bSet(s.id,'weight',e),
+      onUp:()=>this.bMove(s.id,-1), onDown:()=>this.bMove(s.id,1), onRemove:()=>this.bRemoveSection(s.id), onAddField:()=>this.bAddField(s.id),
+      fields:s.fields.map(f=>({label:f.label, onLabel:e=>this.bSetField(s.id,f.id,e), onRemove:()=>this.bRemoveField(s.id,f.id)})),
+    }));
+    return {
+      bName:b.name, bScope:b.scope, onBName:e=>this.bName(e), onBScope:e=>this.bScope(e),
+      bSections:sections, bSectionCount:b.sections.length, bFieldCount:b.sections.reduce((a,s)=>a+s.fields.length,0),
+      bTotalWeight:total+'%', bWeightColor:total===100?'var(--ok)':'var(--red)', bWeightWarn:total!==100,
+      builderAddSection:()=>this.bAddSection(), builderSave:()=>this.builderSave(), builderCancel:()=>this.builderCancel(),
+    };
+  }
+
+  notifVals(){
+    const map={submitted:{icon:'BiltemaDPP.IconBolt',bg:'var(--accent-050)',fg:'var(--accent)'},approved:{icon:'BiltemaDPP.IconCheck',bg:'var(--ok-bg)',fg:'var(--ok)'},changes:{icon:'BiltemaDPP.IconPencil',bg:'var(--warn-bg)',fg:'var(--warn)'},rejected:{icon:'BiltemaDPP.IconAlert',bg:'var(--red-bg)',fg:'var(--red)'},reminder:{icon:'BiltemaDPP.IconRefresh',bg:'var(--navy-050)',fg:'var(--navy)'}};
+    const list=(this.state.notifs||[]).map(n=>{ const m=map[n.kind]||map.submitted; return {subject:n.subject, preview:n.preview, to:n.to, ts:n.ts, icon:m.icon, iconBg:m.bg, iconFg:m.fg, bg:n.id===this.state.emailId?'var(--accent-tint)':'var(--surface)', onOpen:()=>this.openNotif(n.id)}; });
+    const sel=(this.state.notifs||[]).find(n=>n.id===this.state.emailId)||(this.state.notifs||[])[0]||{};
+    const ctaMap={submitted:'Open review',approved:'View appraisal',changes:'Edit appraisal',rejected:'Contact manager',reminder:'Complete now'};
+    return {notifList:list, notifsEmpty:list.length===0, emailStatus:'Sent', emailSubject:sel.subject||'', emailBody:(sel.preview||'')+'\n\nYou can review the full appraisal and take action directly in the platform. This message was delivered through Microsoft Graph and recorded in the audit log.', emailCta:ctaMap[sel.kind]||'Open', emailTo:sel.to||''};
+  }
+
+  orgVals(role){
+    const list=this.visibleAppraisals(role);
+    const f=this.state.orgFilter;
+    const orgs=[...new Set(list.map(a=>a.org))];
+    const defs=[{k:'all',l:'All'},...orgs.map(o=>({k:o,l:o}))];
+    const orgFilters=defs.map(d=>({label:d.l, count:d.k==='all'?list.length:list.filter(a=>a.org===d.k).length, active:f===d.k?'active':'', onClick:()=>this.setState({orgFilter:d.k})}));
+    const rows=(f==='all'?list:list.filter(a=>a.org===f)).map(a=>{ const st=this.STATUS[a.status]; const sc=a.status==='not_started'?'—':this.scoreOf(a);
+      return {name:a.name, initials:a.initials, color:a.color, dept:a.dept, tpl:(this.tpl(a.tpl)||{}).name, status:st.label, chip:st.chip, score:sc, scoreColor:sc==='—'?'var(--muted)':'var(--accent)', reviewer:a.reviewer, onOpen:()=> role==='cfo'?null:this.openReview(a.id)}; });
+    const cnt=s=>list.filter(a=>a.status===s).length;
+    const avg=list.length?Math.round(list.map(a=>this.scoreOf(a)).reduce((x,y)=>x+y,0)/list.length):0;
+    const orgKpis=[{label:role==='cfo'?'Finalized':'Participants',value:String(list.length),color:'var(--ink)',sub:role==='cfo'?'Approved appraisals':'In cycle'},{label:'Approved',value:String(cnt('approved')),color:'var(--ok)',sub:'Signed off'},{label:'Open',value:String(cnt('submitted')+cnt('changes_requested')+cnt('in_progress')),color:'var(--accent)',sub:'In flight'},{label:'Avg score',value:String(avg),color:'var(--navy)',sub:'Out of 100'}];
+    return {orgKpis, orgFilters, orgRows:rows, orgEmpty:rows.length===0};
+  }
+
+  analyticsVals(){ return {}; /* uses statusBars/deptScores from dashVals + below */ }
+
+  cycleVals(){
+    const canManage = this.state.role==='admin' || this.state.role==='it_manager' || this.state.role==='cio' || this.state.role==='cto';
+    const stepView=(steps)=>steps.map((s,i)=>({n:i+1,label:s.label,date:this.shortDate(s.date),
+      state:s.state==='done'?'Complete':(s.state==='cur'?'In progress':'Upcoming'),
+      dot:s.state==='done'?'var(--ok)':(s.state==='cur'?'var(--accent)':'var(--muted)'),
+      bg:s.state==='cur'?'var(--accent-050)':'var(--paper)', border:s.state==='cur'?'#bcd3e8':'var(--line)', fg:s.state==='cur'?'var(--accent-700)':'var(--ink-2)',
+      tagBg:s.state==='done'?'var(--ok-bg)':(s.state==='cur'?'var(--accent-050)':'var(--line-2)'), tagFg:s.state==='done'?'var(--ok)':(s.state==='cur'?'var(--accent)':'var(--muted)')}));
+    const cycles=(this.state.cycles||[]).map(c=>({
+      id:c.id, name:c.name, scope:c.scope, participants:c.participants.length, status:c.status, chip:c.chip,
+      due:c.due, dueColor:c.closed?'var(--ok)':'var(--warn)', progress:c.progress, steps:stepView(c.steps),
+      canExtend:canManage && !c.closed,
+      onExtend:()=>this.openExtendCycle(c.id),
+      showParticipants: canManage && !c.closed && c.participants.length>0,
+      participantRows:c.participants.map(p=>({name:p.name, team:p.team, due:this.shortDate(p.due),
+        extended:p.extended, dueColor:p.extended?'var(--ok)':'var(--ink-2)',
+        onExtend:()=>this.openExtendUser(c.id,p.name)})),
+    }));
+    return {cycles, cyclesCanManage:canManage, cyclesEmpty:cycles.length===0};
+  }
+
+  secVals(){
+    const secCards=[
+      {icon:'BiltemaDPP.IconCheck',title:'Controls implemented',value:'—',sub:'Mapped to platform features'},
+      {icon:'BiltemaDPP.IconPublish',title:'ISO 27001',value:'—',sub:'Certification status'},
+      {icon:'BiltemaDPP.IconGlobe',title:'NIS2 readiness',value:'—',sub:'Essential-entity controls'},
+    ];
+    const controls=[
+      {fw:'ISO 27001',code:'A.9.2',name:'Access provisioning',how:'Role-based access via Entra ID app roles; joiner/mover/leaver synced from HR.',fwBg:'var(--accent-050)',fwFg:'var(--accent)',statusClass:'ok',statusLabel:'Met'},
+      {fw:'ISO 27001',code:'A.12.4',name:'Logging & monitoring',how:'Immutable append-only audit log of all access and decisions, retained 24 months.',fwBg:'var(--accent-050)',fwFg:'var(--accent)',statusClass:'ok',statusLabel:'Met'},
+      {fw:'NIST CSF',code:'PR.AC-7',name:'Authentication',how:'MFA enforced via Conditional Access; SSO with no local credentials.',fwBg:'var(--navy-050)',fwFg:'var(--navy)',statusClass:'ok',statusLabel:'Met'},
+      {fw:'NIST CSF',code:'DE.CM-1',name:'Continuous monitoring',how:'Sign-in risk + anomalous-access alerts surfaced from Entra ID Protection.',fwBg:'var(--navy-050)',fwFg:'var(--navy)',statusClass:'na',statusLabel:'Partial'},
+      {fw:'NIS2',code:'Art.21',name:'Risk management measures',how:'Documented risk register, encryption, MFA and incident handling procedures.',fwBg:'var(--ok-bg)',fwFg:'var(--ok)',statusClass:'ok',statusLabel:'Met'},
+      {fw:'GDPR',code:'Art.5/17',name:'Data minimization & erasure',how:'Retention schedule auto-purges; DSAR export and anonymization workflow.',fwBg:'var(--red-bg)',fwFg:'var(--red)',statusClass:'ok',statusLabel:'Met'},
+      {fw:'GDPR',code:'Art.32',name:'Security of processing',how:'AES-256 at rest, TLS 1.3 in transit, RBAC and audit logging.',fwBg:'var(--red-bg)',fwFg:'var(--red)',statusClass:'ok',statusLabel:'Met'},
+      {fw:'STRIDE',code:'Tampering',name:'Integrity of appraisals',how:'Submitted appraisals are locked; changes require an explicit request action and are logged.',fwBg:'var(--warn-bg)',fwFg:'var(--warn)',statusClass:'ok',statusLabel:'Met'},
+      {fw:'STRIDE',code:'Repudiation',name:'Non-repudiation',how:'Every decision attributed to an authenticated identity with timestamp and IP.',fwBg:'var(--warn-bg)',fwFg:'var(--warn)',statusClass:'ok',statusLabel:'Met'},
+      {fw:'MITRE ATT&CK',code:'T1078',name:'Valid accounts abuse',how:'Conditional Access, MFA and least-privilege app roles limit account misuse.',fwBg:'var(--line-2)',fwFg:'var(--ink-2)',statusClass:'na',statusLabel:'Monitored'},
+    ];
+    const archCards=[
+      {cat:'Authentication',title:'Entra ID SSO + MFA',desc:'OIDC/SAML federation, Conditional Access, no local passwords stored.'},
+      {cat:'Authorization',title:'App roles & RBAC',desc:'Seven app roles mapped to Entra security groups; least privilege by default.'},
+      {cat:'Data at rest',title:'AES-256 + EU region',desc:'Encrypted storage in EU data residency; keys in managed key vault.'},
+      {cat:'Data in transit',title:'TLS 1.3',desc:'All traffic encrypted end-to-end; HSTS enforced.'},
+      {cat:'Auditability',title:'Append-only log',desc:'Tamper-evident trail of access and approval decisions, 24-month retention.'},
+      {cat:'Notifications',title:'MS Graph mail',desc:'Status emails sent via Graph with delegated, scoped Mail.Send permission.'},
+    ];
+    return {secCards, controls, archCards};
+  }
+
+  auditVals(){
+    // TODO(backend): stream immutable audit events (append-only)
+    return {auditRows:[...(this.state.extraAudit||[])], auditEmpty:(this.state.extraAudit||[]).length===0};
+  }
+
+  gdprVals(){
+    return {
+      dsarExport:()=>this.dsarRun('export'), dsarErase:()=>this.dsarRun('erase'), dsarDone:!!this.state.dsar, dsarMsg:this.state.dsar,
+      retention:[
+        {kind:'Active appraisals',basis:'Performance management',period:'Cycle + 3y'},
+        {kind:'Audit & access logs',basis:'ISO 27001 / NIS2',period:'24 months'},
+        {kind:'Email notifications',basis:'Record of processing',period:'12 months'},
+        {kind:'Leaver records',basis:'Anonymized on exit',period:'90 days'},
+      ],
+      processing:[
+        {purpose:'Performance appraisal',basis:'Legitimate interest',data:'Ratings, comments, goals'},
+        {purpose:'SSO authentication',basis:'Contract',data:'UPN, object ID, groups'},
+        {purpose:'Status notifications',basis:'Legitimate interest',data:'Name, email, status'},
+        {purpose:'Audit logging',basis:'Legal obligation',data:'Actor, action, timestamp, IP'},
+      ],
+      consents:[
+        {label:'Privacy notice acknowledged',state:'Active'},
+        {label:'Processing record published',state:'Active'},
+        {label:'Sub-processor list (MS Graph)',state:'Documented'},
+      ],
+    };
+  }
+
+  userVals(){
+    const appConfig=[
+      {label:'Application (client) ID', value:'— configure in Azure'},
+      {label:'Directory (tenant) ID', value:'— configure in Azure'},
+      {label:'Sign-on URL', value:'— configure in Azure'},
+      {label:'Token / SSO', value:'OIDC + SAML · MFA enforced'},
+    ];
+    const graphScopes=['User.Read','Mail.Send','GroupMember.Read.All','Directory.Read.All'];
+    const appRoles=[
+      {role:'Employee (Appraisee)', value:'Appraisal.Employee', group:'SG-Appraisal-Employees', members:'—', desc:'Completes own appraisal and submits to manager.'},
+      {role:'Manager', value:'Appraisal.Manager.IT', group:'SG-IT-Managers', members:'—', desc:'Reviews & approves their own team.'},
+      {role:'CTO', value:'Appraisal.Exec.CTO', group:'SG-Exec-IT', members:'—', desc:'IT organization-wide visibility.'},
+      {role:'CIO', value:'Appraisal.Exec.CIO', group:'SG-Exec-IT', members:'—', desc:'IT organization-wide + compliance.'},
+      {role:'CFO', value:'Appraisal.Exec.CFO', group:'SG-Exec-Finance', members:'—', desc:'Read-only on finished appraisals.'},
+      {role:'Managing Director', value:'Appraisal.Exec.MD', group:'SG-Exec', members:'—', desc:'Whole-organization visibility.'},
+      {role:'Platform Administrator', value:'Appraisal.Admin', group:'SG-App-Admins', members:'—', desc:'Config, scheduling & roles — no appraisal content.'},
+    ];
+    const userRows=[]; // TODO(backend): list users + Entra app-role assignments
+    return {appConfig, graphScopes, appRoles, userRows, usersEmpty:userRows.length===0};
+  }
+}
+</script>
+</body>
+</html>

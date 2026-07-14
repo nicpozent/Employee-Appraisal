@@ -1,0 +1,202 @@
+// Employee Appraisal Platform — data model (§10 of CLAUDE.md)
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// ── Users (synced from Entra ID; roles come from the token, mirrored here) ──
+model User {
+  id            String   @id @default(uuid())
+  entraObjectId String?  @unique
+  upn           String   @unique
+  email         String
+  displayName   String
+  department    String?
+  org           String? // IT / Finance / Legal / ...
+  managerId     String?
+  manager       User?    @relation("Reports", fields: [managerId], references: [id])
+  reports       User[]   @relation("Reports")
+  appRoles      String[] @default([]) // Entra appRole values
+  entraGroups   String[] @default([])
+  mfaEnabled    Boolean  @default(false)
+  lastSignIn    DateTime?
+  active        Boolean  @default(true)
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  appraisalsAsEmployee Appraisal[] @relation("EmployeeAppraisals")
+  appraisalsAsManager  Appraisal[] @relation("ManagerAppraisals")
+  notifications        Notification[]
+
+  @@index([managerId])
+  @@index([org])
+}
+
+// ── Templates ──
+model Template {
+  id        String    @id @default(uuid())
+  name      String
+  scope     String
+  system    Boolean   @default(false)
+  icon      String?
+  color     String?
+  desc      String?
+  createdBy String?
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  sections  Section[]
+  appraisals Appraisal[]
+}
+
+model Section {
+  id         String  @id @default(uuid())
+  templateId String
+  template   Template @relation(fields: [templateId], references: [id], onDelete: Cascade)
+  title      String
+  type       String // rating | text | goal | number
+  weight     Int     @default(0)
+  order      Int     @default(0)
+  fields     Field[]
+
+  @@index([templateId])
+}
+
+model Field {
+  id        String  @id @default(uuid())
+  sectionId String
+  section   Section @relation(fields: [sectionId], references: [id], onDelete: Cascade)
+  label     String
+  order     Int     @default(0)
+
+  @@index([sectionId])
+}
+
+// ── Cycles ──
+model Cycle {
+  id           String              @id @default(uuid())
+  name         String
+  scope        String
+  status       String              @default("upcoming") // upcoming | active | closed
+  targetDate   DateTime?
+  closed       Boolean             @default(false)
+  createdAt    DateTime            @default(now())
+  updatedAt    DateTime            @updatedAt
+  steps        CycleStep[]
+  participants CycleParticipant[]
+  appraisals   Appraisal[]
+}
+
+model CycleStep {
+  id      String    @id @default(uuid())
+  cycleId String
+  cycle   Cycle     @relation(fields: [cycleId], references: [id], onDelete: Cascade)
+  label   String
+  dueDate DateTime?
+  state   String    @default("upcoming") // complete | in_progress | upcoming
+  order   Int       @default(0)
+
+  @@index([cycleId])
+}
+
+model CycleParticipant {
+  id       String    @id @default(uuid())
+  cycleId  String
+  cycle    Cycle     @relation(fields: [cycleId], references: [id], onDelete: Cascade)
+  userId   String
+  team     String?
+  dueDate  DateTime?
+  extended Boolean   @default(false)
+
+  @@unique([cycleId, userId])
+  @@index([cycleId])
+}
+
+// ── Appraisals ──
+model Appraisal {
+  id         String    @id @default(uuid())
+  employeeId String
+  employee   User      @relation("EmployeeAppraisals", fields: [employeeId], references: [id])
+  managerId  String?
+  manager    User?     @relation("ManagerAppraisals", fields: [managerId], references: [id])
+  templateId String
+  template   Template  @relation(fields: [templateId], references: [id])
+  cycleId    String?
+  cycle      Cycle?    @relation(fields: [cycleId], references: [id])
+
+  status           String  @default("not_started")
+  managerReviewDone Boolean @default(false)
+  signed           Boolean @default(false)
+
+  // JSON blobs mirror the spec's nested self / review structures
+  employeeSelf   Json? // { ratings:{fieldId:1-5}, texts:{fieldId}, goals:[] }
+  managerReview  Json? // { ratings:{fieldId:1-5}, sectionComments:{sectionId} }
+  employeeScore  Int?
+  managerScore   Int?
+
+  finalCommentEmployee String?
+  finalCommentManager  String?
+
+  signatures Signature[]
+
+  submittedAt DateTime?
+  decidedAt   DateTime?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@index([employeeId])
+  @@index([managerId])
+  @@index([status])
+}
+
+model Signature {
+  id          String    @id @default(uuid())
+  appraisalId String
+  appraisal   Appraisal @relation(fields: [appraisalId], references: [id], onDelete: Cascade)
+  party       String // employee | manager
+  name        String
+  account     String // UPN
+  ip          String?
+  signedAt    DateTime  @default(now())
+
+  @@unique([appraisalId, party])
+  @@index([appraisalId])
+}
+
+// ── Notifications (Graph mail log) ──
+model Notification {
+  id             String   @id @default(uuid())
+  kind           String // submitted | approved | changes | rejected | reminder
+  subject        String
+  body           String?
+  preview        String?
+  toUserId       String?
+  toUser         User?    @relation(fields: [toUserId], references: [id])
+  toEmail        String?
+  read           Boolean  @default(false)
+  graphMessageId String?
+  sentAt         DateTime @default(now())
+
+  @@index([toUserId])
+  @@index([sentAt])
+}
+
+// ── Audit log (append-only, hash-chained) ──
+model AuditEvent {
+  id        String   @id @default(uuid())
+  ts        DateTime @default(now())
+  actorId   String?
+  actorName String?
+  action    String
+  objectRef String?
+  sourceIp  String?
+  result    String   @default("success")
+  prevHash  String?
+  hash      String
+
+  @@index([ts])
+  @@index([action])
+}

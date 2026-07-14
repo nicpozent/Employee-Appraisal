@@ -1,0 +1,55 @@
+/* Design tokens ported from the Biltema DPP design system + app brand
+   extensions (§12). Three themes via [data-theme] on <html>. */
+
+:root {
+  /* base neutrals & semantics (Daylight) */
+  --ink: #10243b;
+  --ink-2: #3a506b;
+  --muted: #6b7e96;
+  --line: #e4eaf1;
+  --line-2: #eef2f7;
+  --paper: #f6f8fb;
+  --surface: #ffffff;
+
+  --ok: #1a7f4b;   --ok-bg: #e8f4ed;
+  --warn: #b5710c; --warn-bg: #faf0dd;
+  --crit: #b23a2e; --crit-bg: #fbebe8;
+
+  --t-display: 28px; --t-h2: 18px; --t-h3: 15px;
+  --t-base: 13.5px; --t-sm: 12.5px; --t-xs: 11.5px; --t-2xs: 10.5px;
+  --r-sm: 7px; --r-md: 11px; --r-lg: 14px;
+
+  --shadow: 0 1px 2px rgba(16, 36, 59, 0.04), 0 6px 20px rgba(16, 36, 59, 0.05);
+  --shadow-sm: 0 1px 2px rgba(16, 36, 59, 0.06);
+
+  /* brand extensions */
+  --accent: #1080c0; --accent-700: #0c6196; --accent-050: #e9f3fa; --accent-tint: #f3f8fc;
+  --navy: #1c3f8c; --navy-700: #162f6a; --navy-050: #eaeefa;
+  --red: #d81b48; --red-bg: #fdeaf0;
+  --rail: linear-gradient(185deg, #1c3f8c, #162f6a);
+  --hero: linear-gradient(120deg, var(--navy), var(--accent));
+}
+
+/* ---- Command (graphite dark) ---- */
+[data-theme="command"] {
+  --surface: #161d28; --paper: #0c121b; --ink: #eef3f9; --ink-2: #b7c4d2; --muted: #7c8b9c;
+  --line: #28323f; --line-2: #1b232e;
+  --accent: #3aa2e6; --accent-700: #7cc4f2; --accent-050: #13293a; --accent-tint: #101b26;
+  --navy: #0f273f; --navy-700: #0a1b2d; --navy-050: #14283c; --red: #f2506f; --red-bg: #2e1620;
+  --ok: #3ac07e; --ok-bg: #0f2a1e; --warn: #e0a53a; --warn-bg: #2c2413; --crit: #f0685c; --crit-bg: #2e1714;
+  --shadow: 0 1px 2px rgba(0,0,0,.45), 0 8px 24px rgba(0,0,0,.4); --shadow-sm: 0 1px 2px rgba(0,0,0,.45);
+  --rail: linear-gradient(185deg, #111823, #080d14);
+  --hero: linear-gradient(120deg, #0f273f, #1a6ea3);
+}
+
+/* ---- Midnight (deep navy dark) ---- */
+[data-theme="midnight"] {
+  --surface: #172544; --paper: #0e1830; --ink: #eaf0fb; --ink-2: #b3c1de; --muted: #8091b5;
+  --line: #26365c; --line-2: #1a2847;
+  --accent: #5b96f2; --accent-700: #8fb6f7; --accent-050: #1a2b50; --accent-tint: #131f3d;
+  --navy: #1c3f8c; --navy-700: #152e68; --navy-050: #1c2c52; --red: #f65b7d; --red-bg: #331826;
+  --ok: #43c98a; --ok-bg: #123020; --warn: #e6b04a; --warn-bg: #2f2815; --crit: #f26a72; --crit-bg: #331a20;
+  --shadow: 0 1px 2px rgba(0,0,0,.45), 0 10px 28px rgba(4,10,30,.5); --shadow-sm: 0 1px 2px rgba(0,0,0,.45);
+  --rail: linear-gradient(185deg, #183163, #0b1836);
+  --hero: linear-gradient(120deg, #1c3f8c, #2b6fd6);
+}

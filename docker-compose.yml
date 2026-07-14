@@ -1,0 +1,62 @@
+services:
+  db:
+    image: postgres:16-alpine
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER:-appraisal}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-appraisal}
+      POSTGRES_DB: ${POSTGRES_DB:-appraisal}
+    ports:
+      - "${POSTGRES_PORT:-5432}:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-appraisal}"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  api:
+    build:
+      context: .
+      dockerfile: apps/api/Dockerfile
+    restart: unless-stopped
+    depends_on:
+      db:
+        condition: service_healthy
+    environment:
+      DATABASE_URL: postgresql://${POSTGRES_USER:-appraisal}:${POSTGRES_PASSWORD:-appraisal}@db:5432/${POSTGRES_DB:-appraisal}?schema=public
+      API_PORT: 4000
+      WEB_ORIGIN: ${WEB_ORIGIN:-http://localhost:5173}
+      AUTH_MODE: ${AUTH_MODE:-mock}
+      ENTRA_TENANT_ID: ${ENTRA_TENANT_ID:-}
+      ENTRA_CLIENT_ID: ${ENTRA_CLIENT_ID:-}
+      ENTRA_CLIENT_SECRET: ${ENTRA_CLIENT_SECRET:-}
+      ENTRA_API_AUDIENCE: ${ENTRA_API_AUDIENCE:-}
+      GRAPH_SENDER_UPN: ${GRAPH_SENDER_UPN:-}
+      ENTRA_IMPORT_GROUP_IDS: ${ENTRA_IMPORT_GROUP_IDS:-}
+      REMINDERS_ENABLED: ${REMINDERS_ENABLED:-true}
+      REMINDERS_CRON: ${REMINDERS_CRON:-0 8 * * *}
+      REMINDER_LEAD_DAYS: ${REMINDER_LEAD_DAYS:-3}
+    ports:
+      - "${API_PORT:-4000}:4000"
+
+  web:
+    build:
+      context: .
+      dockerfile: apps/web/Dockerfile
+      args:
+        # Empty base → SPA calls same-origin /api, which nginx proxies to the api service (no CORS).
+        VITE_API_BASE: ${VITE_API_BASE_DOCKER:-}
+        VITE_AUTH_MODE: ${VITE_AUTH_MODE:-mock}
+        VITE_ENTRA_TENANT_ID: ${VITE_ENTRA_TENANT_ID:-}
+        VITE_ENTRA_CLIENT_ID: ${VITE_ENTRA_CLIENT_ID:-}
+        VITE_ENTRA_API_SCOPE: ${VITE_ENTRA_API_SCOPE:-}
+    restart: unless-stopped
+    depends_on:
+      - api
+    ports:
+      - "5173:80"
+
+volumes:
+  pgdata:

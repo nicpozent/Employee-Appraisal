@@ -1,0 +1,53 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  api:
+    name: API — build & e2e tests
+    runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: postgres:16-alpine
+        env:
+          POSTGRES_USER: appraisal
+          POSTGRES_PASSWORD: appraisal
+          POSTGRES_DB: appraisal_test
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd "pg_isready -U appraisal"
+          --health-interval 5s --health-timeout 5s --health-retries 10
+    env:
+      DATABASE_URL: postgresql://appraisal:appraisal@localhost:5432/appraisal_test?schema=public
+      AUTH_MODE: mock
+      REMINDERS_ENABLED: 'false'
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - name: Generate Prisma client
+        run: npm --workspace apps/api run db:generate
+      - name: Build API
+        run: npm --workspace apps/api run build
+      - name: Run e2e tests
+        run: npm --workspace apps/api run test:e2e
+
+  web:
+    name: Web — typecheck & build
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - name: Typecheck & build web
+        run: npm --workspace apps/web run build

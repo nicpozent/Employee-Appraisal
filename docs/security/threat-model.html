@@ -1,0 +1,335 @@
+<title>Employee Appraisal — Threat Model &amp; Security Analysis</title>
+<style>
+  :root{
+    --bg:#f4f7fb; --panel:#ffffff; --ink:#0f1e3d; --muted:#46567a; --faint:#6c7a9c;
+    --line:#e0e7f2; --line2:#eef2f9;
+    --accent:#1080c0; --accent-soft:#e6f2fb; --navy:#1c3f8c; --navy2:#12295c;
+    --good:#1a7f4b; --good-bg:#e6f4ec;
+    --med:#b5710c; --med-bg:#fbf1d9;
+    --hi:#c2410c; --hi-bg:#fbe7dc;
+    --crit:#d81b48; --crit-bg:#fde9ef;
+    --shadow:0 1px 2px rgba(16,26,58,.06),0 8px 24px rgba(16,26,58,.05);
+    --mono:ui-monospace,"SFMono-Regular","Cascadia Code",Menlo,Consolas,monospace;
+    --sans:system-ui,-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+  }
+  @media (prefers-color-scheme:dark){
+    :root{
+      --bg:#0a1120; --panel:#121b30; --ink:#e9eefb; --muted:#a3adcf; --faint:#7581a6;
+      --line:#212c48; --line2:#18213a;
+      --accent:#3ca6e6; --accent-soft:#132a3e; --navy:#0f2350; --navy2:#0a1838;
+      --good:#45c67d; --good-bg:#10331f;
+      --med:#d9a441; --med-bg:#302713;
+      --hi:#e0794a; --hi-bg:#331f0e;
+      --crit:#f2607f; --crit-bg:#33101c;
+      --shadow:0 1px 2px rgba(0,0,0,.45),0 10px 30px rgba(0,0,0,.4);
+    }
+  }
+  :root[data-theme="dark"]{
+    --bg:#0a1120; --panel:#121b30; --ink:#e9eefb; --muted:#a3adcf; --faint:#7581a6;
+    --line:#212c48; --line2:#18213a;
+    --accent:#3ca6e6; --accent-soft:#132a3e; --navy:#0f2350; --navy2:#0a1838;
+    --good:#45c67d; --good-bg:#10331f;
+    --med:#d9a441; --med-bg:#302713;
+    --hi:#e0794a; --hi-bg:#331f0e;
+    --crit:#f2607f; --crit-bg:#33101c;
+    --shadow:0 1px 2px rgba(0,0,0,.45),0 10px 30px rgba(0,0,0,.4);
+  }
+  :root[data-theme="light"]{
+    --bg:#f4f7fb; --panel:#ffffff; --ink:#0f1e3d; --muted:#46567a; --faint:#6c7a9c;
+    --line:#e0e7f2; --line2:#eef2f9;
+    --accent:#1080c0; --accent-soft:#e6f2fb; --navy:#1c3f8c; --navy2:#12295c;
+    --good:#1a7f4b; --good-bg:#e6f4ec;
+    --med:#b5710c; --med-bg:#fbf1d9;
+    --hi:#c2410c; --hi-bg:#fbe7dc;
+    --crit:#d81b48; --crit-bg:#fde9ef;
+    --shadow:0 1px 2px rgba(16,26,58,.06),0 8px 24px rgba(16,26,58,.05);
+  }
+  *{box-sizing:border-box;}
+  body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--sans);line-height:1.5;-webkit-font-smoothing:antialiased;}
+  .wrap{max-width:1160px;margin:0 auto;padding:40px 24px 80px;}
+  a{color:var(--accent);}
+  a:focus-visible,button:focus-visible{outline:2px solid var(--accent);outline-offset:2px;border-radius:4px;}
+
+  header{background:linear-gradient(135deg,var(--navy),#1a6ea3);border-radius:18px;padding:34px 34px 30px;color:#eef4fb;box-shadow:var(--shadow);position:relative;overflow:hidden;}
+  header::after{content:"";position:absolute;inset:0;background:radial-gradient(560px 300px at 88% -12%,rgba(90,175,235,.42),transparent 60%);pointer-events:none;}
+  .eyebrow{font-family:var(--mono);font-size:12px;letter-spacing:.18em;text-transform:uppercase;color:#9fc4e8;margin:0 0 10px;position:relative;z-index:1;}
+  h1{font-size:clamp(26px,4vw,38px);line-height:1.08;margin:0;font-weight:700;letter-spacing:-.02em;text-wrap:balance;position:relative;z-index:1;}
+  .sub{margin:12px 0 0;color:#cad9ee;max-width:70ch;font-size:15px;position:relative;z-index:1;}
+  .meta{margin-top:22px;display:flex;flex-wrap:wrap;gap:10px 26px;font-family:var(--mono);font-size:12.5px;color:#a7c0e0;position:relative;z-index:1;}
+  .meta b{color:#eef4fb;font-weight:600;}
+
+  .tiles{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin:18px 0 8px;}
+  .tile{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:18px 18px 16px;box-shadow:var(--shadow);}
+  .tile .k{font-family:var(--mono);font-size:11.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--faint);margin:0 0 8px;}
+  .tile .v{font-size:30px;font-weight:700;letter-spacing:-.02em;font-variant-numeric:tabular-nums;}
+  .tile .v small{font-size:15px;color:var(--faint);font-weight:600;}
+  .tile .note{font-size:12.5px;color:var(--muted);margin-top:4px;}
+
+  h2{font-size:13px;font-family:var(--mono);letter-spacing:.12em;text-transform:uppercase;color:var(--faint);margin:36px 0 14px;display:flex;align-items:center;gap:10px;}
+  h2::after{content:"";flex:1;height:1px;background:var(--line);}
+  .lead{color:var(--muted);font-size:14px;max-width:80ch;margin:-4px 0 14px;}
+
+  .card{background:var(--panel);border:1px solid var(--line);border-radius:14px;overflow:hidden;box-shadow:var(--shadow);}
+  .scroll{overflow-x:auto;}
+  table{border-collapse:collapse;width:100%;font-size:14px;min-width:880px;}
+  thead th{text-align:left;font-family:var(--mono);font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--faint);font-weight:600;padding:13px 16px;border-bottom:1px solid var(--line);background:var(--line2);white-space:nowrap;}
+  tbody td{padding:13px 16px;border-bottom:1px solid var(--line2);vertical-align:top;}
+  tbody tr:last-child td{border-bottom:none;}
+  tbody tr:hover{background:var(--accent-soft);}
+  .id{font-family:var(--mono);color:var(--faint);font-size:12px;white-space:nowrap;}
+  .thr{font-weight:600;color:var(--ink);}
+  .thr small{display:block;color:var(--faint);font-weight:600;font-family:var(--mono);font-size:10.5px;letter-spacing:.06em;text-transform:uppercase;margin-top:3px;}
+  .vec{color:var(--muted);font-size:13px;max-width:34ch;}
+  .mit{color:var(--muted);font-size:13px;max-width:46ch;}
+  .mit code{font-family:var(--mono);font-size:12px;background:var(--accent-soft);color:var(--accent);padding:1px 5px;border-radius:5px;}
+
+  .pill{display:inline-block;padding:2px 9px;border-radius:20px;font-size:11px;font-weight:700;font-family:var(--mono);white-space:nowrap;letter-spacing:.02em;}
+  .sev-crit{background:var(--crit-bg);color:var(--crit);}
+  .sev-hi{background:var(--hi-bg);color:var(--hi);}
+  .sev-med{background:var(--med-bg);color:var(--med);}
+  .sev-low{background:var(--good-bg);color:var(--good);}
+  .st{display:inline-flex;align-items:center;gap:6px;font-size:11.5px;font-weight:600;font-family:var(--mono);white-space:nowrap;}
+  .st::before{content:"";width:8px;height:8px;border-radius:50%;background:currentColor;flex:none;}
+  .st-mit{color:var(--good);}
+  .st-part{color:var(--med);}
+  .st-open{color:var(--hi);}
+
+  /* Blueprint panel — deliberately fixed-light in both themes so the diagram stays legible */
+  .dfd{background:#eef4fb;border:1px solid #d3dff0;border-radius:14px;box-shadow:var(--shadow);padding:20px;color:#0f1e3d;}
+  .dfd .mermaid{display:flex;justify-content:center;min-width:760px;}
+  .legend{display:flex;flex-wrap:wrap;gap:8px 18px;margin-top:14px;font-family:var(--mono);font-size:11.5px;color:#46567a;}
+  .legend span{display:inline-flex;align-items:center;gap:7px;}
+  .legend i{width:22px;height:0;border-top:2px dashed #1080c0;display:inline-block;}
+
+  .grid2{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
+  .mini{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:18px 20px;box-shadow:var(--shadow);}
+  .mini h3{margin:0 0 6px;font-size:14.5px;color:var(--ink);}
+  .mini p{margin:0;color:var(--muted);font-size:13px;}
+  .mini .tag{font-family:var(--mono);font-size:11px;text-transform:uppercase;letter-spacing:.06em;color:var(--accent);}
+
+  .verdict{background:var(--panel);border:1px solid var(--line);border-left:4px solid var(--accent);border-radius:12px;padding:20px 22px;box-shadow:var(--shadow);}
+  .verdict .headline{color:var(--ink);font-size:16px;font-weight:700;margin:0 0 8px;}
+  .verdict p{margin:0;color:var(--muted);font-size:14.5px;max-width:92ch;}
+  .verdict b{color:var(--accent);}
+  footer{margin-top:30px;color:var(--faint);font-size:12.5px;font-family:var(--mono);line-height:1.7;}
+  @media (max-width:820px){.tiles{grid-template-columns:repeat(2,1fr);}.grid2{grid-template-columns:1fr;}.wrap{padding:24px 14px 60px;}}
+</style>
+
+<div class="wrap">
+  <header>
+    <p class="eyebrow">Threat Model &amp; Security Analysis · Biltema / Birgma Group</p>
+    <h1>Employee Appraisal Platform — Threat Model &amp; Security Analysis</h1>
+    <p class="sub">A STRIDE + LINDDUN assessment of the group-wide appraisal platform, drawn from the running code: Entra&nbsp;ID SSO, server-authoritative RBAC with <b>Platform-Administrator blindness</b> to appraisal content, per-role scope resolution, a dual electronic-signature flow with MSAL step-up re-auth, and an append-only SHA-256 <b>hash-chained audit log</b>. Every mitigation below is tied to a concrete control in the API; every residual item is stated, not smoothed over.</p>
+    <div class="meta">
+      <span>Reviewed <b>2026-07-16</b></span>
+      <span>Stack <b>React 18 · TS · NestJS · Prisma · PostgreSQL 16</b></span>
+      <span>Identity <b>Entra ID (OIDC/MSAL) · MS Graph</b></span>
+      <span>e2e tests <b>19</b></span>
+      <span>Frameworks <b>6</b></span>
+    </div>
+  </header>
+
+  <div class="tiles">
+    <div class="tile"><p class="k">Security posture</p><div class="v">3.9<small>/5</small></div><p class="note">Core threats mitigated; hardening pending pre-prod</p></div>
+    <div class="tile"><p class="k">STRIDE threats</p><div class="v">22</div><p class="note">15 mitigated · 6 partial · 1 open</p></div>
+    <div class="tile"><p class="k">Privacy (LINDDUN)</p><div class="v">6</div><p class="note">GDPR DSAR + retention wired; DPIA sign-off outstanding</p></div>
+    <div class="tile"><p class="k">Frameworks mapped</p><div class="v">6</div><p class="note">ISO 27001 · NIST CSF · NIS2 · GDPR · STRIDE · MITRE ATT&amp;CK</p></div>
+  </div>
+
+  <h2>System model &amp; trust boundaries</h2>
+  <p class="lead">Four principal trust boundaries: the untrusted browser, the TLS edge, the application zone (where all authorization is decided), and the EU data zone. Microsoft Entra ID and Graph are trusted external services. Every arrow that crosses a boundary is an attack surface enumerated in the scorecard.</p>
+  <div class="dfd scroll">
+    <pre class="mermaid">
+%%{init: {'theme':'base','themeVariables':{'primaryColor':'#e6f2fb','primaryBorderColor':'#1080c0','primaryTextColor':'#0f1e3d','secondaryColor':'#eef2f9','lineColor':'#5b6b90','fontFamily':'ui-monospace, Menlo, monospace','fontSize':'13px'}}}%%
+flowchart LR
+  subgraph CLIENT["① Client · untrusted"]
+    U["Browser SPA<br/>React + MSAL<br/>Employee · Manager · Exec · Admin"]
+  end
+  subgraph EDGE["② Edge · TLS"]
+    N["nginx<br/>static SPA + /api reverse proxy"]
+  end
+  subgraph APP["③ Application zone — authorization decided here"]
+    A["NestJS API<br/>AuthGuard · RolesGuard · @NoAdmin<br/>ScopeService · ValidationPipe"]
+    R["Reminder scheduler"]
+  end
+  subgraph DATA["④ Data zone · EU"]
+    DB[("PostgreSQL 16<br/>appraisals · signatures<br/>hash-chained audit log")]
+  end
+  subgraph MS["Microsoft cloud · trusted external"]
+    E["Entra ID<br/>OIDC · JWKS · MFA"]
+    G["MS Graph<br/>group import · sendMail"]
+  end
+  U -- "HTTPS" --> N -- "same-origin /api" --> A
+  U -- "OIDC login + MFA / step-up" --> E
+  A -- "validate JWT via JWKS" --> E
+  A -- "Prisma over TLS" --> DB
+  A -- "import users · mail" --> G
+  R -- "reminders" --> G
+    </pre>
+    <div class="legend">
+      <span><i></i> boundary-crossing data flow = attack surface</span>
+      <span>Assets: appraisal answers/scores · signatures · audit chain · directory · tokens · Graph secret</span>
+    </div>
+  </div>
+
+  <h2>STRIDE threat scorecard</h2>
+  <p class="lead">Threats grouped by STRIDE category. Severity is the inherent risk before controls; status reflects what is actually implemented in the codebase today.</p>
+  <div class="card scroll">
+    <table>
+      <thead><tr><th>ID</th><th>Threat</th><th>Vector / affected asset</th><th>Severity</th><th>Mitigation (implemented)</th><th>Status</th></tr></thead>
+      <tbody id="stride"></tbody>
+    </table>
+  </div>
+
+  <h2>Privacy threats — LINDDUN / GDPR</h2>
+  <p class="lead">Appraisal data is identified personal data about performance — a high-sensitivity category. LINDDUN surfaces the privacy-specific risks that STRIDE does not.</p>
+  <div class="card scroll">
+    <table>
+      <thead><tr><th>ID</th><th>Privacy threat</th><th>Where it arises</th><th>Severity</th><th>Control</th><th>Status</th></tr></thead>
+      <tbody id="linddun"></tbody>
+    </table>
+  </div>
+
+  <h2>Top risks &amp; next steps</h2>
+  <p class="lead">The residual and partial items above, ordered by priority. None are architectural — all are hardening or operational actions before external production exposure.</p>
+  <div class="card scroll">
+    <table>
+      <thead><tr><th>Priority</th><th>Action</th><th>Why it matters</th></tr></thead>
+      <tbody id="risks"></tbody>
+    </table>
+  </div>
+
+  <h2>Control framework mapping</h2>
+  <p class="lead">Mirrors the platform's in-app Security &amp; compliance register, cross-checked against the implemented controls.</p>
+  <div class="card scroll">
+    <table>
+      <thead><tr><th>Framework</th><th>Control</th><th>How it is met</th><th>Status</th></tr></thead>
+      <tbody id="controls"></tbody>
+    </table>
+  </div>
+
+  <h2>Verdict</h2>
+  <div class="verdict">
+    <p class="headline">Sound by design (3.9/5) — the high-severity threats are mitigated in code; the residual items are hardening and operational, not architectural.</p>
+    <p>The platform gets the hard parts right where they matter most. Authorization is <b>server-authoritative</b>: roles come only from the validated Entra token, every appraisal route is guarded, and the Platform Administrator is <b>structurally blind</b> to appraisal content (a <code>@NoAdmin</code> guard returns 403, backed by a passing e2e test) — the single most sensitive requirement in the spec. Cross-tenant/IDOR exposure is closed by a per-request <b>ScopeService</b> (appraisee→self, manager→team, execs→org, CFO→approved-only). Integrity and non-repudiation are strong: submitted appraisals lock, scores are recomputed server-side, mass-assignment is stripped by a whitelisting <code>ValidationPipe</code>, every mutation is written to an <b>append-only SHA-256 hash-chained audit log</b> with a verify endpoint, and the dual e-signature requires an MSAL <code>prompt=login</code> step-up. What genuinely remains is pre-production hardening the assessment does <b>not</b> hide: enforce Entra mode so the dev-mock header path can never run in production; add application rate-limiting (<code>@nestjs/throttler</code>) and edge security headers (CSP/HSTS); move the Graph client secret and DB credentials into a secret manager (Key Vault / OpenBao) with passwordless Postgres; add field-level AES-256-GCM encryption for free-text comments; ship the audit chain to an append-only/SIEM store beyond DBA reach; and commission an independent penetration test plus DPIA/ROPA sign-off. Close those and this moves cleanly to external-production-ready.</p>
+  </div>
+
+  <footer>
+    Method: STRIDE (per data-flow) + LINDDUN (privacy), evidence drawn from the API source — AuthGuard/RolesGuard/@NoAdmin, ScopeService, AuditService hash-chain, appraisals state machine, MSAL step-up, Graph integration — and the 19 e2e tests.<br/>
+    Honest-assessment basis: severity is inherent risk pre-control; status is what ships today. Gaps are stated as residual/open, not smoothed over. Not a substitute for an independent human penetration test.
+  </footer>
+</div>
+
+<script type="module">
+  const STRIDE = [
+    ["S1","Spoofing","Forged or replayed identity token","Stolen/forged bearer token impersonates a user at the API","hi",
+      "Entra OIDC; API validates JWT signature via <code>JWKS</code> (RS256) with audience + issuer checks; MFA enforced by Conditional Access.","mit"],
+    ["S2","Spoofing","Dev-mock header trusted as identity","<code>x-dev-upn</code> header selects a user when not in Entra mode","crit",
+      "Header path active only when <code>AUTH_MODE≠entra</code>; production must build web + API in Entra mode. Not yet hard-failed if mis-set.","part"],
+    ["S3","Spoofing","Signing as another party","POST /sign with someone else's party","hi",
+      "Signer's <code>party</code> must match the caller (employee vs responsible manager); MSAL <code>prompt=login</code> step-up before signing.","mit"],
+    ["T1","Tampering","Editing a submitted / locked appraisal","Mutating answers after submission or sign-off","hi",
+      "State machine: self-edit only in <code>not_started/in_progress/changes_requested</code>; <code>signed=true</code> locks the record; server rejects otherwise.","mit"],
+    ["T2","Tampering","Client-supplied score manipulation","Posting a favourable score from the client","med",
+      "Server recomputes the weighted 0–100 score from ratings; client-sent scores are ignored entirely.","mit"],
+    ["T3","Tampering","Mass-assignment / over-posting","Extra fields in PATCH bodies (e.g. status, managerId)","med",
+      "Global <code>ValidationPipe({whitelist:true})</code> strips unknown props; final-comments limits each party to its own field.","mit"],
+    ["T4","Tampering","Audit-log alteration","Editing or deleting audit rows to hide activity","med",
+      "Append-only writes, SHA-256 <code>prevHash</code> chain, and a <code>/audit/verify</code> integrity check. Detects tampering but a DBA can still delete rows.","part"],
+    ["R1","Repudiation","Denying a decision or edit","User claims they never approved / rejected / changed","med",
+      "Every mutation appends an audit event with actor id + name, action, object ref, source IP and timestamp, chained.","mit"],
+    ["R2","Repudiation","Denying a signature","User disputes their electronic sign-off","hi",
+      "E-signature records name, UPN, source IP and server timestamp; <code>APPRAISAL.ESIGN</code> audited after step-up re-auth (advanced e-sign; not eIDAS QES).","mit"],
+    ["I1","Info disclosure","Admin reading appraisal content","Platform Admin views answers/scores/comments","crit",
+      "Admin-blindness: <code>@NoAdmin</code> guard → 403 on appraisal &amp; analytics routes; GDPR export returns a receipt-only to admin. Covered by e2e test.","mit"],
+    ["I2","Info disclosure","Cross-scope / IDOR access","Reading another team's or employee's appraisal by id","hi",
+      "Per-request <code>ScopeService</code> where-clause + <code>canView</code> on single fetch; role scopes enforced server-side. Covered by e2e tests.","mit"],
+    ["I3","Info disclosure","Interception in transit","Sniffing appraisal data on the wire","med",
+      "TLS at the edge; CORS locked to the configured origin; SPA calls the API same-origin via nginx. HSTS/CSP headers not yet set.","part"],
+    ["I4","Info disclosure","Exposure at rest","DB/backup compromise reveals free-text notes","med",
+      "Full-disk AES-256 + EU residency at the deployment layer. No application field-level encryption for comments/scores yet.","part"],
+    ["I5","Info disclosure","Secret exposure","Graph client secret / DB credentials leak","hi",
+      "<code>.env</code> git-ignored; secrets via environment. Not yet in a managed secret store; DB uses a password rather than passwordless TLS cert.","part"],
+    ["I6","Info disclosure","Over-privileged Graph app","Compromised app token over-reaches the tenant","med",
+      "Least-privilege application permissions only: <code>User.Read.All · GroupMember.Read.All · Directory.Read.All · Mail.Send</code>.","mit"],
+    ["D1","Denial of service","Request flooding / credential stuffing","Unthrottled requests exhaust the API or brute-force","med",
+      "All routes require auth via a global guard, but no application rate-limiting/throttling is implemented yet.","open"],
+    ["D2","Denial of service","Mail / reminder abuse","Reminder sweep floods recipients or Graph quota","low",
+      "Reminder sweep is scheduled and bounded per run; Graph applies its own send throttling.","mit"],
+    ["D3","Denial of service","Oversized payloads","Large request bodies consume memory","low",
+      "Validation + typed DTOs; relies on framework default body limits — an explicit cap is recommended.","part"],
+    ["E1","Elevation of privilege","Client-forged role","User asserts a higher role from the client","hi",
+      "Roles are derived only from the validated token <code>roles</code> claim; the client-side role is cosmetic and never trusted.","mit"],
+    ["E2","Elevation of privilege","Reaching privileged endpoints","Calling admin/exec routes without the role","hi",
+      "<code>@Roles(...)</code> + RolesGuard enforced per controller server-side; verified by e2e tests.","mit"],
+    ["E3","Elevation of privilege","Manager acting outside team","Reviewing/deciding on a non-report","med",
+      "<code>isManagerOf</code> checks <code>appraisal.managerId === caller</code> before review/decision/sign; verified by e2e test.","mit"],
+    ["E4","Elevation of privilege","Escalation via group import","Import mapping grants unintended roles","med",
+      "Import derives roles from a governed group→role map; effective access is the Entra app-role assignment; role changes are audited.","mit"]
+  ];
+
+  const LINDDUN = [
+    ["P1","Linkability / Identifiability","Appraisal answers &amp; scores are tied to an identified employee","hi",
+      "Access minimised by role scope; admin blind to content; presence data kept to name/role only.","mit"],
+    ["P2","Disclosure of information","Sensitive performance notes over-exposed internally","hi",
+      "RBAC scope + admin-blindness; recommend field-level AES-256-GCM for free-text at rest.","part"],
+    ["P3","Detectability","Who viewed an appraisal is unaccountable","med",
+      "<code>APPRAISAL.VIEW</code> and every action written to the immutable audit log.","mit"],
+    ["P4","Non-repudiation (privacy tension)","Signature permanently binds a person","low",
+      "By design and lawful for appraisal sign-off; balanced against integrity requirements.","mit"],
+    ["P5","Unawareness","Data subject unaware of processing","med",
+      "Privacy notice, lawful-basis &amp; processing register surfaced in-app; DPIA/ROPA sign-off is an organizational action.","part"],
+    ["P6","Non-compliance","Data kept beyond need; rights unmet","hi",
+      "DSAR export (Art. 15/20) &amp; erase/anonymize (Art. 17) implemented; retention schedule defined; auto-purge job is operational.","part"]
+  ];
+
+  const RISKS = [
+    ["hi","Enforce Entra mode in production (disable dev-mock)","The <code>x-dev-upn</code> path trusts a header for identity; a prod build must run Entra-only and ideally hard-fail if mock auth is detected (S2)."],
+    ["med","Add application rate-limiting + edge security headers","No throttling today (D1); add <code>@nestjs/throttler</code> and set CSP / HSTS / X-Frame-Options / Referrer-Policy at nginx (I3)."],
+    ["med","Move secrets to a managed store; passwordless Postgres","Graph client secret &amp; DB credentials live in env (I5); resolve via Key Vault / OpenBao and use TLS client-cert DB auth."],
+    ["med","Field-level encryption for free-text at rest","Comments and self-assessment prose warrant AES-256-GCM envelope encryption beyond full-disk (I4 / P2)."],
+    ["med","Ship the audit chain to an append-only / SIEM store","Hash-chaining detects tampering but a DBA can delete rows; forward events to WORM/SIEM for prevention (T4)."],
+    ["low","Commission an independent penetration test","Automated checks and this model are the baseline; a human engagement is the remaining assurance step."],
+    ["low","Formalize DPIA / ROPA sign-off + retention auto-purge","Drafted from real behaviour; needs DPO / MBL §11 review and a scheduled purge job (P5 / P6)."]
+  ];
+
+  const CONTROLS = [
+    ["ISO 27001","A.9.2 Access provisioning","RBAC via Entra app roles; JML synced from the directory","mit"],
+    ["ISO 27001","A.12.4 Logging &amp; monitoring","Immutable append-only hash-chained audit log; 24-month retention","mit"],
+    ["NIST CSF","PR.AC-7 Authentication","MFA via Conditional Access, SSO, no local credentials","mit"],
+    ["NIST CSF","DE.CM-1 Continuous monitoring","Sign-in risk / anomalous-access alerts (Entra ID Protection) — tenant-side","part"],
+    ["NIS2","Art. 21 Risk-management measures","Risk register (this model), encryption, MFA, incident handling","mit"],
+    ["GDPR","Art. 5 / 17 Minimization &amp; erasure","DSAR export + erase/anonymize; retention schedule (auto-purge pending)","part"],
+    ["GDPR","Art. 32 Security of processing","TLS, RBAC, audit logging; field-level at-rest encryption pending","part"],
+    ["STRIDE","Tampering / Repudiation","Locked records, hash-chained audit, attributed e-signatures","mit"],
+    ["MITRE ATT&amp;CK","T1078 Valid accounts","Conditional Access, MFA, least-privilege app roles","mit"]
+  ];
+
+  const sev = {crit:["sev-crit","Critical"],hi:["sev-hi","High"],med:["sev-med","Medium"],low:["sev-low","Low"]};
+  const stat = {mit:["st-mit","Mitigated"],part:["st-part","Partial"],open:["st-open","Open"]};
+  const sevPill = k => `<span class="pill ${sev[k][0]}">${sev[k][1]}</span>`;
+  const statPill = k => `<span class="st ${stat[k][0]}">${stat[k][1]}</span>`;
+
+  document.getElementById("stride").innerHTML = STRIDE.map(r =>
+    `<tr><td class="id">${r[0]}</td>`
+    + `<td class="thr">${r[2]}<small>${r[1]}</small></td>`
+    + `<td class="vec">${r[3]}</td>`
+    + `<td>${sevPill(r[4])}</td>`
+    + `<td class="mit">${r[5]}</td>`
+    + `<td>${statPill(r[6])}</td></tr>`).join("");
+
+  document.getElementById("linddun").innerHTML = LINDDUN.map(r =>
+    `<tr><td class="id">${r[0]}</td>`
+    + `<td class="thr">${r[1]}</td>`
+    + `<td class="vec">${r[2]}</td>`
+    + `<td>${sevPill(r[3])}</td>`
+    + `<td class="mit">${r[4]}</td>`
+    + `<td>${statPill(r[5])}</td></tr>`).join("");
+
+  document.getElementById("risks").innerHTML = RISKS.map(r =>
+    `<tr><td>${sevPill(r[0])}</td><td class="thr">${r[1]}</td><td class="mit">${r[2]}</td></tr>`).join("");
+
+  document.getElementById("controls").innerHTML = CONTROLS.map(r =>
+    `<tr><td><span class="pill" style="background:var(--accent-soft);color:var(--accent)">${r[0]}</span></td>`
+    + `<td class="thr">${r[1]}</td><td class="mit">${r[2]}</td><td>${statPill(r[3])}</td></tr>`).join("");
+</script>
